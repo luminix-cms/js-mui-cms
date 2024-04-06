@@ -2,14 +2,7 @@ import React from 'react';
 
 import { LuminixProvider } from '@luminix/react';
 
-import routes from '../routes';
-import { LuminixProviderProps } from '@luminix/react/dist/components/LuminixProvider';
-
-import manifest from '../assets/manifest.json';
-
-import { AppConfiguration } from '@luminix/core/dist/types/Config';
-
-type AppProps = Partial<LuminixProviderProps>;
+import { AppProps } from '../types/PropTypes';
 
 
 export const App: React.FunctionComponent<AppProps> = (props) => {
@@ -17,10 +10,16 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
 
     return (
         <LuminixProvider
-            routes={routes}
+            routes={(app) => {
+                const routes = app.make('cms.route').make();
+            
+                return routes;
+            }}
             config={{
-                app: { debug: true },
-                manifest: manifest as unknown as AppConfiguration['manifest'],
+                app: { 
+                    debug: true,
+                    url: 'http://localhost'
+                },
             }}
             {...props}
         />

@@ -4,8 +4,10 @@ import React from 'react';
 import { Reducible } from '@luminix/core';
 import { ReducerCallback } from '@luminix/core/dist/types/Reducer';
 
-import App from '../views/Layout/App';
+import Layout from '../views/Layout/Layout';
 import Dashboard from '../views/Dashboard';
+import ModelIndex from '../views/ModelIndex';
+import ModelItem from '../views/ModelItem';
 
 class ComponentFacade {
 
@@ -15,14 +17,17 @@ class ComponentFacade {
 
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 
 
     boot() {
 
         this.reducer('componentMap', () => ({
-            Layout: App,
-            Dashboard: Dashboard,
+            Layout,
+            Dashboard,
+            ModelIndex,
+            ModelItem,
         }), 0);
 
     }
@@ -45,6 +50,7 @@ class ComponentFacade {
     }
 
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     reducer(_: string, __: ReducerCallback, ___ = 10) {
         throw new Error('Method not implemented.');
     }
