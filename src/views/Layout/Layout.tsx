@@ -1,40 +1,43 @@
 import React from 'react';
 
-import Avatar from '@mui/material/Avatar';
-import Box, { BoxProps } from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import MuiDrawer, { DrawerProps as MuiDrawerProps } from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import Box from '@mui/material/Box';
 
-import { CSSObject, Theme, styled, useTheme } from '@mui/material/styles';
-import { app } from '@luminix/core';
-import useMenu from '../../hooks/useMenu';
-import useIsDesktopMode from '../../hooks/useIsDesktopMode';
+import { app, config } from '@luminix/core';
+import { LayoutProps } from '../../types/PropTypes';
 
 
 
-
-
-
-const Layout: React.FunctionComponent = ({ children }) => {
+const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...props }) => {
 
     const {
-        ['Layout.AppBar']: AppBar
+        ['Layout.AppBar']: AppBar,
+        ['Layout.Drawer']: Drawer,
     } = app('cms.component').make();
 
-    
+    const {
+        AppBar: appBarProps,
+        Drawer: drawerProps,
+        main: mainProps,
+    } = slotProps || {};
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex' }} {...props}>
             <AppBar
                 position="fixed"
+                title={config('app.name')}
+                {...appBarProps}
             />
-            {children}
+            <Drawer {...drawerProps} />
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    p: { xs: 1, sm: 2, md: 3 },
+                }}
+                {...mainProps}
+            >
+                {children}
+            </Box>
         </Box>
     )
 };

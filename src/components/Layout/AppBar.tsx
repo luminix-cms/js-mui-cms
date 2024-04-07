@@ -11,7 +11,7 @@ import { Breakpoint, Theme, styled } from '@mui/material/styles';
 
 import { AppBarProps, StyledAppBarProps } from '../../types/PropTypes';
 
-import { config } from '@luminix/core';
+import { app, config } from '@luminix/core';
 
 import useMenu from '../../hooks/useMenu';
 import useLayoutConfig from '../../hooks/useLayoutConfig';
@@ -49,18 +49,20 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
         config('luminix.cms.layout.breakpoint', 'md') as Breakpoint
     ));
 
-    const AppBarComponent: React.FunctionComponent<StyledAppBarProps> = React.useMemo(() => isTablet
+    const AppBarComponent = isTablet
         ? DesktopAppBar
-        : MobileAppBar, [isTablet]);
+        : MobileAppBar;
+
+    const MenuButton = app('cms.component').make('Layout.AppBar.MenuButton');
 
     const { open } = useMenu();
 
-    const height = useLayoutConfig('appBar.height', undefined) as number;
+    const height = useLayoutConfig('appBar.height') as number;
     const drawerWidth = useLayoutConfig('drawer.width', 280) as number;
 
 
     const {
-        title = document.title,
+        start: title = document.title,
         end = null,
     } = slots;
 
@@ -73,15 +75,18 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
             {...props}
         >
             <Toolbar>
-                {/* drawer, menu button */}
-                <Typography
-                    width="100%"
-                    variant="h6"
-                    noWrap
-                    component="div"
-                >
-                    {title}
-                </Typography>
+                <MenuButton />
+                {typeof title === 'string'
+                    ? (
+                        <Typography
+                            width="100%"
+                            variant="h6"
+                            noWrap
+                            component="div"
+                        >
+                            {title}
+                        </Typography>
+                    ) : title}
                     
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: 'flex' }}>

@@ -9,6 +9,8 @@ import ModelIndex from './views/ModelIndex';
 import ModelItem from './views/ModelItem';
 import routes from './routes';
 import AppBar from './components/Layout/AppBar';
+import MenuButton from './components/Layout/AppBar/MenuButton';
+import Drawer from './components/Layout/Drawer';
 
 let app: AppFacade;
 
@@ -50,6 +52,8 @@ class CmsPlugin extends Plugin {
             ModelIndex,
             ModelItem,
             'Layout.AppBar': AppBar,
+            'Layout.Drawer': Drawer,
+            'Layout.AppBar.MenuButton': MenuButton,
             
         }), 0);
     }

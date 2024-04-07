@@ -12,10 +12,15 @@ export default function useMenu() {
         setOpen(false);
     };
 
+    const toggle = () => {
+        setOpen((prev) => !prev);
+    };
+
     return {
         open,
         handleDrawerOpen,
         handleDrawerClose,
+        toggle,
     };
 }
 
