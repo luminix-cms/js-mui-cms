@@ -8,8 +8,6 @@ import LayoutProvider from "./providers/LayoutProvider";
 
 const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem }, models) => [
     {
-        path: '/',
-        name: 'luminix.cms.dashboard',
         element: (
             <LayoutProvider>
                 <CssBaseline />
