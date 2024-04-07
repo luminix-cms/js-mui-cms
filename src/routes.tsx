@@ -2,15 +2,18 @@ import { Outlet } from "react-router-dom";
 import _ from "lodash";
 
 import { CmsRoutesReducer } from "./types/Reducers";
+import LayoutProvider from "./providers/LayoutProvider";
 
 const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem }, models) => [
     {
         path: '/',
         name: 'luminix.cms.dashboard',
         element: (
-            <Layout>
-                <Outlet />
-            </Layout>
+            <LayoutProvider>
+                <Layout>
+                    <Outlet />
+                </Layout>
+            </LayoutProvider>
         ),
         children: [
             {

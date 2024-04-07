@@ -8,6 +8,7 @@ import Dashboard from './views/Dashboard';
 import ModelIndex from './views/ModelIndex';
 import ModelItem from './views/ModelItem';
 import routes from './routes';
+import AppBar from './components/Layout/AppBar';
 
 let app: AppFacade;
 
@@ -48,6 +49,8 @@ class CmsPlugin extends Plugin {
             Dashboard,
             ModelIndex,
             ModelItem,
+            'Layout.AppBar': AppBar,
+            
         }), 0);
     }
 
