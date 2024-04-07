@@ -1,5 +1,5 @@
 import React from 'react';
-import { app } from '@luminix/core';
+import { app, config } from '@luminix/core';
 
 import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
@@ -58,7 +58,7 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
 
 
     const {
-        start: title = document.title,
+        start: title = config('app.name', document.title),
         end = null,
     } = slots;
 

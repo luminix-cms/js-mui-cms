@@ -1,11 +1,19 @@
 import React from 'react';
+import { app, config } from '@luminix/core';
 
 import Box from '@mui/material/Box';
 
-import { app, config } from '@luminix/core';
+import { styled } from '@mui/material/styles';
+
 import { LayoutProps } from '../../types/PropTypes';
+import useLayoutConfig from '../../hooks/useLayoutConfig';
 
 
+const AppBarDisplacement = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+}));
 
 const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...props }) => {
 
@@ -13,6 +21,8 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...
         ['Layout.AppBar']: AppBar,
         ['Layout.Drawer']: Drawer,
     } = app('cms').getComponents();
+
+    const height = useLayoutConfig('appBar.height') as number;
 
     const {
         AppBar: appBarProps,
@@ -36,6 +46,7 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...
                 }}
                 {...mainProps}
             >
+                <AppBarDisplacement style={{ height }} />
                 {children}
             </Box>
         </Box>

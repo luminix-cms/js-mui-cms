@@ -1,3 +1,4 @@
+import Typography from '@mui/material/Typography';
 import React from "react";
 
 
@@ -5,7 +6,7 @@ const Dashboard: React.FunctionComponent = () => {
 
     return (
         <div>
-            <h1>Dashboard</h1>
+            <Typography variant="h4">Dashboard</Typography>
         </div>
     );
 };
