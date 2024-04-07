@@ -1,7 +1,7 @@
 import { AppFacade, Plugin } from '@luminix/core';
 
-import Component from './facades/Component';
-import Route from './facades/Route';
+import CmsFacade from './facades/Cms';
+
 
 import Layout from './views/Layout/Layout';
 import Dashboard from './views/Dashboard';
@@ -11,6 +11,8 @@ import routes from './routes';
 import AppBar from './components/Layout/AppBar';
 import MenuButton from './components/Layout/AppBar/MenuButton';
 import Drawer from './components/Layout/Drawer';
+import RecursiveList from './components/RecursiveList';
+import RecursiveMenu from './components/RecursiveMenu';
 
 let app: AppFacade;
 
@@ -24,36 +26,40 @@ class CmsPlugin extends Plugin {
         
         app = appFacade;
 
-        app.bind('cms.component', new Component());
-        app.bind('cms.route', new Route(app));
+        app.bind('cms', new CmsFacade(app));
 
 
     }
 
 
     boot() {
-        this.registerComponents();
-        this.registerRoutes();
+        this.bootComponents();
+        this.bootRoutes();
 
     }
 
-    registerRoutes() {
-        app.make('cms.route').reducer('cmsRoutes', routes, 0);
+    bootRoutes() {
+        app.make('cms').reducer('cmsRoutes', routes, 0);
         app.make('route').reducer('routerOptions', (opts) => ({
             ...opts,
             basename: app.make('config').get('luminix.cms.url', '/luminix-admin')
         }));
     }
 
-    registerComponents() {
-        app.make('cms.component').reducer('componentMap', () => ({
+    bootComponents() {
+        app.make('cms').reducer('componentMap', () => ({
             Layout,
             Dashboard,
             ModelIndex,
             ModelItem,
+
+            RecursiveList,
+            RecursiveMenu,
+
             'Layout.AppBar': AppBar,
             'Layout.Drawer': Drawer,
             'Layout.AppBar.MenuButton': MenuButton,
+            
             
         }), 0);
     }

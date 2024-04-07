@@ -19,9 +19,9 @@ const DEFAULT_THEME = createTheme({
 });
 
 const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_THEME }) => (
-    <ThemeProvider theme={theme}>        
+    <ThemeProvider theme={theme}>
         <LuminixProvider
-            routes={(app) => app.make('cms.route').make()}
+            routes={(app) => app.make('cms').getRoutes()}
             plugins={[
                 new CmsPlugin(),
             ]}
@@ -30,6 +30,15 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
                     debug: true,
                     url: 'http://localhost'
                 },
+                // luminix: {
+                //     cms: {
+                //         layout: {
+                //             appBar: {
+                //                 height: 90,
+                //             }
+                //         }
+                //     }
+                // }
             }}
         />
     </ThemeProvider>

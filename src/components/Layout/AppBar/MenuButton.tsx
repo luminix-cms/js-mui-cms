@@ -6,10 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import useMenu from '../../../hooks/useMenu';
 
 const MenuButton: React.FunctionComponent = () => {
-
-    const {
-        handleDrawerOpen,
-    } = useMenu();
+    const { handleDrawerOpen } = useMenu();
 
     return (
         <IconButton

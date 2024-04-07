@@ -1,20 +1,18 @@
 import React from 'react';
+import { app } from '@luminix/core';
 
 import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import useMediaQuery from '@mui/material/useMediaQuery';
-
-import { Breakpoint, Theme, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 import { AppBarProps, StyledAppBarProps } from '../../types/PropTypes';
 
-import { app, config } from '@luminix/core';
-
 import useMenu from '../../hooks/useMenu';
 import useLayoutConfig from '../../hooks/useLayoutConfig';
+import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 
 
 const DesktopAppBar = styled(
@@ -45,15 +43,13 @@ const MobileAppBar = styled(
 
 const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) => {
 
-    const isTablet = useMediaQuery((theme: Theme) => theme.breakpoints.up(
-        config('luminix.cms.layout.breakpoint', 'md') as Breakpoint
-    ));
+    const isDesktop = useIsDesktopMode();
 
-    const AppBarComponent = isTablet
+    const AppBarComponent = isDesktop
         ? DesktopAppBar
         : MobileAppBar;
 
-    const MenuButton = app('cms.component').make('Layout.AppBar.MenuButton');
+    const MenuButton = app('cms').getComponent('Layout.AppBar.MenuButton');
 
     const { open } = useMenu();
 
@@ -75,7 +71,7 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
             {...props}
         >
             <Toolbar>
-                <MenuButton />
+                {(!isDesktop || !open) && <MenuButton />}
                 {typeof title === 'string'
                     ? (
                         <Typography
@@ -87,7 +83,6 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
                             {title}
                         </Typography>
                     ) : title}
-                    
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: 'flex' }}>
                     {end}

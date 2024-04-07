@@ -12,7 +12,7 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...
     const {
         ['Layout.AppBar']: AppBar,
         ['Layout.Drawer']: Drawer,
-    } = app('cms.component').make();
+    } = app('cms').getComponents();
 
     const {
         AppBar: appBarProps,
