@@ -3,6 +3,7 @@ import { ModelComponentProps } from '../types/PropTypes';
 import { useBrowsableQuery } from '@luminix/react';
 import { app, log } from '@luminix/core';
 import ModelIndexSkeleton from './ModelIndex.skeleton';
+import useSetPageTitle from '../hooks/useSetPageTitle';
 
 const ModelIndex: React.FunctionComponent<ModelComponentProps> = ({ Model }) => {
 
@@ -17,7 +18,9 @@ const ModelIndex: React.FunctionComponent<ModelComponentProps> = ({ Model }) => 
 
     log(paginator);
 
-    const Error = app('cms').getComponent('Error');
+    useSetPageTitle(Model.plural());
+
+    const { Error, DesktopPageTitle } = app('cms').getComponents();
 
     if (error) {
         return <Error error={error} />;
@@ -29,8 +32,8 @@ const ModelIndex: React.FunctionComponent<ModelComponentProps> = ({ Model }) => 
 
 
     return (
-        <div>
-            <h1>{Model.plural()}</h1>
+        <>
+            <DesktopPageTitle />
             <ul>
                 {items!.map((item, index) => (
                     <li key={index}>
@@ -38,7 +41,7 @@ const ModelIndex: React.FunctionComponent<ModelComponentProps> = ({ Model }) => 
                     </li>
                 ))}
             </ul>
-        </div>
+        </>
     );
 }
 

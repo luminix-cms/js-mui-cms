@@ -21,6 +21,7 @@ import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import _ from 'lodash';
 import { MenuItem } from './types/Menu';
 import Error from './views/Error';
+import DesktopPageTitle from './components/DesktopPageTitle';
 
 let app: AppFacade;
 
@@ -66,6 +67,7 @@ class CmsPlugin extends Plugin {
 
             RecursiveList,
             RecursiveMenu,
+            DesktopPageTitle,
 
             'Layout.AppBar': AppBar,
             'Layout.Drawer': Drawer,

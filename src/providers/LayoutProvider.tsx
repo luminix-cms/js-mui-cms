@@ -6,19 +6,26 @@ import { Theme } from '@mui/material/styles';
 
 import { LayoutProviderValue } from '../types/Provider';
 import { CmsConfig } from '../types/Config';
+import { config } from '@luminix/core';
 
 const DEFAULT_VALUE: LayoutProviderValue = {
     open: false,
     setOpen: () => {},
     layout: {},
     isBreakpointUp: false,
+    currentPage: '',
+    setCurrentPage: () => {},
 };
 
 export const LayoutContext = React.createContext(DEFAULT_VALUE); // exporta o context pra usar onde precisar
 
+const originalTitle = document.title;
+
 const LayoutProvider: React.FunctionComponent = ({ children }) => {
      
     const [open, setOpen] = React.useState(DEFAULT_VALUE.open);
+
+    const [currentPage, setCurrentPage] = React.useState('');
 
     const layout = useConfig('luminix.cms.layout', {}) as CmsConfig['layout'];
 
@@ -26,7 +33,18 @@ const LayoutProvider: React.FunctionComponent = ({ children }) => {
 
     const value: LayoutProviderValue = {
         open, setOpen, layout, isBreakpointUp,
+        currentPage, setCurrentPage,
     };
+
+    React.useEffect(() => {
+        document.title = currentPage
+            ? `${currentPage} | ${config('app.name', originalTitle)}`
+            : config('app.name', originalTitle) as string;
+
+        return () => {
+            document.title = originalTitle;
+        };
+    }, [currentPage]);
 
     return (
         <LayoutContext.Provider value={value}>

@@ -41,7 +41,7 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    p: { xs: 1, sm: 2, md: 3 },
+                    // p: { xs: 1, sm: 2, md: 3 },
                 }}
                 {...mainProps}
             >

@@ -6,6 +6,8 @@ export type LayoutProviderValue = {
     setOpen: Dispatch<SetStateAction<boolean>>,
     layout: CmsConfig['layout'],
     isBreakpointUp: boolean,
+    currentPage: string,
+    setCurrentPage: Dispatch<SetStateAction<string>>,
 };
 
 

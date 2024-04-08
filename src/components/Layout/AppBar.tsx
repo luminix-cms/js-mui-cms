@@ -13,6 +13,7 @@ import { AppBarProps, StyledAppBarProps } from '../../types/PropTypes';
 import useMenu from '../../hooks/useMenu';
 import useLayoutConfig from '../../hooks/useLayoutConfig';
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
+import usePageTitle from '../../hooks/usePageTitle';
 
 
 const DesktopAppBar = styled(
@@ -58,10 +59,11 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
 
 
     const {
-        start: title = config('app.name', document.title),
+        start = null,//: title = config('app.name', document.title),
         end = null,
     } = slots;
 
+    const title = usePageTitle();
 
     return (
         <AppBarComponent
@@ -72,17 +74,15 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
         >
             <Toolbar>
                 {(!isDesktop || !open) && <MenuButton />}
-                {typeof title === 'string'
-                    ? (
-                        <Typography
-                            width="100%"
-                            variant="h6"
-                            noWrap
-                            component="div"
-                        >
-                            {title}
-                        </Typography>
-                    ) : title}
+                {!isDesktop ? start : null}
+                <Typography
+                    width="100%"
+                    variant="h6"
+                    noWrap
+                    component="div"
+                >
+                    {(!isDesktop && title) || config('app.name', document.title)}
+                </Typography>
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: 'flex' }}>
                     {end}
