@@ -10,6 +10,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { RecursiveMenuProps } from '../types/PropTypes';
 
 import useLayoutConfig from '../hooks/useLayoutConfig';
+import Link from './Link';
 
 
 
@@ -17,73 +18,71 @@ const RecursiveMenu: React.FunctionComponent<RecursiveMenuProps> = ({
     collapsed = false, items, onClick,
     ...props
 }) => {
-    const [childrenOpen, setChildrenOpen] = React.useState<{ [key: string]: Element | null }>({});
+    const [childrenOpen, setChildrenOpen] = React.useState<Record<string, Element | null>>({});
 
     const width = useLayoutConfig('drawer.width', 280) as number;
 
     return (
         <>
             <Menu {...props}>
-                {items
-                    .filter(({ hidden = () => false }) => !hidden())
-                    .map((item) => {
-                        const {
-                            text, icon, element = null,
-                            key, children, onClick: onClickItem,
-                            component: Component, to,
-                        } = item;
+                {items.map((item) => {
+                    const {
+                        text, icon, element = null,
+                        key, children, onClick: onClickItem,
+                        to,
+                    } = item;
 
-                        if (element) {
-                            return element;
-                        }
+                    if (element) {
+                        return element;
+                    }
 
-                        // const { onClick: onClickItem, ...buttonProps } = ListItemButtonProps;
+                    // const { onClick: onClickItem, ...buttonProps } = ListItemButtonProps;
 
-                        return (
-                            <MenuItem
-                                key={key}
-                                onClick={(e) => {
-                                    if (onClickItem) {
-                                        onClickItem(e);
-                                    }
-                                    if (children) {
-                                        setChildrenOpen({
-                                            ...childrenOpen,
-                                            [key]: childrenOpen[key] ? null : e.currentTarget,
-                                        });
-                                        return;
-                                    }
-                                    if (onClick) {
-                                        onClick(e);
-                                    }
-                                }}
-                                {...({
-                                    component: Component,
-                                    to,
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                } as any)}
-                            >
-                                {icon && (
-                                    <ListItemIcon
-                                        sx={{
-                                            minWidth: 0,
-                                            mr: !collapsed ? 3 : 'auto',
-                                            justifyContent: 'center',
-                                            color: 'inherit',
-                                        }}
-                                    >
-                                        {icon}
-                                    </ListItemIcon>
-                                )}
-                                <ListItemText sx={{ opacity: !collapsed ? 1 : 0 }}>
-                                    {text}
-                                </ListItemText>
-                                {!collapsed && children && (
-                                    <ChevronRightIcon />
-                                )}
-                            </MenuItem>
-                        );
-                    })}
+                    return (
+                        <MenuItem
+                            key={key}
+                            onClick={(e) => {
+                                if (onClickItem) {
+                                    onClickItem(e);
+                                }
+                                if (children) {
+                                    setChildrenOpen({
+                                        ...childrenOpen,
+                                        [key]: childrenOpen[key] ? null : e.currentTarget,
+                                    });
+                                    return;
+                                }
+                                if (onClick) {
+                                    onClick(e);
+                                }
+                            }}
+                            {...(to ? {
+                                component: Link,
+                                to,
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            } as any : {})}
+                        >
+                            {icon && (
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: !collapsed ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                        color: 'inherit',
+                                    }}
+                                >
+                                    {icon}
+                                </ListItemIcon>
+                            )}
+                            <ListItemText sx={{ opacity: !collapsed ? 1 : 0 }}>
+                                {text}
+                            </ListItemText>
+                            {!collapsed && children && (
+                                <ChevronRightIcon />
+                            )}
+                        </MenuItem>
+                    );
+                })}
             </Menu>
             {items.map((item) => {
                 const { key, children } = item;

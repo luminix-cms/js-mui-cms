@@ -1,5 +1,5 @@
 import React from 'react';
-import { app, config } from '@luminix/core';
+import { app } from '@luminix/core';
 
 import Box from '@mui/material/Box';
 
@@ -34,7 +34,6 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...
         <Box sx={{ display: 'flex' }} {...props}>
             <AppBar
                 position="fixed"
-                title={config('app.name')}
                 {...appBarProps}
             />
             <Drawer {...drawerProps} />

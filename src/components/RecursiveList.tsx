@@ -15,6 +15,7 @@ import { MenuItem } from '../types/Menu';
 import { RecursiveListProps } from '../types/PropTypes';
 import useLayoutConfig from '../hooks/useLayoutConfig';
 import { app } from '@luminix/core';
+import Link from './Link';
 
 const RecursiveList: React.FunctionComponent<RecursiveListProps> = ({
     collapsed = false, items, onClick,
@@ -30,106 +31,100 @@ const RecursiveList: React.FunctionComponent<RecursiveListProps> = ({
 
     return (
         <List {...props}>
-            {items
-                .filter(({ hidden = () => false }) => !hidden())
-                .map((item) => {
-                    const {
-                        text, icon, element = null,
-                        key, children, component: Component,
-                        to, onClick: onClickItem
-                    } = item;
+            {items.map((item) => {
+                const {
+                    text, icon, element = null, key,
+                    children, to, onClick: onClickItem
+                } = item;
 
-                    if (element) {
-                        return element;
-                    }
+                if (element) {
+                    return element;
+                }
 
-                    // const { onClick: onClickItem, ...buttonProps } = ListItemButtonProps;
-
-                    return (
-                        <ListItem
-                            key={key}
-                            disablePadding
-                            sx={{ display: 'block' }}
-                            slots={{ root: Component }}
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            {...({ to } as any)}
-                        >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: !collapsed ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={(e) => {
-                                    if (onClickItem) {
-                                        onClickItem(e);
-                                    }
-                                    if (children) {
-                                        if (collapsed) {
-                                            setDropItems(() => {
-                                                setAnchorEl(e.currentTarget);
-                                                return children;
-                                            });
-                                            return;
-                                        }
-                                        setChildrenOpen({
-                                            ...childrenOpen,
-                                            [key]: !childrenOpen[key],
+                return (
+                    <ListItem
+                        key={key}
+                        disablePadding
+                        sx={{ display: 'block' }}
+                    >
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: !collapsed ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                            onClick={(e) => {
+                                if (onClickItem) {
+                                    onClickItem(e);
+                                }
+                                if (children) {
+                                    if (collapsed) {
+                                        setDropItems(() => {
+                                            setAnchorEl(e.currentTarget);
+                                            return children;
                                         });
                                         return;
                                     }
-                                    if (onClick) {
-                                        onClick(e);
-                                    }
+                                    setChildrenOpen({
+                                        ...childrenOpen,
+                                        [key]: !childrenOpen[key],
+                                    });
+                                    return;
+                                }
+                                if (onClick) {
+                                    onClick(e);
+                                }
+                            }}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            {...(to ? { to, component: Link } as any : {})}
+                        >
+                            
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: !collapsed ? 3 : 'unset',
+                                    justifyContent: 'center',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    color: 'inherit',
                                 }}
                             >
-                                
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: !collapsed ? 3 : 'unset',
-                                        justifyContent: 'center',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        color: 'inherit',
-                                    }}
-                                >
-                                    {icon}
-                                    {collapsed && (
-                                        <Typography
-                                            fontSize={10}
-                                            sx={{ mt: 0.5 }}
-                                        >
-                                            {text}
-                                        </Typography>
-                                    )}
-                                </ListItemIcon>
-                            
-                                {!collapsed
-                                    && <ListItemText primary={text} />
-                                }
-                                {!collapsed && children && (childrenOpen[key]
-                                    ? <ExpandLessIcon />
-                                    : <ExpandMoreIcon />)}
-                            </ListItemButton>
-                            {children && !collapsed && (
-                                <Collapse
-                                    in={childrenOpen[key]}
-                                    timeout="auto"
-                                    unmountOnExit
-                                >
-                                    <RecursiveList
-                                        items={children}
-                                        onClick={onClick}
-                                        collapsed={collapsed}
-                                        sx={{ pl: collapsed ? 0 : 2, pb: 0 }}
-                                    />
-                                </Collapse>
-                            )}
+                                {icon}
+                                {collapsed && (
+                                    <Typography
+                                        fontSize={10}
+                                        sx={{ mt: 0.5 }}
+                                    >
+                                        {text}
+                                    </Typography>
+                                )}
+                            </ListItemIcon>
+                        
+                            {!collapsed
+                                && <ListItemText primary={text} />
+                            }
+                            {!collapsed && children && (childrenOpen[key]
+                                ? <ExpandLessIcon />
+                                : <ExpandMoreIcon />)}
+                        </ListItemButton>
+                        {children && !collapsed && (
+                            <Collapse
+                                in={childrenOpen[key]}
+                                timeout="auto"
+                                unmountOnExit
+                            >
+                                <RecursiveList
+                                    items={children}
+                                    onClick={onClick}
+                                    collapsed={collapsed}
+                                    sx={{ pl: collapsed ? 0 : 2, pb: 0 }}
+                                />
+                            </Collapse>
+                        )}
 
-                        </ListItem>
-                    );
-                })}
+                    </ListItem>
+                );
+            })}
             {collapsed && (
                 <RecursiveMenu
                     items={dropItems || []}

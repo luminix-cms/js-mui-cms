@@ -86,6 +86,8 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
 
     const RecursiveList = app('cms').getComponent('RecursiveList');
 
+    const menuItems = app('cms').getMenuItems();
+
     return (
         <DrawerComponent
             variant={isDesktop ? 'permanent' : 'temporary'}
@@ -111,37 +113,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
             <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden' }}>
                 <RecursiveList 
                     collapsed={!open && isDesktop}
-                    items={[
-                        {
-                            text: 'Item 1',
-                            key: 1
-                        },
-                        {
-                            text: 'Item 2',
-                            key: 2,
-                            children: [
-                                {
-                                    text: 'Item 2.1',
-                                    key: 21
-                                },
-                                {
-                                    text: 'Item 2.2',
-                                    key: 22,
-                                    children: [
-                                        {
-                                            text: 'Item 2.2.1',
-                                            key: 221
-                                        },
-                                        {
-                                            text: 'Item 2.2.2',
-                                            key: 222
-                                        }
-                                    ]
-                                
-                                }
-                            ],
-                        }
-                    ]}
+                    items={menuItems}
                     onClick={() => !isDesktop && handleDrawerClose()}
                 />
             </Box>

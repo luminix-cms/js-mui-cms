@@ -1,7 +1,6 @@
-import { AppFacade, Plugin } from '@luminix/core';
+import { AppFacade, Model, Plugin } from '@luminix/core';
 
 import CmsFacade from './facades/Cms';
-
 
 import Layout from './views/Layout/Layout';
 import Dashboard from './views/Dashboard';
@@ -13,6 +12,15 @@ import MenuButton from './components/Layout/AppBar/MenuButton';
 import Drawer from './components/Layout/Drawer';
 import RecursiveList from './components/RecursiveList';
 import RecursiveMenu from './components/RecursiveMenu';
+
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+
+
+import _ from 'lodash';
+import { MenuItem } from './types/Menu';
+import Error from './views/Error';
 
 let app: AppFacade;
 
@@ -35,6 +43,7 @@ class CmsPlugin extends Plugin {
     boot() {
         this.bootComponents();
         this.bootRoutes();
+        this.bootMenu();
 
     }
 
@@ -53,6 +62,8 @@ class CmsPlugin extends Plugin {
             ModelIndex,
             ModelItem,
 
+            Error,
+
             RecursiveList,
             RecursiveMenu,
 
@@ -62,6 +73,32 @@ class CmsPlugin extends Plugin {
             
             
         }), 0);
+    }
+
+    bootMenu() {
+        app.make('cms').reducer('menuItems', (items: MenuItem[], models: Record<string, typeof Model>) => {
+            return [
+                ...items,
+                {
+                    key: 'dashboard',
+                    text: 'Dashboard',
+                    to: '/',
+                    icon: <DashboardOutlinedIcon />,
+                },
+                ...Object.entries(models)
+                    .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+                    .map(([key, Model]) => ({
+                        key,
+                        text: Model.plural(),
+                        to: '/' + _.kebabCase(Model.plural()),
+                        icon: key === 'user' 
+                            ? <PeopleOutlinedIcon />
+                            : <CategoryOutlinedIcon />,
+                        
+                    })),
+                
+            ]
+        }, 0);
     }
 
 

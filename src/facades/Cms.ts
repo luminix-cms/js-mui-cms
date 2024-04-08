@@ -3,6 +3,7 @@ import React from 'react';
 
 import { AppFacade, Reducible } from '@luminix/core';
 import { RouteObject } from 'react-router-dom';
+import { MenuItem } from '../types/Menu';
 
 
 class CmsFacade {
@@ -27,6 +28,10 @@ class CmsFacade {
     getRoutes(): RouteObject[]
     {
         return this.cmsRoutes([], this.getComponents(), this.app.make('model').make());
+    }
+
+    getMenuItems(): MenuItem[] {
+        return this.menuItems([], this.app.make('model').make());
     }
 
 }

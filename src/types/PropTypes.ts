@@ -6,7 +6,6 @@ import { Theme } from '@mui/material/styles';
 
 import { DefaultComponentProps } from '@mui/material/OverridableComponent';
 import { MenuItem } from './Menu';
-import { FunctionComponent } from 'react';
 
 export type LuminixCmsProps = {
     theme?: Theme
@@ -37,6 +36,10 @@ export type StyledAppBarProps = MuiAppBarProps & {
 export type StyledDrawerProps = MuiDrawerProps & {
     open?: boolean,
     width: number,
+};
+
+export type ErrorProps = {
+    error: Error,
 };
 
 export type RecursiveListProps = DefaultComponentProps<ListTypeMap> & {

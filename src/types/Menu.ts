@@ -14,6 +14,5 @@ export type MenuItem = {
 
     children?: MenuItem[];
     element?: React.ReactNode;
-    hidden?: () => boolean;
 };
 
