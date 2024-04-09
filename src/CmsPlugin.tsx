@@ -23,6 +23,8 @@ import { MenuItem } from './types/Menu';
 import Error from './views/Error';
 import DesktopPageTitle from './components/DesktopPageTitle';
 import SearchBar from './components/Layout/SearchBar';
+import Table from './components/ModelIndex/Table';
+import Pagination from './components/ModelIndex/Pagination';
 
 let app: AppFacade;
 
@@ -74,6 +76,9 @@ class CmsPlugin extends Plugin {
             'Layout.Drawer': Drawer,
             'Layout.AppBar.MenuButton': MenuButton,
             'Layout.SearchBar': SearchBar,
+
+            'ModelIndex.Table': Table,
+            'ModelIndex.Pagination': Pagination,
             
             
         }), 0);

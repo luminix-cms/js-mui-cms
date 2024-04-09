@@ -18,6 +18,7 @@ const AppBarDisplacement = styled('div')(({ theme }) => ({
 const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...props }) => {
 
     const {
+        DesktopPageTitle,
         ['Layout.AppBar']: AppBar,
         ['Layout.Drawer']: Drawer,
     } = app('cms').getComponents();
@@ -46,6 +47,7 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...
                 {...mainProps}
             >
                 <AppBarDisplacement style={{ height }} />
+                <DesktopPageTitle />
                 {children}
             </Box>
         </Box>

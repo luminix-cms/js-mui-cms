@@ -19,7 +19,7 @@ const DEFAULT_VALUE: LayoutProviderValue = {
     setShowSearch: () => {},
 };
 
-export const LayoutContext = React.createContext(DEFAULT_VALUE); // exporta o context pra usar onde precisar
+export const LayoutContext = React.createContext(DEFAULT_VALUE);
 
 const originalTitle = document.title;
 
@@ -56,5 +56,4 @@ const LayoutProvider: React.FunctionComponent = ({ children }) => {
     );
 };
 
-// usa o provider como export default
 export default LayoutProvider;
