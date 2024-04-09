@@ -14,6 +14,7 @@ import useMenu from '../../hooks/useMenu';
 import useLayoutConfig from '../../hooks/useLayoutConfig';
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import usePageTitle from '../../hooks/usePageTitle';
+import useHasSearch from '../../hooks/useHasSearch';
 
 
 const DesktopAppBar = styled(
@@ -50,9 +51,14 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
         ? DesktopAppBar
         : MobileAppBar;
 
-    const MenuButton = app('cms').getComponent('Layout.AppBar.MenuButton');
+    const { 
+        ['Layout.AppBar.MenuButton']: MenuButton,
+        ['Layout.SearchBar']: SearchBar,
+    } = app('cms').getComponents();
 
     const { open } = useMenu();
+
+    const searching = useHasSearch();
 
     const height = useLayoutConfig('appBar.height') as number;
     const drawerWidth = useLayoutConfig('drawer.width', 280) as number;
@@ -85,6 +91,7 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
                 </Typography>
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: 'flex' }}>
+                    {searching && <SearchBar />}
                     {end}
                 </Box>
             </Toolbar>

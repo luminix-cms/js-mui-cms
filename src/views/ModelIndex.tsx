@@ -4,21 +4,26 @@ import { useBrowsableQuery } from '@luminix/react';
 import { app, log } from '@luminix/core';
 import ModelIndexSkeleton from './ModelIndex.skeleton';
 import useSetPageTitle from '../hooks/useSetPageTitle';
+import useSearch from '../hooks/useSearch';
 
 const ModelIndex: React.FunctionComponent<ModelComponentProps> = ({ Model }) => {
 
-    const query = React.useMemo(() => Model.query(), [Model]);
+    const query = React.useMemo(() => {
+        const query = Model.query();
+        log().info('ModelIndex: query', { Model, query });
+        return query;
+    }, [Model]);
 
     const {
         data: items,
         loading,
         error,
-        ...paginator
+        // links,
     } = useBrowsableQuery(query);
 
-    log(paginator);
-
     useSetPageTitle(Model.plural());
+
+    useSearch();
 
     const { Error, DesktopPageTitle } = app('cms').getComponents();
 

@@ -6,7 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CmsRoutesReducer } from "./types/Reducers";
 import LayoutProvider from "./providers/LayoutProvider";
 
-const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem }, models) => [
+const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem, Error }, models) => [
     {
         element: (
             <LayoutProvider>
@@ -15,6 +15,9 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
                     <Outlet />
                 </Layout>
             </LayoutProvider>
+        ),
+        errorElement: (
+            <Error />
         ),
         children: [
             {

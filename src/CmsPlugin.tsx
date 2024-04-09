@@ -22,6 +22,7 @@ import _ from 'lodash';
 import { MenuItem } from './types/Menu';
 import Error from './views/Error';
 import DesktopPageTitle from './components/DesktopPageTitle';
+import SearchBar from './components/Layout/SearchBar';
 
 let app: AppFacade;
 
@@ -65,13 +66,14 @@ class CmsPlugin extends Plugin {
 
             Error,
 
+            DesktopPageTitle,
             RecursiveList,
             RecursiveMenu,
-            DesktopPageTitle,
-
+            
             'Layout.AppBar': AppBar,
             'Layout.Drawer': Drawer,
             'Layout.AppBar.MenuButton': MenuButton,
+            'Layout.SearchBar': SearchBar,
             
             
         }), 0);

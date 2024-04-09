@@ -8,7 +8,7 @@ const Error: React.FunctionComponent<ErrorProps> = ({ error }) => {
         <div>
             <h1>Error</h1>
             <p>Something went wrong</p>
-            {config('app.debug') && (
+            {config('app.debug') && error && (
                 <>
                     <pre style={{ whiteSpace: 'pre-wrap' }}>
                         {error.message}

@@ -15,6 +15,8 @@ const DEFAULT_VALUE: LayoutProviderValue = {
     isBreakpointUp: false,
     currentPage: '',
     setCurrentPage: () => {},
+    showSearch: false,
+    setShowSearch: () => {},
 };
 
 export const LayoutContext = React.createContext(DEFAULT_VALUE); // exporta o context pra usar onde precisar
@@ -24,8 +26,8 @@ const originalTitle = document.title;
 const LayoutProvider: React.FunctionComponent = ({ children }) => {
      
     const [open, setOpen] = React.useState(DEFAULT_VALUE.open);
-
     const [currentPage, setCurrentPage] = React.useState('');
+    const [showSearch, setShowSearch] = React.useState(false);
 
     const layout = useConfig('luminix.cms.layout', {}) as CmsConfig['layout'];
 
@@ -33,7 +35,8 @@ const LayoutProvider: React.FunctionComponent = ({ children }) => {
 
     const value: LayoutProviderValue = {
         open, setOpen, layout, isBreakpointUp,
-        currentPage, setCurrentPage,
+        currentPage, setCurrentPage, showSearch,
+        setShowSearch,
     };
 
     React.useEffect(() => {

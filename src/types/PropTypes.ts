@@ -39,7 +39,7 @@ export type StyledDrawerProps = MuiDrawerProps & {
 };
 
 export type ErrorProps = {
-    error: Error,
+    error?: Error,
 };
 
 export type RecursiveListProps = DefaultComponentProps<ListTypeMap> & {

@@ -8,6 +8,8 @@ export type LayoutProviderValue = {
     isBreakpointUp: boolean,
     currentPage: string,
     setCurrentPage: Dispatch<SetStateAction<string>>,
+    showSearch: boolean,
+    setShowSearch: Dispatch<SetStateAction<boolean>>,
 };
 
 
