@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import { CmsRoutesReducer } from "./types/Reducers";
 import LayoutProvider from "./providers/LayoutProvider";
+import QueryProvider from "./providers/QueryProvider";
 
 const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem, Error }, models) => [
     {
@@ -32,7 +33,9 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
                     path: '/' + _.kebabCase(Model.plural()),
                     name: `luminix.cms.${key}.index`,
                     element: (
-                        <ModelIndex Model={Model} />
+                        <QueryProvider Model={Model}>
+                            <ModelIndex />
+                        </QueryProvider>
                     )
                 },
                 {

@@ -2,12 +2,10 @@
 import React from 'react';
 
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+import Stack, { StackProps } from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import Link from '../Link';
-
-import { PaginationProps } from '../../types/PropTypes';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -16,6 +14,8 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import { Form, useSearchParams } from 'react-router-dom';
+import useCurrentQuery from '../../hooks/useCurrentQuery';
+import { ModelPaginatedLink } from '@luminix/core/dist/types/Model';
 
 
 const Label: React.FunctionComponent<{ label: string }> = ({ label }) => {
@@ -46,22 +46,26 @@ const Label: React.FunctionComponent<{ label: string }> = ({ label }) => {
 
 
 
-const Pagination: React.FunctionComponent<PaginationProps> = ({ links, compactLinks, ...props }) => {
+const Pagination: React.FunctionComponent<StackProps> = (props) => {
     
     const isDesktop = useIsDesktopMode();
 
-
     const [searchParams, setSearchParams] = useSearchParams();
-    const [page, setPage] = React.useState(parseInt(searchParams.get('page') || '1'));
+    const [pageText, setPageText] = React.useState(parseInt(searchParams.get('page') || '1'));
+
+    const {
+        links: compactLinks,
+        meta: { links = [] } = {},
+    } = useCurrentQuery();
 
     const {
         first, prev, next, last
-    } = compactLinks;
+    } = compactLinks || {};
 
     const handleChangePage = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSearchParams((params) => {
-            params.set('page', page.toString());
+            params.set('page', pageText.toString());
             return params;
         });
     };
@@ -91,8 +95,8 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({ links, compactLi
                                 
                             }
                         }}
-                        value={page}
-                        onChange={(e) => setPage(e.target.value as unknown as number)}
+                        value={pageText}
+                        onChange={(e) => setPageText(e.target.value as unknown as number)}
                         onBlur={(e) => {
                             setSearchParams((params) => {
                                 params.set('page', e.target.value);
@@ -116,7 +120,7 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({ links, compactLi
             alignItems="center"
             {...props}
         >
-            {(isDesktop ? links : mobileLinks).map((link, i) => link.element || (
+            {(isDesktop ? links : mobileLinks).map((link, i) => (link as { element: React.JSX.Element }).element || (
                 <Button
                     key={i}
                     variant={link.active ? 'contained' : 'text'}
@@ -134,7 +138,7 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({ links, compactLi
                         to: link.url,
                     })}
                 >
-                    <Label label={link.label} />   
+                    <Label label={(link as ModelPaginatedLink).label} />   
                 </Button>
             ))}
         </Stack>

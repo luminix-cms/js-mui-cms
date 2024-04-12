@@ -1,13 +1,17 @@
 import { Model } from '@luminix/core';
 
-import { DrawerProps as MuiDrawerProps, AppBarProps as MuiAppBarProps, BoxProps, DrawerProps, MenuProps, StackProps } from '@mui/material';
+import {
+    DrawerProps as MuiDrawerProps, AppBarProps as MuiAppBarProps, BoxProps,
+    DrawerProps, MenuProps
+} from '@mui/material';
 import { ListTypeMap } from '@mui/material/List';
 import { Theme } from '@mui/material/styles';
 
 import { DefaultComponentProps } from '@mui/material/OverridableComponent';
 import { MenuItem } from './Menu';
-import { ModelPaginatedLink } from '@luminix/core/dist/types/Model';
+import { ModelPaginatedResponse } from '@luminix/core/dist/types/Model';
 import { Collection } from '@luminix/core/dist/types/Collection';
+import { Scope } from '@luminix/core/dist/types/Builder';
 
 export type LuminixCmsProps = {
     theme?: Theme
@@ -68,13 +72,9 @@ export type TableProps = {
     Model: typeof Model,
 };
 
-export type PaginationProps = StackProps & {
-    links: (ModelPaginatedLink & { element?: React.ReactElement })[],
-    compactLinks: {
-        first: string,
-        last: string,
-        next: string,
-        prev: string,
-    }
-}
+export type QueryProviderProps = {
+    Model: typeof Model,
+    scope?: Scope<Model, ModelPaginatedResponse>,
+    dependencies?: unknown[],
+};
 

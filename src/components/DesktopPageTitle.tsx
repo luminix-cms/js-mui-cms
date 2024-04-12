@@ -16,13 +16,13 @@ const DesktopPageTitle: React.FunctionComponent = () => {
             sx={{ 
                 display: { xs: 'none', [breakpoint]: 'block' },
                 boxShadow: (theme) => theme.shadows[3],
-                py: 4,
+                py: 2,
                 px: 3,
                 borderRadius: 0,
 
             }}
         >
-            <Typography variant="h4" noWrap>
+            <Typography variant="h5" noWrap>
                 {pageTitle}
             </Typography>
         </Paper>

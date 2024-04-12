@@ -1,7 +1,13 @@
 import React from 'react';
-import { LayoutContext } from '../providers/LayoutProvider';
+import LayoutContext from '../contexts/LayoutContext';
 
-
+/**
+ * 
+ * Sets a title for the current page.
+ * 
+ * @param title 
+ * 
+ */
 export default function useSetPageTitle(title: string): void {
 
     const { setCurrentPage } = React.useContext(LayoutContext);

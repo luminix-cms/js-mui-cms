@@ -4,28 +4,17 @@ import { useConfig } from '@luminix/react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Theme } from '@mui/material/styles';
 
-import { LayoutProviderValue } from '../types/Provider';
+import { LayoutContextValue } from '../types/Contexts';
 import { CmsConfig } from '../types/Config';
 import { config } from '@luminix/core';
 
-const DEFAULT_VALUE: LayoutProviderValue = {
-    open: false,
-    setOpen: () => {},
-    layout: {},
-    isBreakpointUp: false,
-    currentPage: '',
-    setCurrentPage: () => {},
-    showSearch: false,
-    setShowSearch: () => {},
-};
-
-export const LayoutContext = React.createContext(DEFAULT_VALUE);
+import LayoutContext from '../contexts/LayoutContext';
 
 const originalTitle = document.title;
 
 const LayoutProvider: React.FunctionComponent = ({ children }) => {
      
-    const [open, setOpen] = React.useState(DEFAULT_VALUE.open);
+    const [open, setOpen] = React.useState(false);
     const [currentPage, setCurrentPage] = React.useState('');
     const [showSearch, setShowSearch] = React.useState(false);
 
@@ -33,7 +22,7 @@ const LayoutProvider: React.FunctionComponent = ({ children }) => {
 
     const isBreakpointUp = useMediaQuery((theme: Theme) => theme.breakpoints.up(layout?.breakpoint || 'md'));
 
-    const value: LayoutProviderValue = {
+    const value: LayoutContextValue = {
         open, setOpen, layout, isBreakpointUp,
         currentPage, setCurrentPage, showSearch,
         setShowSearch,

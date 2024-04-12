@@ -1,8 +1,14 @@
+import React from 'react';
 
 import Skeleton from '@mui/material/Skeleton';
 import Grid from '@mui/material/Unstable_Grid2';
 
-const ModelIndexSkeleton = () => {
+const LIST_LENGTH = 15;
+
+
+const TableSkeleton = () => {
+
+    
 
     return (
         <Grid container spacing={2}>
@@ -16,6 +22,6 @@ const ModelIndexSkeleton = () => {
     );
 };
 
-export default ModelIndexSkeleton;
+export default TableSkeleton;
 
 
