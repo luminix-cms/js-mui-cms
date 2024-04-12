@@ -47,7 +47,9 @@ export type QueryContextValue = {
 export type TableContextValue = {
     columns: Column[],
     massActions: MassAction[],
-    items: Collection<Model>,
+    items?: Collection<Model>,
+    loading?: boolean,
+    error?: Error | null,
     Model: typeof Model,
 };
 

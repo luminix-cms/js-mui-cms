@@ -2,7 +2,7 @@ import { Model } from '@luminix/core';
 
 import {
     DrawerProps as MuiDrawerProps, AppBarProps as MuiAppBarProps, BoxProps,
-    DrawerProps, MenuProps
+    DrawerProps, MenuProps, TableProps as MuiTableProps
 } from '@mui/material';
 import { ListTypeMap } from '@mui/material/List';
 import { Theme } from '@mui/material/styles';
@@ -67,8 +67,10 @@ export type ModelComponentProps = {
     Model: typeof Model,
 };
 
-export type TableProps = {
-    items: Collection<Model>,
+export type TableProps = MuiTableProps & {
+    items?: Collection<Model>,
+    loading?: boolean,
+    error: Error | null,
     Model: typeof Model,
 };
 

@@ -55,7 +55,10 @@ const Pagination: React.FunctionComponent<StackProps> = (props) => {
 
     const {
         links: compactLinks,
-        meta: { links = [] } = {},
+        meta: {
+            current_page: currentPage,
+            links = []
+        } = {},
     } = useCurrentQuery();
 
     const {
@@ -111,6 +114,10 @@ const Pagination: React.FunctionComponent<StackProps> = (props) => {
         { url: next, label: 'Next &raquo;', active: false },
         { url: last, label: 'Last &raquo;', active: false },
     ];
+
+    React.useEffect(() => {
+        currentPage && setPageText(currentPage);
+    }, [currentPage]);
 
     return (
         <Stack

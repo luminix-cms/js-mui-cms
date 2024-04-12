@@ -17,7 +17,7 @@ const DEFAULT_MASS_ACTIONS = [
     },
 ];
 
-const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, children }) => {
+const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, loading, children }) => {
 
     const DEFAULT_COLUMNS = React.useMemo(() => [
         {
@@ -44,6 +44,7 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, chil
                 columns,
                 massActions,
                 items,
+                loading,
                 Model,
             }}
         >

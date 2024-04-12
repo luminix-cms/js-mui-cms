@@ -25,6 +25,9 @@ import DesktopPageTitle from './components/DesktopPageTitle';
 import SearchBar from './components/Layout/SearchBar';
 import Table from './components/ModelIndex/Table';
 import Pagination from './components/ModelIndex/Pagination';
+import TableHead from './components/ModelIndex/Table/TableHead';
+import TableBody from './components/ModelIndex/Table/TableBody';
+import ShrinkedCell from './components/ModelIndex/Table/ShrinkedCell';
 
 let app: AppFacade;
 
@@ -78,7 +81,13 @@ class CmsPlugin extends Plugin {
             'Layout.SearchBar': SearchBar,
 
             'ModelIndex.Table': Table,
+            'ModelIndex.Table.TableHead': TableHead,
+            'ModelIndex.Table.TableBody': TableBody,
+            'ModelIndex.Table.ShrinkedCell': ShrinkedCell,
+
             'ModelIndex.Pagination': Pagination,
+
+
             
             
         }), 0);

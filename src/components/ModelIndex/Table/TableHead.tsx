@@ -8,24 +8,33 @@ import Checkbox from '@mui/material/Checkbox';
 
 import _ from 'lodash';
 import useTable from '../../../hooks/useTable';
+import { app } from '@luminix/core';
 
 
 
 
 const TableHead: React.FunctionComponent<TableHeadProps> = (props) => {
 
-    const { Model } = useTable();
+    const {
+        Model, massActions,
+    } = useTable();
+
+    const {
+        ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
+    } = app('cms').getComponents();
 
     return (
         <MuiTableHead {...props}>
             <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox />
-                </TableCell>
+                {massActions.length > 0 && (
+                    <ShrinkedCell>
+                        <Checkbox />
+                    </ShrinkedCell>
+                )}
                 <TableCell>
                     {_.upperFirst(Model.getSchema().labeledBy)}
                 </TableCell>
-                <TableCell></TableCell>
+                <ShrinkedCell></ShrinkedCell>
             </TableRow>
         </MuiTableHead>
     );

@@ -1,42 +1,43 @@
 import React from 'react';
 
-import MuiTableBody, { TableBodyProps } from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
+import MuiSkeleton from '@mui/material/Skeleton';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
-import Skeleton from './TableBody/Skeleton';
-
-import useTable from '../../../hooks/useTable';
+import useTable from '../../../../hooks/useTable';
 import { app } from '@luminix/core';
 
-const TableBody: React.FunctionComponent<TableBodyProps> = (props) => {
+const LIST_LENGTH = 15;
+
+
+const Skeleton: React.FunctionComponent = () => {
 
     const {
-        Model, items, massActions, loading,
+        massActions,
     } = useTable();
 
     const {
-
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
     } = app('cms').getComponents();
 
     return (
-        <MuiTableBody {...props}>
-            {loading && <Skeleton />}
-
-            {items && items.map(item => (
-                <TableRow key={item.id}>
+        <>
+            {Array.from({ length: LIST_LENGTH }).map((_, index) => (
+                <TableRow key={index}>
                     {massActions.length > 0 && (
                         <ShrinkedCell>
                             <Checkbox />
                         </ShrinkedCell>
                     )}
                     <TableCell>
-                        {item[Model.getSchema().labeledBy]}
+                        <MuiSkeleton
+                            variant="text"
+                            width="100%"
+                            // height={32}
+                        />
                     </TableCell>
                     <ShrinkedCell>
                         <IconButton>
@@ -45,10 +46,9 @@ const TableBody: React.FunctionComponent<TableBodyProps> = (props) => {
                     </ShrinkedCell>
                 </TableRow>
             ))}
-        </MuiTableBody>
-    );
-
+        </>
+    )
 };
 
 
-export default TableBody;
+export default Skeleton;
