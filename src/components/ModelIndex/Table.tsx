@@ -12,7 +12,7 @@ import TableProvider from '../../providers/TableProvider';
 import { TableProps } from '../../types/PropTypes';
 
 const Table: React.FunctionComponent<TableProps> = ({
-    items, loading, Model, error,
+    items, loading, Model, error, slots = {},
     ...props
 }) => {
 
@@ -20,6 +20,10 @@ const Table: React.FunctionComponent<TableProps> = ({
         ['ModelIndex.Table.TableHead']: TableHead,
         ['ModelIndex.Table.TableBody']: TableBody,
     } = app('cms').getComponents();
+
+    const {
+        tableHead, tableFooter
+    } = slots;
 
     return (
         <TableProvider
@@ -30,15 +34,9 @@ const Table: React.FunctionComponent<TableProps> = ({
         >
             <TableContainer component={Paper}>
                 <MuiTable {...props}>
-                    <TableHead />
+                    <TableHead slots={tableHead} />
                     <TableBody />
-                    {/* <TableFooter>
-                        <TableRow>
-                            <TableCell colSpan={Model.fields.length} align="right">
-                                {items.length} items
-                            </TableCell>
-                        </TableRow>
-                    </TableFooter> */}
+                    {tableFooter}
                 </MuiTable>
 
             </TableContainer>

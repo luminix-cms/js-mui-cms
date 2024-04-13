@@ -2,7 +2,8 @@ import { Model } from '@luminix/core';
 
 import {
     DrawerProps as MuiDrawerProps, AppBarProps as MuiAppBarProps, BoxProps,
-    DrawerProps, MenuProps, TableProps as MuiTableProps
+    DrawerProps, MenuProps, TableProps as MuiTableProps,
+    StackProps, TableHeadProps as MuiTableHeadProps,
 } from '@mui/material';
 import { ListTypeMap } from '@mui/material/List';
 import { Theme } from '@mui/material/styles';
@@ -72,6 +73,21 @@ export type TableProps = MuiTableProps & {
     loading?: boolean,
     error: Error | null,
     Model: typeof Model,
+    slots?: {
+        tableHead?: TableHeadProps['slots'],
+        tableFooter?: React.ReactNode,
+    }
+};
+
+export type TableHeadProps = MuiTableHeadProps & {
+    slots?: {
+        before?: React.ReactNode,
+        after?: React.ReactNode,
+    }
+};
+
+export type PaginationProps = StackProps & {
+    variant?: 'default' | 'compact',
 };
 
 export type QueryProviderProps = {

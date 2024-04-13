@@ -1,23 +1,22 @@
 
 import React from 'react';
+import { app } from '@luminix/core';
 
-import MuiTableHead, { TableHeadProps } from '@mui/material/TableHead';
+import MuiTableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
-import _ from 'lodash';
 import useTable from '../../../hooks/useTable';
-import { app } from '@luminix/core';
+import { TableHeadProps } from '../../../types/PropTypes';
 
-
-
-
-const TableHead: React.FunctionComponent<TableHeadProps> = (props) => {
+const TableHead: React.FunctionComponent<TableHeadProps> = ({ slots = {}, ...props}) => {
 
     const {
-        Model, massActions,
+        massActions, columns
     } = useTable();
+
+    const { before, after } = slots;
 
     const {
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
@@ -25,17 +24,21 @@ const TableHead: React.FunctionComponent<TableHeadProps> = (props) => {
 
     return (
         <MuiTableHead {...props}>
+            {before}
             <TableRow>
                 {massActions.length > 0 && (
                     <ShrinkedCell>
                         <Checkbox />
                     </ShrinkedCell>
                 )}
-                <TableCell>
-                    {_.upperFirst(Model.getSchema().labeledBy)}
-                </TableCell>
+                {columns.map(({ key, label }) => (
+                    <TableCell key={key}>
+                        {label}
+                    </TableCell>
+                ))}
                 <ShrinkedCell></ShrinkedCell>
             </TableRow>
+            {after}
         </MuiTableHead>
     );
 };

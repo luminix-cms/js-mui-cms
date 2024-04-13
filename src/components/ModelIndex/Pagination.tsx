@@ -2,7 +2,7 @@
 import React from 'react';
 
 import Button from '@mui/material/Button';
-import Stack, { StackProps } from '@mui/material/Stack';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import Link from '../Link';
@@ -12,10 +12,10 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 
-import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import { Form, useSearchParams } from 'react-router-dom';
 import useCurrentQuery from '../../hooks/useCurrentQuery';
 import { ModelPaginatedLink } from '@luminix/core/dist/types/Model';
+import { PaginationProps } from '../../types/PropTypes';
 
 
 const Label: React.FunctionComponent<{ label: string }> = ({ label }) => {
@@ -46,9 +46,9 @@ const Label: React.FunctionComponent<{ label: string }> = ({ label }) => {
 
 
 
-const Pagination: React.FunctionComponent<StackProps> = (props) => {
+const Pagination: React.FunctionComponent<PaginationProps> = ({ variant = 'default', ...props }) => {
     
-    const isDesktop = useIsDesktopMode();
+    const isDefault = variant === 'default';//useIsDesktopMode();
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [pageText, setPageText] = React.useState(parseInt(searchParams.get('page') || '1'));
@@ -73,7 +73,7 @@ const Pagination: React.FunctionComponent<StackProps> = (props) => {
         });
     };
 
-    const mobileLinks = [
+    const compactLinksWithTextField = [
         { url: first, label: '&laquo; First', active: false },
         { url: prev, label: '&laquo; Previous', active: false },
         {
@@ -88,7 +88,7 @@ const Pagination: React.FunctionComponent<StackProps> = (props) => {
                         type="number"
                         variant="outlined"
                         sx={{
-                            width: 48,
+                            width: 56,
                             '& input': {
                                 textAlign: 'center',
                                 '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
@@ -127,7 +127,7 @@ const Pagination: React.FunctionComponent<StackProps> = (props) => {
             alignItems="center"
             {...props}
         >
-            {(isDesktop ? links : mobileLinks).map((link, i) => (link as { element: React.JSX.Element }).element || (
+            {(isDefault ? links : compactLinksWithTextField).map((link, i) => (link as { element: React.JSX.Element }).element || (
                 <Button
                     key={i}
                     variant={link.active ? 'contained' : 'text'}
