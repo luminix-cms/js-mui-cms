@@ -10,6 +10,8 @@ import { useSearchParams } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
+import _ from 'lodash';
+import { SearchBarProps } from '../../types/PropTypes';
 
 
 const SearchField = styled(TextField)({
@@ -20,23 +22,33 @@ const SearchField = styled(TextField)({
 });
 
 
-const SearchBar: React.FunctionComponent = () => {
+const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) => {
 
     const [searchParams, setSearchParams] = useSearchParams();
+    const [q, setQ] = React.useState(searchParams.get('q') || '');
     const [focus, setFocus] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-    const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => setSearchParams((params) => {
-        const newParams = new URLSearchParams(params);
+    const reflectToActualSearch = (search: string) => {
+        setSearchParams((params) => {
+            const newParams = new URLSearchParams(params);
 
-        if (e.target.value) {
-            newParams.set('q', e.target.value);
-        } else {
-            newParams.delete('q');
-        }
+            if (search) {
+                newParams.set('q', search);
+            } else {
+                newParams.delete('q');
+            }
 
-        return newParams;
-    });
+            return newParams;
+        });
+    };
+
+    const reflectRef = React.useRef(_.throttle(reflectToActualSearch, throttle))
+
+    const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
+        setQ(e.target.value);
+        reflectRef.current(e.target.value);
+    };
 
     const isDesktop = useIsDesktopMode();
 
@@ -63,7 +75,7 @@ const SearchBar: React.FunctionComponent = () => {
             >
                 <SearchField
                     placeholder="Type to search..."
-                    value={searchParams.get('q') || ''} 
+                    value={q} 
                     InputProps={{
                         endAdornment: <SearchIcon />,
                     }}

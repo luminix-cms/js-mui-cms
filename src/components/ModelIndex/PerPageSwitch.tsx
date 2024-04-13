@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { app } from '@luminix/core';
+import { useApplyReducers } from '@luminix/react';
 
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,8 +11,6 @@ import Stack from '@mui/material/Stack';
 import { useSearchParams } from 'react-router-dom';
 
 import useCurrentQuery from '../../hooks/useCurrentQuery';
-import { app } from '@luminix/core';
-import { useApplyReducers } from '@luminix/react';
 
 const PerPageSwitch: React.FunctionComponent = () => {
 
@@ -31,7 +31,6 @@ const PerPageSwitch: React.FunctionComponent = () => {
         });
     };
 
-    // const options = app('cms').perPageOptions([15, 30, 50, 100]);
     const options = useApplyReducers(
         app('cms'),
         'perPageOptions',

@@ -48,6 +48,10 @@ export type StyledDrawerProps = MuiDrawerProps & {
     width: number,
 };
 
+export type SearchBarProps = {
+    throttle?: number,
+};
+
 export type ErrorProps = {
     error?: Error,
 };

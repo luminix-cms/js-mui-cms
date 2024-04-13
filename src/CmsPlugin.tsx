@@ -153,11 +153,14 @@ class CmsPlugin extends Plugin {
             ...columns,
             {
                 key: 'email',
-                label: 'Email'
+                label: 'Email',
+                align: 'right',
             },
             {
                 key: 'created_at',
-                label: 'Created At'
+                label: 'Created At',
+                size: 'small',
+                align: 'right',
             },
         ]);
 

@@ -10,9 +10,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import useTable from '../../../../hooks/useTable';
 import { app } from '@luminix/core';
 import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
-
-const LIST_LENGTH = 15;
-
+import { useSearchParams } from 'react-router-dom';
 
 const Skeleton: React.FunctionComponent = () => {
 
@@ -26,9 +24,13 @@ const Skeleton: React.FunctionComponent = () => {
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
     } = app('cms').getComponents();
 
+    const [searchParams] = useSearchParams();
+
+    const listLength = parseInt(searchParams.get('per_page') || '15');
+
     return (
         <>
-            {Array.from({ length: LIST_LENGTH }).map((_, index) => (
+            {Array.from({ length: listLength }).map((_, index) => (
                 <TableRow key={index}>
                     {massActions.length > 0 && (
                         <ShrinkedCell>
@@ -40,7 +42,7 @@ const Skeleton: React.FunctionComponent = () => {
                             <MuiSkeleton
                                 variant="text"
                                 width="100%"
-                                // height={32}
+                                height={24}
                             />
                         </TableCell>
                     ))}
@@ -51,7 +53,7 @@ const Skeleton: React.FunctionComponent = () => {
                                     key={index}
                                     variant="text"
                                     width="100%"
-                                    height={32}
+                                    height={24}
                                 />
                             ))}
                         </TableCell>

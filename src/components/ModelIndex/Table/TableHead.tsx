@@ -33,8 +33,14 @@ const TableHead: React.FunctionComponent<TableHeadProps> = ({ children, ...props
                             <Checkbox />
                         </ShrinkedCell>
                     )}
-                    {columns.map(({ key, label }) => (
-                        <TableCell key={key}>
+                    {columns.map(({ key, label, sortable = true, ...props }) => (
+                        <TableCell
+                            key={key}
+                            sx={{
+                                cursor: sortable ? 'pointer' : 'default',
+                            }}
+                            {...props}
+                        >
                             {label}
                         </TableCell>
                     ))}

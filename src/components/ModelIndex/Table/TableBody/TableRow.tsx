@@ -1,6 +1,8 @@
 import React from 'react';
 import { app } from '@luminix/core';
 
+import { styled } from '@mui/material/styles';
+
 import MuiTableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
@@ -20,22 +22,31 @@ type MobileCellContentProps = {
     content: any;
 };
 
+const CellText = styled(Typography)(() => ({
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '& label': {
+        fontWeight: 'bold',
+    },
+}));
+
 const CellContent: React.FunctionComponent<MobileCellContentProps> = ({ content: rawContent }) => {
     if (['string', 'number'].includes(typeof rawContent)) {
         return (
-            <Typography>{rawContent}</Typography>
+            <CellText>{rawContent}</CellText>
         );
     }
 
     if (rawContent instanceof Date) {
         return (
-            <Typography>{rawContent.toLocaleString()}</Typography>
+            <CellText>{rawContent.toLocaleString()}</CellText>
         );
     }
 
     if (typeof rawContent === 'object' && !React.isValidElement(rawContent)) {
         return (
-            <Typography>{JSON.stringify(rawContent)}</Typography>
+            <CellText>{JSON.stringify(rawContent)}</CellText>
         );
     }
 
@@ -50,19 +61,19 @@ const MobileCellContent: React.FunctionComponent<MobileCellContentProps> = ({ la
                         
     if (['string', 'number'].includes(typeof rawContent)) {
         return (
-            <Typography><b>{label}:</b> {rawContent}</Typography>
+            <CellText><label>{label}:</label> {rawContent}</CellText>
         );
     }
 
     if (rawContent instanceof Date) {
         return (
-            <Typography><b>{label}:</b> {rawContent.toLocaleString()}</Typography>
+            <CellText><label>{label}:</label> {rawContent.toLocaleString()}</CellText>
         );
     }
 
     if (typeof rawContent === 'object' && !React.isValidElement(rawContent)) {
         return (
-            <Typography><b>{label}:</b> {JSON.stringify(rawContent)}</Typography>
+            <CellText><label>{label}:</label> {JSON.stringify(rawContent)}</CellText>
         );
     }
 
@@ -80,10 +91,9 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
         massActions, columns,
     } = useTable();
 
-    const columnsWithContents = React.useMemo(() => columns.map(({ key, label }) => ({
-        key,
-        label,
-        content: app('cms')[`model${item.constructor.name}Get${_.upperFirst(_.camelCase(key))}Content`](item.getAttribute(key), item),
+    const columnsWithContents = React.useMemo(() => columns.map((props) => ({
+        ...props,
+        content: app('cms')[`model${item.constructor.name}Get${_.upperFirst(_.camelCase(props.key))}Content`](item.getAttribute(props.key), item),
     })), [columns, item]);
 
     const {
@@ -99,13 +109,16 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                     <Checkbox />
                 </ShrinkedCell>
             )}
-            {isDesktop && columnsWithContents.map(({ key, ...props }) => (
-                <TableCell key={key}>
-                    <CellContent {...props} />
+            {isDesktop && columnsWithContents.map(({ key, label, sortable = true, content, ...props }) => (
+                <TableCell key={key} {...props}>
+                    <CellContent
+                        label={label}
+                        content={content}
+                    />
                 </TableCell>
             ))}
             {!isDesktop && (
-                <TableCell>
+                <TableCell sx={{ maxWidth: 0 }}>
                     {columnsWithContents.map(({ key, ...props }) => <MobileCellContent key={key} {...props} />)}
                 </TableCell>
             )}

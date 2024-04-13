@@ -1,3 +1,4 @@
+import { TableCellProps } from '@mui/material';
 
 export type Action = {
     label: string;
@@ -9,7 +10,7 @@ export type MassAction = {
     name: string;
 };
 
-export type Column = {
+export type Column = TableCellProps & {
     key: string;
     label: string;
     sortable?: boolean;
