@@ -30,7 +30,7 @@ const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props
             {items && typeof children === 'function' && items.map(children as CollectionIteratorCallback)}
             {items && !items.count() && (
                 <TableRow>
-                    <TableCell colSpan={columnCount} sx={{ textAlign: 'center' }}>
+                    <TableCell colSpan={columnCount} sx={{ textAlign: 'center', py: 10 }}>
                         <Typography>
                             No {Model.plural().toLocaleLowerCase()} found
                         </Typography>

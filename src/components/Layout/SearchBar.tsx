@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Badge from '@mui/material/Badge';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
@@ -25,7 +26,9 @@ const SearchField = styled(TextField)({
 const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) => {
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const [q, setQ] = React.useState(searchParams.get('q') || '');
+
+    const currentSearch = searchParams.get('q') || '';
+    const [q, setQ] = React.useState(currentSearch);
     const [focus, setFocus] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -43,7 +46,17 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) 
         });
     };
 
-    const reflectRef = React.useRef(_.throttle(reflectToActualSearch, throttle))
+    const reflectRef = React.useRef(_.throttle(reflectToActualSearch, throttle));
+
+    React.useEffect(() => {
+        setQ((q) => {
+            if (q === currentSearch) {
+                return q;
+            }
+
+            return currentSearch;
+        });
+    }, [currentSearch]);
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
         setQ(e.target.value);
@@ -60,7 +73,18 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) 
         <>
             {!isDesktop && !focus && (
                 <IconButton color="inherit" onClick={() => setFocus(true)}>
-                    <SearchIcon  />
+                    <Badge
+                        variant="dot"
+                        color="secondary"
+                        invisible={!currentSearch}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left'
+                        }}
+                    >
+                        <SearchIcon />
+                    </Badge>
+                    
                 </IconButton>
             )}
             <Collapse

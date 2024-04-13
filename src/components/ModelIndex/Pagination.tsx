@@ -50,13 +50,14 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({ variant = 'defau
     const isDefault = variant === 'default';//useIsDesktopMode();
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const [pageText, setPageText] = React.useState(parseInt(searchParams.get('page') || '1'));
+    const [pageText, setPageText] = React.useState(searchParams.get('page') || '1');
 
     const {
         links: compactLinks,
         meta: {
-            current_page: currentPage,
-            links = []
+            current_page: currentPage = 1,
+            links = [],
+            last_page: lastPage = 1,
         } = {},
     } = useCurrentQuery();
 
@@ -67,13 +68,13 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({ variant = 'defau
     const handleChangePage = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSearchParams((params) => {
-            params.set('page', pageText.toString());
+            params.set('page', pageText || '1');
             return params;
         });
     };
 
     const compactLinksWithTextField = [
-        { url: first, label: '&laquo; First', active: false },
+        { url: currentPage > 1 ? first : null, label: '&laquo; First', active: false },
         { url: prev, label: '&laquo; Previous', active: false },
         {
             element: (
@@ -85,7 +86,7 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({ variant = 'defau
                     <TextField
                         size="small"
                         type="number"
-                        variant="outlined"
+                        variant="standard"
                         sx={{
                             width: 56,
                             '& input': {
@@ -98,24 +99,35 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({ variant = 'defau
                             }
                         }}
                         value={pageText}
-                        onChange={(e) => setPageText(e.target.value as unknown as number)}
+                        error={Number(pageText) > lastPage}
+                        helperText={Number(pageText) > lastPage ? `Max ${lastPage}` : undefined}
+                        onChange={(e) => {
+                            if (!Number.isNaN(Number(e.target.value)) && Number(e.target.value) > 0) {
+                                setPageText(e.target.value);
+                            }
+                            if (e.target.value === '') {
+                                setPageText('');
+                            }
+                        }}
                         onBlur={(e) => {
                             setSearchParams((params) => {
-                                params.set('page', e.target.value);
+                                params.set('page', e.target.value || '1');
                                 return params;
                         
                             }, { replace: true});
                         }}
+                        disabled={lastPage === 1}
+                        aria-label="Page number"
                     />
                 </Form>
             ),
         },
         { url: next, label: 'Next &raquo;', active: false },
-        { url: last, label: 'Last &raquo;', active: false },
+        { url: currentPage < lastPage ? last : null, label: 'Last &raquo;', active: false },
     ];
 
     React.useEffect(() => {
-        currentPage && setPageText(currentPage);
+        currentPage && setPageText(String(currentPage));
     }, [currentPage]);
 
     return (
