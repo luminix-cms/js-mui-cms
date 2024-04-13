@@ -1,50 +1,23 @@
 import React from 'react';
 
-import MuiTableBody, { TableBodyProps } from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MuiTableBody from '@mui/material/TableBody';
 
 import Skeleton from './TableBody/Skeleton';
 
 import useTable from '../../../hooks/useTable';
-import { app } from '@luminix/core';
+import { TableBodyProps } from '../../../types/PropTypes';
 
-const TableBody: React.FunctionComponent<TableBodyProps> = (props) => {
+const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props }) => {
 
     const {
-        Model, items, massActions, loading,
+        items, loading,
     } = useTable();
-
-    const {
-
-        ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
-    } = app('cms').getComponents();
 
     return (
         <MuiTableBody {...props}>
             {loading && <Skeleton />}
-
-            {items && items.map(item => (
-                <TableRow key={item.id}>
-                    {massActions.length > 0 && (
-                        <ShrinkedCell>
-                            <Checkbox />
-                        </ShrinkedCell>
-                    )}
-                    <TableCell>
-                        {item[Model.getSchema().labeledBy]}
-                    </TableCell>
-                    <ShrinkedCell>
-                        <IconButton>
-                            <MoreVertIcon />
-                        </IconButton>
-                    </ShrinkedCell>
-                </TableRow>
-            ))}
+            {typeof children !== 'function' && children}
+            {items && typeof children === 'function' && items.map((item) => children(item))}
         </MuiTableBody>
     );
 

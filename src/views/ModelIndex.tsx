@@ -1,12 +1,13 @@
 import React from 'react';
-import { app } from '@luminix/core';
+import { Model, app } from '@luminix/core';
 
 import Grid from '@mui/material/Unstable_Grid2';
-import Button from '@mui/material/Button';
 
 import useSetPageTitle from '../hooks/useSetPageTitle';
 import useCurrentQuery from '../hooks/useCurrentQuery';
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
+import useLayoutConfig from '../hooks/useLayoutConfig';
+import { Breakpoint } from '@mui/material';
 
 const ModelIndex: React.FunctionComponent = () => {
 
@@ -21,24 +22,33 @@ const ModelIndex: React.FunctionComponent = () => {
 
     const isDesktop = useIsDesktopMode();
 
+    const breakpoint = useLayoutConfig('breakpoint', 'md') as Breakpoint;
+
     const {
+        ['ModelIndex.Actions']: Actions,
         ['ModelIndex.Table']: Table,
+        ['ModelIndex.Table.TableHead']: TableHead,
+        ['ModelIndex.Table.TableBody']: TableBody,
+        ['ModelIndex.Table.TableBody.TableRow']: TableRow,
         ['ModelIndex.Pagination']: Pagination,
     } = app('cms').getComponents();
 
     return (
         <>
-            {/* <DesktopPageTitle /> */}
             <Grid container spacing={2}>
-                <Grid xs={12} lg={6}>
-                    <Button variant="contained">
-                        Create {Model.singular()}
-                    </Button>
+                <Grid
+                    xs={12}
+                    {...({ [breakpoint]: 6 })}
+                >
+                    <Actions />
                 </Grid>
-                <Grid xs={12} lg={6}>
+                <Grid
+                    xs={12}
+                    {...({ [breakpoint]: 6 })}
+                >
                     <Pagination
                         variant="compact"
-                        justifyContent={{ xs: 'center', lg: 'flex-end' }}
+                        justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
                     />
                 </Grid>
                 <Grid xs={12}>
@@ -47,7 +57,12 @@ const ModelIndex: React.FunctionComponent = () => {
                         loading={loading}
                         error={error}
                         Model={Model}
-                    />
+                    >
+                        <TableHead />
+                        <TableBody>
+                            {(item: Model) => <TableRow key={item.id} item={item} />}
+                        </TableBody>
+                    </Table>
                 </Grid>
                 <Grid xs={12}>
                     <Pagination 

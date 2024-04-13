@@ -23,11 +23,14 @@ import { MenuItem } from './types/Menu';
 import Error from './views/Error';
 import DesktopPageTitle from './components/DesktopPageTitle';
 import SearchBar from './components/Layout/SearchBar';
+import Actions from './components/ModelIndex/Actions';
 import Table from './components/ModelIndex/Table';
-import Pagination from './components/ModelIndex/Pagination';
 import TableHead from './components/ModelIndex/Table/TableHead';
 import TableBody from './components/ModelIndex/Table/TableBody';
 import ShrinkedCell from './components/ModelIndex/Table/ShrinkedCell';
+import Pagination from './components/ModelIndex/Pagination';
+import TableRow from './components/ModelIndex/Table/TableBody/TableRow';
+import { Column } from './types/Table';
 
 let app: AppFacade;
 
@@ -43,7 +46,9 @@ class CmsPlugin extends Plugin {
 
         app.bind('cms', new CmsFacade(app));
 
-
+        app.once('booting', () => {
+            this.bootModels();
+        });
     }
 
 
@@ -51,6 +56,35 @@ class CmsPlugin extends Plugin {
         this.bootComponents();
         this.bootRoutes();
         this.bootMenu();
+
+        app.make('cms').reducer('modelUserColumns', (columns: Column[]) => [
+            ...columns,
+            {
+                key: 'email',
+                label: 'Email'
+            },
+            {
+                key: 'updated_at',
+                label: 'Updated At'
+            },
+        ]);
+    }
+
+    bootModels() {
+        app.make('model').reducer('model', (model: typeof Model, abstract: string) => {
+            return class extends model {
+                static icon() {
+                    if (abstract === 'user') {
+                        return (
+                            <PeopleOutlinedIcon />
+                        );
+                    }
+                    return (
+                        <CategoryOutlinedIcon />
+                    );
+                }
+            }
+        }, 0);
 
     }
 
@@ -80,9 +114,11 @@ class CmsPlugin extends Plugin {
             'Layout.AppBar.MenuButton': MenuButton,
             'Layout.SearchBar': SearchBar,
 
+            'ModelIndex.Actions': Actions,
             'ModelIndex.Table': Table,
             'ModelIndex.Table.TableHead': TableHead,
             'ModelIndex.Table.TableBody': TableBody,
+            'ModelIndex.Table.TableBody.TableRow': TableRow,
             'ModelIndex.Table.ShrinkedCell': ShrinkedCell,
 
             'ModelIndex.Pagination': Pagination,
@@ -109,9 +145,7 @@ class CmsPlugin extends Plugin {
                         key,
                         text: Model.plural(),
                         to: '/' + _.kebabCase(Model.plural()),
-                        icon: key === 'user' 
-                            ? <PeopleOutlinedIcon />
-                            : <CategoryOutlinedIcon />,
+                        icon: Model.icon(),
                         
                     })),
                 

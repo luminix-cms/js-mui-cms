@@ -1,4 +1,9 @@
 
+export type Action = {
+    label: string;
+    callback: () => void;
+}
+
 export type MassAction = {
     label: string;
     name: string;

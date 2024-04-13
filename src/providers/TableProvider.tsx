@@ -26,10 +26,16 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, load
         }
     ], [Model]);
 
+    const preMassActions = useApplyReducers(
+        app('cms'),
+        `modelMassActions`,
+        DEFAULT_MASS_ACTIONS
+    ) as MassAction[];
+
     const massActions = useApplyReducers(
         app('cms'),
         `model${_.upperFirst(_.camelCase(Model.getSchemaName()))}MassActions`,
-        DEFAULT_MASS_ACTIONS
+        preMassActions
     ) as MassAction[];
     
     const columns = useApplyReducers(

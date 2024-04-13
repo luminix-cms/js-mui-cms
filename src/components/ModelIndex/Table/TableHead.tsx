@@ -9,14 +9,15 @@ import Checkbox from '@mui/material/Checkbox';
 
 import useTable from '../../../hooks/useTable';
 import { TableHeadProps } from '../../../types/PropTypes';
+import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
 
-const TableHead: React.FunctionComponent<TableHeadProps> = ({ slots = {}, ...props}) => {
+const TableHead: React.FunctionComponent<TableHeadProps> = ({ children, ...props}) => {
 
     const {
         massActions, columns
     } = useTable();
 
-    const { before, after } = slots;
+    const isDesktop = useIsDesktopMode();
 
     const {
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
@@ -24,21 +25,22 @@ const TableHead: React.FunctionComponent<TableHeadProps> = ({ slots = {}, ...pro
 
     return (
         <MuiTableHead {...props}>
-            {before}
-            <TableRow>
-                {massActions.length > 0 && (
-                    <ShrinkedCell>
-                        <Checkbox />
-                    </ShrinkedCell>
-                )}
-                {columns.map(({ key, label }) => (
-                    <TableCell key={key}>
-                        {label}
-                    </TableCell>
-                ))}
-                <ShrinkedCell></ShrinkedCell>
-            </TableRow>
-            {after}
+            {children}
+            {isDesktop && (
+                <TableRow>
+                    {massActions.length > 0 && (
+                        <ShrinkedCell>
+                            <Checkbox />
+                        </ShrinkedCell>
+                    )}
+                    {columns.map(({ key, label }) => (
+                        <TableCell key={key}>
+                            {label}
+                        </TableCell>
+                    ))}
+                    <ShrinkedCell></ShrinkedCell>
+                </TableRow>
+            )}
         </MuiTableHead>
     );
 };
