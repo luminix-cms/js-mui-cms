@@ -3,6 +3,7 @@ import { TableCellProps } from '@mui/material';
 export type Action = {
     label: string;
     callback: () => void;
+    icon?: React.ReactNode;
 }
 
 export type MassAction = {

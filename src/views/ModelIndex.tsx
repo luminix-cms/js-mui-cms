@@ -2,17 +2,13 @@ import React from 'react';
 import { Model, app } from '@luminix/core';
 
 import Grid from '@mui/material/Unstable_Grid2';
-import Stack from '@mui/material/Stack';
-import TableRow from '@mui/material/TableRow';
-import TableFooter from '@mui/material/TableFooter';
-import TableCell from '@mui/material/TableCell';
 
 import useSetPageTitle from '../hooks/useSetPageTitle';
 import useCurrentQuery from '../hooks/useCurrentQuery';
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
 import useLayoutConfig from '../hooks/useLayoutConfig';
+
 import { Breakpoint } from '@mui/material';
-import { TableContextValue } from '../types/Contexts';
 
 const ModelIndex: React.FunctionComponent = () => {
 
@@ -33,10 +29,11 @@ const ModelIndex: React.FunctionComponent = () => {
         ['ModelIndex.Actions']: Actions,
         ['ModelIndex.Pagination']: Pagination,
         ['ModelIndex.PaginationDetails']: PaginationDetails,
-        ['ModelIndex.PerPageSwitch']: PerPageSwitch,
         ['ModelIndex.Table']: ModelTable,
-        ['ModelIndex.Table.TableHead']: ModelTableHead,
         ['ModelIndex.Table.TableBody']: ModelTableBody,
+        ['ModelIndex.Table.TableHead']: ModelTableHead,
+        ['ModelIndex.Table.TableFooter']: ModelTableFooter,
+        ['ModelIndex.Table.TableToolbar']: ModelTableToolbar,
         ['ModelIndex.Table.TableBody.TableRow']: ModelTableRow,
     } = app('cms').getComponents();
 
@@ -47,7 +44,7 @@ const ModelIndex: React.FunctionComponent = () => {
                     xs={12}
                     {...({ [breakpoint]: 6 })}
                 >
-                    <Actions />
+                    <Actions variant={isDesktop ? 'default' : 'fab'} />
                 </Grid>
                 <Grid
                     xs={12}
@@ -72,42 +69,13 @@ const ModelIndex: React.FunctionComponent = () => {
                         error={error}
                         Model={Model}
                     >
-                        {({ columnCount }: TableContextValue) => (
-                            <>
-                                <ModelTableHead />
-                                <ModelTableBody>
-                                    {(item: Model) => <ModelTableRow key={item.getKey()} item={item} />}
-                                </ModelTableBody>
-                                <TableFooter>
-                                    <TableRow>
-                                        <TableCell colSpan={columnCount}>
-                                            <Stack
-                                                direction={isDesktop ? 'row' : 'column-reverse'}
-                                                alignItems="center"
-                                                justifyContent="space-between"
-                                                gap={3}
-                                            >
-                                                <Stack 
-                                                    direction="row"
-                                                    alignItems="center"
-                                                    justifyContent={{ xs: 'space-between', [breakpoint]: 'flex-start' }}
-                                                    width={{ xs: '100%', [breakpoint]: 'auto' }}
-                                                    gap={2}
-                                                >
-                                                    <PerPageSwitch />
-                                                    <PaginationDetails />
-                                                </Stack>
-                                                <Pagination
-                                                    variant={isDesktop ? 'default' : 'compact'}
-                                                    justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
-                                                    // sx={{ width: { [breakpoint]: '60%' } }}
-                                                />
-                                            </Stack>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableFooter>
-                            </>
-                        )}
+                        <ModelTableHead>
+                            <ModelTableToolbar />
+                        </ModelTableHead>
+                        <ModelTableBody>
+                            {(item: Model) => <ModelTableRow key={item.getKey()} item={item} />}
+                        </ModelTableBody>
+                        <ModelTableFooter />
                     </ModelTable>
                 </Grid>
             </Grid>

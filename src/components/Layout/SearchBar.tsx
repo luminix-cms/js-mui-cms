@@ -7,7 +7,7 @@ import Collapse from '@mui/material/Collapse';
 
 import SearchIcon from '@mui/icons-material/Search';
 
-import { useSearchParams } from 'react-router-dom';
+import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
@@ -22,6 +22,19 @@ const SearchField = styled(TextField)({
     // transition: 'width 250ms ease-in-out',
 });
 
+const reflectToActualSearch = (search: string, setSearchParams: SetURLSearchParams) => {
+    setSearchParams((params) => {
+        const newParams = new URLSearchParams(params);
+
+        if (search) {
+            newParams.set('q', search);
+        } else {
+            newParams.delete('q');
+        }
+
+        return newParams;
+    });
+};
 
 const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) => {
 
@@ -31,20 +44,6 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) 
     const [q, setQ] = React.useState(currentSearch);
     const [focus, setFocus] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement | null>(null);
-
-    const reflectToActualSearch = (search: string) => {
-        setSearchParams((params) => {
-            const newParams = new URLSearchParams(params);
-
-            if (search) {
-                newParams.set('q', search);
-            } else {
-                newParams.delete('q');
-            }
-
-            return newParams;
-        });
-    };
 
     const reflectRef = React.useRef(_.throttle(reflectToActualSearch, throttle));
 
@@ -60,8 +59,11 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) 
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
         setQ(e.target.value);
-        reflectRef.current(e.target.value);
     };
+
+    React.useEffect(() => {
+        reflectRef.current(q, setSearchParams);
+    }, [q, setSearchParams]);
 
     const isDesktop = useIsDesktopMode();
 

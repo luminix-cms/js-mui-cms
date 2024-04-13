@@ -109,7 +109,8 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                     <Checkbox />
                 </ShrinkedCell>
             )}
-            {isDesktop && columnsWithContents.map(({ key, label, sortable = true, content, ...props }) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+            {isDesktop && columnsWithContents.map(({ key, label, sortable, content, ...props }) => (
                 <TableCell key={key} {...props}>
                     <CellContent
                         label={label}

@@ -1,5 +1,7 @@
 
 import React from 'react';
+import ReactDOM from 'react-dom';
+
 import { app } from '@luminix/core';
 import { useApplyReducers } from '@luminix/react';
 import _ from 'lodash';
@@ -12,13 +14,34 @@ import Paper from '@mui/material/Paper';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
+import MuiFab from '@mui/material/Fab';
+import MuiSpeedDial from '@mui/material/SpeedDial';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+
+import AddIcon from '@mui/icons-material/Add';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
+import { styled } from '@mui/material/styles';
 
 import useCurrentQuery from '../../hooks/useCurrentQuery';
 
 import { Action } from '../../types/Table';
+import { ActionsProps } from '../../types/PropTypes';
 
-const Actions: React.FunctionComponent = () => {
+const Fab = styled(MuiFab)(({ theme }) => ({
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+}));
+
+const SpeedDial = styled(MuiSpeedDial)(({ theme }) => ({
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+}));
+
+const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' }) => {
 
     const { Model } = useCurrentQuery();
 
@@ -31,8 +54,9 @@ const Actions: React.FunctionComponent = () => {
             label: `Create ${Model.singular()}`,
             callback: () => {
                 console.log('Create');
-            }
-        }
+            },
+            icon: <AddIcon />,
+        },
     ], [Model]);
 
     const preActions = useApplyReducers(
@@ -74,6 +98,45 @@ const Actions: React.FunctionComponent = () => {
         setOpen(false);
     };
 
+    if (variant === 'fab') {
+
+        if (actions.length === 1) {
+            return ReactDOM.createPortal(
+                <Fab
+                    color="primary"
+                    onClick={() => handleSplitButtonClick(actions[0].callback)}
+                >
+                    {actions[0].icon || actions[0].label.charAt(0).toUpperCase()}
+                </Fab>,
+                document.body
+            );
+        }
+
+        return ReactDOM.createPortal(
+            <SpeedDial
+                ariaLabel={`actions for ${Model.singular()}`}
+                icon={<SpeedDialIcon />}
+                color="primary"
+                onClose={() => setOpen(false)}
+                onOpen={() => setOpen(true)}
+                open={open}
+            >
+                {actions.map((action) => (
+                    <SpeedDialAction
+                        key={action.label}
+                        icon={action.icon
+                            ? action.icon
+                            : action.label.charAt(0).toUpperCase()}
+                        tooltipTitle={action.label}
+                        onClick={() => handleSplitButtonClick(action.callback)}
+                    />
+                ))}
+            </SpeedDial>,
+            document.body
+        );
+
+    }
+
 
     return (
         <>
@@ -104,7 +167,6 @@ const Actions: React.FunctionComponent = () => {
                 anchorEl={anchorRef.current}
                 role={undefined}
                 transition
-                // disablePortal
             >
                 {({ TransitionProps, placement }) => (
                     <Grow

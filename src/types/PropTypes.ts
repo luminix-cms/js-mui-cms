@@ -109,3 +109,7 @@ export type QueryProviderProps = {
     dependencies?: unknown[],
 };
 
+
+export type ActionsProps = {
+    variant?: 'default' | 'fab',
+};

@@ -33,6 +33,9 @@ import TableRow from './components/ModelIndex/Table/TableBody/TableRow';
 import { Column } from './types/Table';
 import PaginationDetails from './components/ModelIndex/PaginationDetails';
 import PerPageSwitch from './components/ModelIndex/PerPageSwitch';
+import TableFooter from './components/ModelIndex/Table/TableFooter';
+import TableToolbar from './components/ModelIndex/Table/TableToolbar';
+import Sort from './components/ModelIndex/Sort';
 
 let app: AppFacade;
 
@@ -110,9 +113,12 @@ class CmsPlugin extends Plugin {
             'ModelIndex.Pagination': Pagination,
             'ModelIndex.PaginationDetails': PaginationDetails,
             'ModelIndex.PerPageSwitch': PerPageSwitch,
+            'ModelIndex.Sort': Sort,
             'ModelIndex.Table': Table,
             'ModelIndex.Table.TableHead': TableHead,
             'ModelIndex.Table.TableBody': TableBody,
+            'ModelIndex.Table.TableFooter': TableFooter,
+            'ModelIndex.Table.TableToolbar': TableToolbar,
             'ModelIndex.Table.TableBody.TableRow': TableRow,
             'ModelIndex.Table.ShrinkedCell': ShrinkedCell,
 
