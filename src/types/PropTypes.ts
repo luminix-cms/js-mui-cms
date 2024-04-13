@@ -13,8 +13,9 @@ import { Theme } from '@mui/material/styles';
 import { DefaultComponentProps } from '@mui/material/OverridableComponent';
 import { MenuItem } from './Menu';
 import { ModelPaginatedResponse } from '@luminix/core/dist/types/Model';
-import { Collection } from '@luminix/core/dist/types/Collection';
+import { Collection, CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
 import { Scope } from '@luminix/core/dist/types/Builder';
+import { TableContextValue } from './Contexts';
 
 export type LuminixCmsProps = {
     theme?: Theme
@@ -75,6 +76,7 @@ export type TableProps = MuiTableProps & {
     loading?: boolean,
     error: Error | null,
     Model: typeof Model,
+    children: React.ReactNode | ((props: TableContextValue) => React.ReactNode),
 };
 
 export type TableHeadProps = MuiTableHeadProps & {
@@ -89,7 +91,8 @@ export type TableRowProps = MuiTableRowProps & {
 };
 
 export type TableBodyProps = MuiTableBodyProps & {
-    children: (item: Model) => React.ReactNode,
+    children: React.ReactNode | CollectionIteratorCallback<Model, React.ReactNode>,
+    //(item: Model) => React.ReactNode,
 }
 
 export type PaginationProps = StackProps & {

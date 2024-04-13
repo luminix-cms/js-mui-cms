@@ -31,6 +31,8 @@ import ShrinkedCell from './components/ModelIndex/Table/ShrinkedCell';
 import Pagination from './components/ModelIndex/Pagination';
 import TableRow from './components/ModelIndex/Table/TableBody/TableRow';
 import { Column } from './types/Table';
+import PaginationDetails from './components/ModelIndex/PaginationDetails';
+import PerPageSwitch from './components/ModelIndex/PerPageSwitch';
 
 let app: AppFacade;
 
@@ -41,7 +43,7 @@ class CmsPlugin extends Plugin {
     
 
     register(appFacade: AppFacade): void {
-        
+
         app = appFacade;
 
         app.bind('cms', new CmsFacade(app));
@@ -56,18 +58,8 @@ class CmsPlugin extends Plugin {
         this.bootComponents();
         this.bootRoutes();
         this.bootMenu();
-
-        app.make('cms').reducer('modelUserColumns', (columns: Column[]) => [
-            ...columns,
-            {
-                key: 'email',
-                label: 'Email'
-            },
-            {
-                key: 'updated_at',
-                label: 'Updated At'
-            },
-        ]);
+        this.bootModifiers();
+        
     }
 
     bootModels() {
@@ -115,13 +107,15 @@ class CmsPlugin extends Plugin {
             'Layout.SearchBar': SearchBar,
 
             'ModelIndex.Actions': Actions,
+            'ModelIndex.Pagination': Pagination,
+            'ModelIndex.PaginationDetails': PaginationDetails,
+            'ModelIndex.PerPageSwitch': PerPageSwitch,
             'ModelIndex.Table': Table,
             'ModelIndex.Table.TableHead': TableHead,
             'ModelIndex.Table.TableBody': TableBody,
             'ModelIndex.Table.TableBody.TableRow': TableRow,
             'ModelIndex.Table.ShrinkedCell': ShrinkedCell,
 
-            'ModelIndex.Pagination': Pagination,
 
 
             
@@ -151,6 +145,22 @@ class CmsPlugin extends Plugin {
                 
             ]
         }, 0);
+    }
+
+    bootModifiers() {
+
+        app.make('cms').reducer('modelUserColumns', (columns: Column[]) => [
+            ...columns,
+            {
+                key: 'email',
+                label: 'Email'
+            },
+            {
+                key: 'created_at',
+                label: 'Created At'
+            },
+        ]);
+
     }
 
 

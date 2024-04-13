@@ -15,7 +15,12 @@ const DEFAULT_THEME = createTheme({
         primary: {
             main: '#1d9798',
         },
+        background: {
+            default: '#e9f0f1',
+            
+        }
     },
+    
 });
 
 const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_THEME }) => (

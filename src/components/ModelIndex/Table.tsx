@@ -19,11 +19,14 @@ const Table: React.FunctionComponent<TableProps> = ({
             loading={loading}
             error={error}
         >
-            <TableContainer component={Paper}>
-                <MuiTable {...props}>
-                    {children}
-                </MuiTable>
-            </TableContainer>
+            {(value) => (
+                <TableContainer component={Paper}>
+                    <MuiTable {...props}>
+                        {typeof children !== 'function' && children}
+                        {typeof children === 'function' && children(value)}
+                    </MuiTable>
+                </TableContainer>
+            )}
         </TableProvider>
     );
 };

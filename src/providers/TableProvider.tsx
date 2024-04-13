@@ -9,6 +9,7 @@ import TableContext from '../contexts/TableContext';
 
 import _ from 'lodash';
 import { TableProps } from '../types/PropTypes';
+import useIsDesktopMode from '../hooks/useIsDesktopMode';
 
 const DEFAULT_MASS_ACTIONS = [
     {
@@ -25,6 +26,8 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, load
             label: _.upperFirst(_.camelCase(Model.getSchema().labeledBy)),
         }
     ], [Model]);
+
+    const isDesktop = useIsDesktopMode();
 
     const preMassActions = useApplyReducers(
         app('cms'),
@@ -44,17 +47,27 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, load
         DEFAULT_COLUMNS
     ) as Column[];
 
+    const dataColumns = isDesktop ? columns.length : 1;
+
+    const columnCount = dataColumns + (
+        massActions.length > 0
+            ? 2
+            : 1
+    );
+    
+    const value = {
+        columns,
+        columnCount,
+        massActions,
+        items,
+        loading,
+        Model,
+    };
+
     return (
-        <TableContext.Provider
-            value={{
-                columns,
-                massActions,
-                items,
-                loading,
-                Model,
-            }}
-        >
-            {children}
+        <TableContext.Provider value={value}>
+            {typeof children !== 'function' && children}
+            {typeof children === 'function' && children(value)}
         </TableContext.Provider>
     )
 

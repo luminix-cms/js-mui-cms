@@ -33,7 +33,6 @@ export type QueryContextValue = {
         current_page: number;
         from: number;
         last_page: number;
-        path: string;
         per_page: number;
         to: number;
         total: number;
@@ -46,6 +45,7 @@ export type QueryContextValue = {
 
 export type TableContextValue = {
     columns: Column[],
+    columnCount: number,
     massActions: MassAction[],
     items?: Collection<Model>,
     loading?: boolean,
