@@ -35,9 +35,7 @@ const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props
                             No {Model.plural().toLocaleLowerCase()} found
                         </Typography>
                         <br />
-                        <Typography>
-                            <Actions />
-                        </Typography>
+                        <Actions />
                     </TableCell>
                 </TableRow>
             )}

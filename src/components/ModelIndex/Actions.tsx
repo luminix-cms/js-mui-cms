@@ -124,9 +124,7 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
                 {actions.map((action) => (
                     <SpeedDialAction
                         key={action.label}
-                        icon={action.icon
-                            ? action.icon
-                            : action.label.charAt(0).toUpperCase()}
+                        icon={action.icon || action.label.charAt(0).toUpperCase()}
                         tooltipTitle={action.label}
                         onClick={() => handleSplitButtonClick(action.callback)}
                     />
