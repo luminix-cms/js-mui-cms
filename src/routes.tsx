@@ -1,8 +1,6 @@
 import { Outlet } from "react-router-dom";
 import _ from "lodash";
 
-import CssBaseline from '@mui/material/CssBaseline';
-
 import { CmsRoutesReducer } from "./types/Reducers";
 import LayoutProvider from "./providers/LayoutProvider";
 import QueryProvider from "./providers/QueryProvider";
@@ -11,7 +9,6 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
     {
         element: (
             <LayoutProvider>
-                <CssBaseline />
                 <Layout>
                     <Outlet />
                 </Layout>

@@ -13,14 +13,15 @@ import { styled } from '@mui/material/styles';
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import _ from 'lodash';
 import { SearchBarProps } from '../../types/PropTypes';
+import useKeyChord from '../../hooks/useKeyChord';
 
 
-const SearchField = styled(TextField)({
+const SearchField = styled(TextField)(({ theme }) => ({
     '& .MuiInputBase-root': {
-        backgroundColor: 'white',
+        backgroundColor: theme.palette.background.paper,
     },
     // transition: 'width 250ms ease-in-out',
-});
+}));
 
 const reflectToActualSearch = (search: string, setSearchParams: SetURLSearchParams) => {
     setSearchParams((params) => {
@@ -67,6 +68,10 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) 
 
     const isDesktop = useIsDesktopMode();
 
+    useKeyChord(['Control', '/'], () => {
+        inputRef.current!.focus();
+    });
+
     const width = isDesktop
         ? 300
         : 'calc(100vw - 58px)';
@@ -100,7 +105,9 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) 
                 unmountOnExit={false}
             >
                 <SearchField
-                    placeholder="Type to search..."
+                    placeholder={isDesktop
+                        ? '(Ctrl + /) Search...'
+                        : 'Search...'}
                     value={q} 
                     InputProps={{
                         endAdornment: <SearchIcon />,

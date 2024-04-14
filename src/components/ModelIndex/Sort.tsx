@@ -50,31 +50,11 @@ const Sort: React.FunctionComponent = () => {
         setDirection(currentSortDirection);
     };
 
-    // const handleSort = (key: string) => () => {
-    //     if (currentSortColumn === key) {
-    //         setSearchParms((params) => {
-    //             const newSearch = new URLSearchParams(params);
-    //             if (!currentSortDirection) {
-    //                 newSearch.set('order_by', `${key}:asc`);
-    //                 return newSearch;
-    //             }
-    //             if (currentSortDirection === 'desc') {
-    //                 newSearch.delete('order_by');
-    //                 return newSearch;
-    //             }
-    //             newSearch.set('order_by', `${key}:desc`);
-    //             return newSearch;
-    //         });
-    //     } else {
-    //         setSearchParms((params) => {
-    //             const newSearch = new URLSearchParams(params);
-    //             newSearch.set('order_by', `${key}:asc`);
-    //             return newSearch;
-    //         });
-    //     }
-    // };
-
     const handleApply = () => {
+        if (!column || !direction) {
+            setOpen(false);
+            return;
+        }
         setSearchParms((params) => {
             const newSearch = new URLSearchParams(params);
             newSearch.set('order_by', `${column}:${direction}`);
@@ -89,7 +69,9 @@ const Sort: React.FunctionComponent = () => {
             newSearch.delete('order_by');
             return newSearch;
         });
-        handleClose();
+        setOpen(false);
+        setColumn('');
+        setDirection('');
     };
 
     return (
@@ -116,7 +98,12 @@ const Sort: React.FunctionComponent = () => {
                 <DialogContent dividers>
                     <RadioGroup
                         value={column}
-                        onChange={(e) => setColumn(e.target.value)}
+                        onChange={(e) => {
+                            setColumn(e.target.value);
+                            if (!direction) {
+                                setDirection('asc');
+                            }
+                        }}
                     >
                         <Typography variant="caption">Column</Typography>
                         <Divider />
@@ -161,7 +148,7 @@ const Sort: React.FunctionComponent = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClear} sx={{ mr: 'auto' }}>Clear</Button>
-                    <Button onClick={handleApply}>Apply</Button>
+                    <Button onClick={handleApply} variant="contained" >Apply</Button>
                 </DialogActions>
             </Dialog>
         </>

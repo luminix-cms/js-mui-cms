@@ -32,8 +32,6 @@ const TableHead: React.FunctionComponent<TableHeadProps> = ({ children, ...props
 
     const [column, direction] = currentSort.split(':');
 
-    console.log('sorting:', column, direction);
-
     const handleSort = (key: string) => () => {
 
         if (column === key) {

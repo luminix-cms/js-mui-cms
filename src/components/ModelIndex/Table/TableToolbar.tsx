@@ -13,6 +13,7 @@ const TableToolbar: React.FunctionComponent = () => {
     } = useTable();
 
     const {
+        ['ModelIndex.Filter']: Filter,
         ['ModelIndex.Sort']: Sort,
     } = app('cms').getComponents();
 
@@ -21,7 +22,8 @@ const TableToolbar: React.FunctionComponent = () => {
 
     return (
         <TableRow>
-            <TableCell colSpan={columnCount}>
+            <TableCell colSpan={columnCount} sx={{ p: 1 }}>
+                <Filter />
                 {!isDesktop && <Sort />}
             </TableCell>
         </TableRow>

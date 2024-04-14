@@ -30,12 +30,12 @@ import TableBody from './components/ModelIndex/Table/TableBody';
 import ShrinkedCell from './components/ModelIndex/Table/ShrinkedCell';
 import Pagination from './components/ModelIndex/Pagination';
 import TableRow from './components/ModelIndex/Table/TableBody/TableRow';
-import { Column } from './types/Table';
 import PaginationDetails from './components/ModelIndex/PaginationDetails';
 import PerPageSwitch from './components/ModelIndex/PerPageSwitch';
 import TableFooter from './components/ModelIndex/Table/TableFooter';
 import TableToolbar from './components/ModelIndex/Table/TableToolbar';
 import Sort from './components/ModelIndex/Sort';
+import Filter from './components/ModelIndex/Filter';
 
 let app: AppFacade;
 
@@ -110,6 +110,7 @@ class CmsPlugin extends Plugin {
             'Layout.SearchBar': SearchBar,
 
             'ModelIndex.Actions': Actions,
+            'ModelIndex.Filter': Filter,
             'ModelIndex.Pagination': Pagination,
             'ModelIndex.PaginationDetails': PaginationDetails,
             'ModelIndex.PerPageSwitch': PerPageSwitch,
@@ -155,20 +156,26 @@ class CmsPlugin extends Plugin {
 
     bootModifiers() {
 
-        app.make('cms').reducer('modelUserColumns', (columns: Column[]) => [
-            ...columns,
+        app.make('cms').reducer('modelUserColumns', () => [
+            {
+                key: 'name',
+                label: 'Name',
+                scope: 'row',
+                component: 'th',
+            },
             {
                 key: 'email',
                 label: 'Email',
                 align: 'right',
+                size: 'small',
             },
             {
                 key: 'created_at',
                 label: 'Created At',
-                size: 'small',
                 align: 'right',
+                size: 'small',
             },
-        ]);
+        ], 1);
 
     }
 

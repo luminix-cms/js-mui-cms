@@ -119,7 +119,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                 </TableCell>
             ))}
             {!isDesktop && (
-                <TableCell sx={{ maxWidth: 0 }}>
+                <TableCell sx={{ maxWidth: 0, px: 0 }}>
                     {columnsWithContents.map(({ key, ...props }) => <MobileCellContent key={key} {...props} />)}
                 </TableCell>
             )}

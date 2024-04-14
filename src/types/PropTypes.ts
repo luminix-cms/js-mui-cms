@@ -4,11 +4,11 @@ import {
     DrawerProps as MuiDrawerProps, AppBarProps as MuiAppBarProps, BoxProps,
     DrawerProps, MenuProps, TableProps as MuiTableProps,
     StackProps, TableHeadProps as MuiTableHeadProps, TableBodyProps as MuiTableBodyProps,
-    TableRowProps as MuiTableRowProps
+    TableRowProps as MuiTableRowProps,
+    ThemeOptions
 } from '@mui/material';
 
 import { ListTypeMap } from '@mui/material/List';
-import { Theme } from '@mui/material/styles';
 
 import { DefaultComponentProps } from '@mui/material/OverridableComponent';
 import { MenuItem } from './Menu';
@@ -18,7 +18,7 @@ import { Scope } from '@luminix/core/dist/types/Builder';
 import { TableContextValue } from './Contexts';
 
 export type LuminixCmsProps = {
-    theme?: Theme
+    theme?: ThemeOptions
 };
 
 export type LayoutProps = BoxProps & {

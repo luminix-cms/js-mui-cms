@@ -37,17 +37,18 @@ const Skeleton: React.FunctionComponent = () => {
                             <Checkbox />
                         </ShrinkedCell>
                     )}
-                    {isDesktop && columns.map((_, index) => (
-                        <TableCell key={index}>
+                    {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+                    {isDesktop && columns.map(({ key, label, sortable, ...props }, index) => (
+                        <TableCell key={index} {...props}>
                             <MuiSkeleton
                                 variant="text"
-                                width="100%"
+                                // width="100%"
                                 height={24}
                             />
                         </TableCell>
                     ))}
                     {!isDesktop && (
-                        <TableCell>
+                        <TableCell sx={{ px: 0 }}>
                             {Array.from({ length: columns.length }).map((_, index) => (
                                 <MuiSkeleton
                                     key={index}
