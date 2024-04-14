@@ -51,6 +51,7 @@ export type TableContextValue = {
     loading?: boolean,
     error?: Error | null,
     Model: typeof Model,
+    selected: Collection<Model>,
 };
 
 

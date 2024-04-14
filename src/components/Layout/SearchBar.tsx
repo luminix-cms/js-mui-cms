@@ -23,7 +23,7 @@ const SearchField = styled(TextField)(({ theme }) => ({
     // transition: 'width 250ms ease-in-out',
 }));
 
-const reflectToActualSearch = (search: string, setSearchParams: SetURLSearchParams) => {
+const throttleSearch = _.throttle((search: string, setSearchParams: SetURLSearchParams) => {
     setSearchParams((params) => {
         const newParams = new URLSearchParams(params);
 
@@ -35,9 +35,9 @@ const reflectToActualSearch = (search: string, setSearchParams: SetURLSearchPara
 
         return newParams;
     });
-};
+}, 500);
 
-const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) => {
+const SearchBar: React.FunctionComponent<SearchBarProps> = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -45,8 +45,6 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) 
     const [q, setQ] = React.useState(currentSearch);
     const [focus, setFocus] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement | null>(null);
-
-    const reflectRef = React.useRef(_.throttle(reflectToActualSearch, throttle));
 
     React.useEffect(() => {
         setQ((q) => {
@@ -63,7 +61,7 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({ throttle = 500 }) 
     };
 
     React.useEffect(() => {
-        reflectRef.current(q, setSearchParams);
+        throttleSearch(q, setSearchParams);
     }, [q, setSearchParams]);
 
     const isDesktop = useIsDesktopMode();

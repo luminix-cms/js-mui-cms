@@ -13,6 +13,7 @@ import useTable from '../../../hooks/useTable';
 import { TableHeadProps } from '../../../types/PropTypes';
 import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
 import { useSearchParams } from 'react-router-dom';
+import useSelection from '../../../hooks/useSelection';
 
 const TableHead: React.FunctionComponent<TableHeadProps> = ({ children, ...props}) => {
 
@@ -23,6 +24,10 @@ const TableHead: React.FunctionComponent<TableHeadProps> = ({ children, ...props
     const isDesktop = useIsDesktopMode();
 
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const {
+        indeterminate, allSelected, handleSelectToggleAll,
+    } = useSelection();
 
     const {
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
@@ -67,7 +72,11 @@ const TableHead: React.FunctionComponent<TableHeadProps> = ({ children, ...props
                 <TableRow>
                     {massActions.length > 0 && (
                         <ShrinkedCell>
-                            <Checkbox />
+                            <Checkbox
+                                indeterminate={indeterminate}
+                                checked={allSelected}
+                                onChange={handleSelectToggleAll}
+                            />
                         </ShrinkedCell>
                     )}
                     {columns.map(({ key, label, sortable = true, ...props }) => (

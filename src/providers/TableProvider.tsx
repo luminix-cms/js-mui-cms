@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import { app } from '@luminix/core';
+import { Model, app, collect } from '@luminix/core';
 import { useApplyReducers } from '@luminix/react';
 
 import { Column, MassAction } from '../types/Table';
@@ -19,6 +19,9 @@ const DEFAULT_MASS_ACTIONS = [
 ];
 
 const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, loading, children }) => {
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const selected = React.useMemo(() => collect<Model>([]), [Model, items]);
 
     const DEFAULT_COLUMNS = React.useMemo(() => [
         {
@@ -61,6 +64,7 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, load
         massActions,
         items,
         loading,
+        selected,
         Model,
     };
 

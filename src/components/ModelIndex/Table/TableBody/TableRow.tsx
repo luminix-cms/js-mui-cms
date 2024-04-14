@@ -15,6 +15,7 @@ import _ from 'lodash';
 import useTable from '../../../../hooks/useTable';
 import { TableRowProps } from '../../../../types/PropTypes';
 import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
+import useSelection from '../../../../hooks/useSelection';
 
 type MobileCellContentProps = {
     label: string;
@@ -102,11 +103,18 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
 
     const isDesktop = useIsDesktopMode();
 
+    const {
+        selected, handleSelectToggle,
+    } = useSelection();
+
     return (
         <MuiTableRow {...props}>
             {massActions.length > 0 && (
                 <ShrinkedCell>
-                    <Checkbox />
+                    <Checkbox 
+                        checked={selected.contains(item)}
+                        onChange={() => handleSelectToggle(item)}
+                    />
                 </ShrinkedCell>
             )}
             {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
