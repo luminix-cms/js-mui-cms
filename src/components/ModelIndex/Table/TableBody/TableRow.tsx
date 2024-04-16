@@ -104,7 +104,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
     const isDesktop = useIsDesktopMode();
 
     const {
-        selected, handleSelectToggle,
+        isSelected, handleSelectToggle,
     } = useSelection();
 
     return (
@@ -112,7 +112,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
             {massActions.length > 0 && (
                 <ShrinkedCell>
                     <Checkbox 
-                        checked={selected.contains(item)}
+                        checked={isSelected(item)}
                         onChange={() => handleSelectToggle(item)}
                     />
                 </ShrinkedCell>

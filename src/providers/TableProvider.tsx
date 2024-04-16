@@ -18,7 +18,7 @@ const DEFAULT_MASS_ACTIONS = [
     },
 ];
 
-const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, loading, children }) => {
+const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, loading, children, error }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const selected = React.useMemo(() => collect<Model>([]), [Model, items]);
@@ -65,6 +65,7 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, load
         items,
         loading,
         selected,
+        error,
         Model,
     };
 

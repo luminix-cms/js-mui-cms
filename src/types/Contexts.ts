@@ -49,7 +49,7 @@ export type TableContextValue = {
     massActions: MassAction[],
     items?: Collection<Model>,
     loading?: boolean,
-    error?: Error | null,
+    error: Error | null,
     Model: typeof Model,
     selected: Collection<Model>,
 };

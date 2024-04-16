@@ -37,14 +37,21 @@ export default function useSelection() {
         selectedContext.splice(0, selectedContext.count(), ...items);
     };
 
-    const indeterminate = items ? (selected.count() > 0 && selected.count() < items.count()) : false;
-    const allSelected = items ? selected.count() === items.count() : false;
-    
+    const isSelected = (item: Model) => selected.contains(item);
+
+    const indeterminate = items
+        ? (selected.count() > 0 && selected.count() < items.count())
+        : false;
+
+    const allSelected = (items && items.count())
+        ? selected.count() === items.count()
+        : false;
 
     return {
         selected,
         indeterminate,
         allSelected,
+        isSelected,
         handleClearSelected,
         handleSelectToggle,
         handleSelectToggleAll,

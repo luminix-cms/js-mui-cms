@@ -18,7 +18,7 @@ import useSelection from '../../../hooks/useSelection';
 const TableHead: React.FunctionComponent<TableHeadProps> = ({ children, ...props}) => {
 
     const {
-        massActions, columns
+        massActions, columns, items
     } = useTable();
 
     const isDesktop = useIsDesktopMode();
@@ -76,6 +76,7 @@ const TableHead: React.FunctionComponent<TableHeadProps> = ({ children, ...props
                                 indeterminate={indeterminate}
                                 checked={allSelected}
                                 onChange={handleSelectToggleAll}
+                                disabled={items && items.count() === 0}
                             />
                         </ShrinkedCell>
                     )}
