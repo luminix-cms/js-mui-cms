@@ -1,6 +1,6 @@
 
 import React from 'react';
-import useCurrentQuery from '../../hooks/useCurrentQuery';
+import { useCurrentQuery } from '@luminix/react';
 
 import Typography from '@mui/material/Typography';
 

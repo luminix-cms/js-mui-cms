@@ -3,7 +3,7 @@ import _ from "lodash";
 
 import { CmsRoutesReducer } from "./types/Reducers";
 import LayoutProvider from "./providers/LayoutProvider";
-import QueryProvider from "./providers/QueryProvider";
+import { QueryProvider } from "@luminix/react";
 
 const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem, Error }, models) => [
     {

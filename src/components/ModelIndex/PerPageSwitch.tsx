@@ -1,16 +1,13 @@
 
 import React from 'react';
 import { app } from '@luminix/core';
-import { useApplyReducers } from '@luminix/react';
+import { useApplyReducers, useCurrentQuery } from '@luminix/react';
+import { useSearchParams } from 'react-router-dom';
 
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-
-import { useSearchParams } from 'react-router-dom';
-
-import useCurrentQuery from '../../hooks/useCurrentQuery';
 
 const PerPageSwitch: React.FunctionComponent = () => {
 

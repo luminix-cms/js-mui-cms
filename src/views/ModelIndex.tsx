@@ -1,25 +1,27 @@
 import React from 'react';
 import { Model, app } from '@luminix/core';
+import { useCurrentQuery } from '@luminix/react';
 
 import Grid from '@mui/material/Unstable_Grid2';
+import { Breakpoint } from '@mui/material';
 
 import useSetPageTitle from '../hooks/useSetPageTitle';
-import useCurrentQuery from '../hooks/useCurrentQuery';
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
 import useLayoutConfig from '../hooks/useLayoutConfig';
-
-import { Breakpoint } from '@mui/material';
+import useSearch from '../hooks/useSearch';
 
 const ModelIndex: React.FunctionComponent = () => {
 
     const {
         Model,
-        items,
+        data,
         error,
         loading,
     } = useCurrentQuery();
 
     useSetPageTitle(Model.plural());
+
+    useSearch();
 
     const isDesktop = useIsDesktopMode();
 
@@ -64,7 +66,7 @@ const ModelIndex: React.FunctionComponent = () => {
                 </Grid>
                 <Grid xs={12}>
                     <ModelTable
-                        items={items}
+                        items={data}
                         loading={loading}
                         error={error}
                         Model={Model}

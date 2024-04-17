@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { app } from '@luminix/core';
-import { useApplyReducers } from '@luminix/react';
+import { useApplyReducers, useCurrentQuery } from '@luminix/react';
 import _ from 'lodash';
 
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -23,8 +23,6 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { styled } from '@mui/material/styles';
-
-import useCurrentQuery from '../../hooks/useCurrentQuery';
 
 import { Action } from '../../types/Table';
 import { ActionsProps } from '../../types/PropTypes';
