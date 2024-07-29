@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { app } from '@luminix/core';
-import { useApplyReducers, useCurrentQuery } from '@luminix/react';
+import { useApplyReducers } from '@luminix/react';
 import _ from 'lodash';
 
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -26,6 +26,7 @@ import { styled } from '@mui/material/styles';
 
 import { Action } from '../../types/Table';
 import { ActionsProps } from '../../types/PropTypes';
+import useCurrentModel from '../../hooks/useCurrentModel';
 
 const Fab = styled(MuiFab)(({ theme }) => ({
     position: 'fixed',
@@ -41,7 +42,7 @@ const SpeedDial = styled(MuiSpeedDial)(({ theme }) => ({
 
 const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' }) => {
 
-    const { Model } = useCurrentQuery();
+    const Model = useCurrentModel();
 
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
@@ -195,7 +196,5 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
         </>
     );
 };
-
-
 
 export default Actions;

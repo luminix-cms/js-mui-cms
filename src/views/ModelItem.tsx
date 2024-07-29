@@ -1,13 +1,14 @@
 import React from 'react';
-import { ModelComponentProps } from '../types/PropTypes';
 
 import { useParams } from 'react-router-dom';
+import useCurrentModel from '../hooks/useCurrentModel';
 
 
-const ModelItem: React.FunctionComponent<ModelComponentProps> = ({ Model }) => {
+const ModelItem: React.FunctionComponent = () => {
 
     const { id } = useParams();
 
+    const Model = useCurrentModel();
 
     return (
         <div>

@@ -1,14 +1,14 @@
 import React from 'react';
 import { ErrorProps } from '../types/PropTypes';
-import { config } from '@luminix/core';
+import { app } from '@luminix/core';
 
 const Error: React.FunctionComponent<ErrorProps> = ({ error }) => {
 
     return (
         <div>
-            <h1>Error</h1>
+            <h1>Ops...</h1>
             <p>Something went wrong</p>
-            {config('app.debug') && error && (
+            {app().hasDebugModeEnabled() && error && (
                 <>
                     <pre style={{ whiteSpace: 'pre-wrap' }}>
                         {error.message}

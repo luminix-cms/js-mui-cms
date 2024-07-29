@@ -1,6 +1,6 @@
 import React from 'react';
 import { Model, app } from '@luminix/core';
-import { useCurrentQuery } from '@luminix/react';
+import { usePagination } from '@luminix/react';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import { Breakpoint } from '@mui/material';
@@ -9,15 +9,17 @@ import useSetPageTitle from '../hooks/useSetPageTitle';
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
 import useLayoutConfig from '../hooks/useLayoutConfig';
 import useSearch from '../hooks/useSearch';
+import useCurrentModel from '../hooks/useCurrentModel';
 
 const ModelIndex: React.FunctionComponent = () => {
 
+    const Model = useCurrentModel();
+
     const {
-        Model,
         data,
         error,
         loading,
-    } = useCurrentQuery();
+    } = usePagination();
 
     useSetPageTitle(Model.plural());
 

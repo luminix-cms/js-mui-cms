@@ -42,13 +42,11 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
             <CssBaseline />
             <LuminixProvider
                 routes={(app) => app.make('cms').getRoutes()}
-                plugins={[
-                    new CmsPlugin(),
-                ]}
+                plugins={[new CmsPlugin(),]}
                 config={{
-                    app: { 
+                    app: {
                         debug: true,
-                        url: 'http://localhost'
+                        url: 'http://localhost',
                     },
                     // luminix: {
                     //     cms: {

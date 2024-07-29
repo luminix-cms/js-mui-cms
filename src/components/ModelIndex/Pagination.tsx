@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModelPaginatedLink } from '@luminix/core/dist/types/Model';
-import { useCurrentQuery } from '@luminix/react';
+import { usePagination } from '@luminix/react';
 import { Form, useSearchParams } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
@@ -59,7 +59,7 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({ variant = 'defau
             links = [],
             last_page: lastPage = 1,
         } = {},
-    } = useCurrentQuery();
+    } = usePagination();
 
     const {
         first, prev, next, last

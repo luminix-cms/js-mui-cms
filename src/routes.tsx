@@ -3,7 +3,8 @@ import _ from "lodash";
 
 import { CmsRoutesReducer } from "./types/Reducers";
 import LayoutProvider from "./providers/LayoutProvider";
-import { QueryProvider } from "@luminix/react";
+import { PaginationProvider } from "@luminix/react";
+import ModelProvider from "./providers/ModelProvider";
 
 const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem, Error }, models) => [
     {
@@ -30,16 +31,20 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
                     path: '/' + _.kebabCase(Model.plural()),
                     name: `luminix.cms.${key}.index`,
                     element: (
-                        <QueryProvider Model={Model}>
-                            <ModelIndex />
-                        </QueryProvider>
+                        <ModelProvider Model={Model}>
+                            <PaginationProvider factory={Model.query}>
+                                <ModelIndex />
+                            </PaginationProvider>
+                        </ModelProvider>
                     )
                 },
                 {
                     path: '/' + _.kebabCase(Model.plural()) + '/:id',
                     name: `luminix.cms.${key}.item`,
                     element: (
-                        <ModelItem Model={Model} />
+                        <ModelProvider Model={Model}>
+                            <ModelItem />
+                        </ModelProvider>
                     )
                 }
             ])),

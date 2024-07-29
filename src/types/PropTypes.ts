@@ -71,8 +71,9 @@ export type RecursiveMenuProps = MenuProps & {
     // RecursiveList: FunctionComponent<RecursiveListProps>;
 }
 
-export type ModelComponentProps = {
-    Model: typeof Model,
+export type ModelProviderProps = {
+    Model: typeof Model;
+    children: React.ReactNode;
 };
 
 export type TableProps = MuiTableProps & {

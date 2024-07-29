@@ -1,5 +1,4 @@
 import React from 'react';
-import { useConfig } from '@luminix/react';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Theme } from '@mui/material/styles';
@@ -12,13 +11,13 @@ import LayoutContext from '../contexts/LayoutContext';
 
 const originalTitle = document.title;
 
-const LayoutProvider: React.FunctionComponent = ({ children }) => {
+const LayoutProvider: React.FunctionComponent<{ children: React.ReactNode }> = ({ children }) => {
      
     const [open, setOpen] = React.useState(false);
     const [currentPage, setCurrentPage] = React.useState('');
     const [showSearch, setShowSearch] = React.useState(false);
 
-    const layout = useConfig('luminix.cms.layout', {}) as CmsConfig['layout'];
+    const layout = config('luminix.cms.layout', {}) as CmsConfig['layout'];
 
     const isBreakpointUp = useMediaQuery((theme: Theme) => theme.breakpoints.up(layout?.breakpoint || 'md'));
 

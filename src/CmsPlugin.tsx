@@ -39,6 +39,8 @@ import Filter from './components/ModelIndex/Filter';
 
 let app: AppFacade;
 
+// 
+
 class CmsPlugin extends Plugin {
 
     name = 'Luminix CMS Plugin';
@@ -66,6 +68,7 @@ class CmsPlugin extends Plugin {
     }
 
     bootModels() {
+
         app.make('model').reducer('model', (model: typeof Model, abstract: string) => {
             return class extends model {
                 static icon() {
@@ -145,8 +148,10 @@ class CmsPlugin extends Plugin {
                     .map(([key, Model]) => ({
                         key,
                         text: Model.plural(),
+                        // TODO: use route(`luminix.${model}.index`) instead
                         to: '/' + _.kebabCase(Model.plural()),
-                        icon: Model.icon(),
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        icon: (Model as unknown as any).icon(),
                         
                     })),
                 

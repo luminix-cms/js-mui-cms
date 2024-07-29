@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { app } from '@luminix/core';
-import { useApplyReducers, useCurrentQuery } from '@luminix/react';
+import { useApplyReducers, usePagination } from '@luminix/react';
 import { useSearchParams } from 'react-router-dom';
 
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -15,7 +15,7 @@ const PerPageSwitch: React.FunctionComponent = () => {
         meta: {
             per_page: perPage = 15,
         } = {},
-    } = useCurrentQuery();
+    } = usePagination();
 
     const [, setSearchParams] = useSearchParams();
 

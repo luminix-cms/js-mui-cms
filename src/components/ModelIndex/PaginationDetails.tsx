@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useCurrentQuery } from '@luminix/react';
+import { usePagination } from '@luminix/react';
 
 import Typography from '@mui/material/Typography';
 
@@ -13,7 +13,7 @@ const PaginationDetails: React.FunctionComponent = () => {
             from = 0,
             to = 0,
         } = {},
-    } = useCurrentQuery();
+    } = usePagination();
 
     return (
         <Typography variant="caption">
