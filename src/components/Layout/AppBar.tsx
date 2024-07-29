@@ -87,7 +87,7 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
                     noWrap
                     component="div"
                 >
-                    {(!isDesktop && title) || config('app.name', document.title)}
+                    {(!isDesktop && title) || config('app.name', document.title) as string}
                 </Typography>
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: 'flex' }}>

@@ -8,25 +8,21 @@ import TableProvider from '../../providers/TableProvider';
 import { TableProps } from '../../types/PropTypes';
 
 const Table: React.FunctionComponent<TableProps> = ({
-    items, loading, Model, error, children,
+    items, loading, error, children,
     ...props
 }) => {
 
     return (
         <TableProvider
-            Model={Model}
             items={items}
             loading={loading}
             error={error}
         >
-            {(value) => (
-                <TableContainer component={Paper}>
-                    <MuiTable {...props}>
-                        {typeof children !== 'function' && children}
-                        {typeof children === 'function' && children(value)}
-                    </MuiTable>
-                </TableContainer>
-            )}
+            <TableContainer component={Paper}>
+                <MuiTable {...props}>
+                    {children}
+                </MuiTable>
+            </TableContainer>
         </TableProvider>
     );
 };

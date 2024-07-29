@@ -71,7 +71,6 @@ const ModelIndex: React.FunctionComponent = () => {
                         items={data}
                         loading={loading}
                         error={error}
-                        Model={Model}
                     >
                         <ModelTableHead>
                             <ModelTableToolbar />

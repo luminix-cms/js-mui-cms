@@ -48,15 +48,6 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
                         debug: true,
                         url: 'http://localhost',
                     },
-                    // luminix: {
-                    //     cms: {
-                    //         layout: {
-                    //             appBar: {
-                    //                 height: 90,
-                    //             }
-                    //         }
-                    //     }
-                    // }
                 }}
             />
         </ThemeProvider>

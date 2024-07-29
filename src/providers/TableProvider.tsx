@@ -10,6 +10,8 @@ import TableContext from '../contexts/TableContext';
 import _ from 'lodash';
 import { TableProps } from '../types/PropTypes';
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
+import useCurrentModel from '../hooks/useCurrentModel';
+import { Collection } from '@luminix/core/dist/types/Collection';
 
 const DEFAULT_MASS_ACTIONS = [
     {
@@ -18,10 +20,12 @@ const DEFAULT_MASS_ACTIONS = [
     },
 ];
 
-const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, loading, children, error }) => {
+const TableProvider: React.FunctionComponent<TableProps> = ({ items, loading, children, error }) => {
+
+    const Model = useCurrentModel();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const selected = React.useMemo(() => collect<Model>([]), [Model, items]);
+    const selected: Collection<Model> = React.useMemo(() => collect([]), [Model, items]);
 
     const DEFAULT_COLUMNS = React.useMemo(() => [
         {
@@ -71,8 +75,7 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ Model, items, load
 
     return (
         <TableContext.Provider value={value}>
-            {typeof children !== 'function' && children}
-            {typeof children === 'function' && children(value)}
+            {children}
         </TableContext.Provider>
     )
 

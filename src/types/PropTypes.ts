@@ -15,7 +15,7 @@ import { MenuItem } from './Menu';
 import { ModelPaginatedResponse } from '@luminix/core/dist/types/Model';
 import { Collection, CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
 import { Scope } from '@luminix/core/dist/types/Builder';
-import { TableContextValue } from './Contexts';
+// import { TableContextValue } from './Contexts';
 
 export type LuminixCmsProps = {
     theme?: ThemeOptions
@@ -80,8 +80,7 @@ export type TableProps = MuiTableProps & {
     items?: Collection<Model>,
     loading?: boolean,
     error: Error | null,
-    Model: typeof Model,
-    children: React.ReactNode | ((props: TableContextValue) => React.ReactNode),
+    // children: React.ReactNode | ((props: TableContextValue) => React.ReactNode),
 };
 
 export type TableHeadProps = MuiTableHeadProps & {

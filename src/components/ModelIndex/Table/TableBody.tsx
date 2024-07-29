@@ -9,13 +9,16 @@ import Skeleton from './TableBody/Skeleton';
 
 import useTable from '../../../hooks/useTable';
 import { TableBodyProps } from '../../../types/PropTypes';
-import { app } from '@luminix/core';
+import { Model, app, collect } from '@luminix/core';
 import { CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
+import useCurrentModel from '../../../hooks/useCurrentModel';
 
 const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props }) => {
 
+    const Model = useCurrentModel();
+
     const {
-        items, loading, columnCount, Model,
+        items, loading, columnCount,
     } = useTable();
 
     const {
@@ -23,11 +26,14 @@ const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props
         ['ModelIndex.Actions']: Actions,
     } = app('cms').getComponents();
 
+    const renderedChildren = React.isValidElement(children) 
+        ? children 
+        : (items || collect([])).map(children as CollectionIteratorCallback<Model, React.ReactNode>);
+
     return (
         <MuiTableBody {...props}>
             {loading && <Skeleton />}
-            {typeof children !== 'function' && children}
-            {items && typeof children === 'function' && items.map(children as CollectionIteratorCallback)}
+            {renderedChildren}
             {items && !items.count() && (
                 <TableRow>
                     <TableCell colSpan={columnCount} sx={{ textAlign: 'center', py: 10 }}>
