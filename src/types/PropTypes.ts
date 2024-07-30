@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Model } from '@luminix/core';
 
 import {
@@ -61,14 +63,12 @@ export type ErrorProps = {
 export type RecursiveListProps = DefaultComponentProps<ListTypeMap> & {
     collapsed?: boolean;
     items: MenuItem[];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onClick?: (e: any) => void;
 };
 
 export type RecursiveMenuProps = MenuProps & {
     collapsed?: boolean;
     items: MenuItem[];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onClick?: (e: any) => void;
     // RecursiveList: FunctionComponent<RecursiveListProps>;
 }
@@ -129,3 +129,12 @@ export type BreadcrumbsProps = BreadcrumbsOwnProps & {
         href?: string
     }[],
 };
+
+export type DefaultObject = {
+    [key: string]: any
+}
+
+export type InputOption = { 
+    key: string, 
+    label: string, 
+}

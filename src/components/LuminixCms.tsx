@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { LuminixProvider } from '@luminix/react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -43,7 +44,6 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
     }), [theme, prefersDarkMode]);
 
     return (
-        
         <ThemeProvider theme={muiTheme}>
             <CssBaseline />
             <NotificationProvider
@@ -53,7 +53,7 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
                 <DialogProvider>
                     <LuminixProvider
                         routes={(app) => app.make('cms').getRoutes()}
-                        plugins={[new CmsPlugin(),]}
+                        plugins={[ new CmsPlugin() ]}
                         config={{
                             app: {
                                 debug: true,

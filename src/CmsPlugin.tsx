@@ -1,51 +1,56 @@
+import _ from 'lodash';
+
 import { AppFacade, Model, Plugin } from '@luminix/core';
+import { ModelFormProps } from '@luminix/react/dist/types/Form';
 
 import CmsFacade from './facades/Cms';
+import FilterFacade from './facades/Filter';
 
-import Layout from './views/Layout/Layout';
+import routes from './routes';
+
 import Dashboard from './views/Dashboard';
+import Error from './views/Error';
+import Layout from './views/Layout/Layout';
 import ModelIndex from './views/ModelIndex';
 import ModelItem from './views/ModelItem';
-import routes from './routes';
-import AppBar from './components/Layout/AppBar';
-import MenuButton from './components/Layout/AppBar/MenuButton';
-import Drawer from './components/Layout/Drawer';
-import RecursiveList from './components/RecursiveList';
-import RecursiveMenu from './components/RecursiveMenu';
 
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-
-
-import _ from 'lodash';
-import { MenuItem } from './types/Menu';
-import Error from './views/Error';
-import DesktopPageTitle from './components/DesktopPageTitle';
-import SearchBar from './components/Layout/SearchBar';
 import Actions from './components/ModelIndex/Actions';
+import AppBar from './components/Layout/AppBar';
+import BackButton from './components/Layout/BackButton';
+import Drawer from './components/Layout/Drawer';
+import DesktopPageTitle from './components/DesktopPageTitle';
+import Filter from './components/ModelIndex/Filter';
+import MassActions from './components/ModelIndex/MassActions';
+import MenuButton from './components/Layout/AppBar/MenuButton';
+import Pagination from './components/ModelIndex/Pagination';
+import PaginationDetails from './components/ModelIndex/PaginationDetails';
+import PerPageSwitch from './components/ModelIndex/PerPageSwitch';
+import SearchBar from './components/Layout/SearchBar';
+import ShrinkedCell from './components/ModelIndex/Table/ShrinkedCell';
+import Sort from './components/ModelIndex/Sort';
 import Table from './components/ModelIndex/Table';
 import TableHead from './components/ModelIndex/Table/TableHead';
 import TableBody from './components/ModelIndex/Table/TableBody';
-import ShrinkedCell from './components/ModelIndex/Table/ShrinkedCell';
-import Pagination from './components/ModelIndex/Pagination';
 import TableRow from './components/ModelIndex/Table/TableBody/TableRow';
-import PaginationDetails from './components/ModelIndex/PaginationDetails';
-import PerPageSwitch from './components/ModelIndex/PerPageSwitch';
 import TableFooter from './components/ModelIndex/Table/TableFooter';
 import TableToolbar from './components/ModelIndex/Table/TableToolbar';
-import Sort from './components/ModelIndex/Sort';
-import Filter from './components/ModelIndex/Filter';
-import Breadcrumbs from './components/Breadcrumbs';
-import { ModelFormProps } from '@luminix/react/dist/types/Form';
 import Tabs from './components/ModelIndex/Tabs';
-import BackButton from './components/Layout/BackButton';
-import MassActions from './components/ModelIndex/MassActions';
+
+import Breadcrumbs from './components/Breadcrumbs';
+import RecursiveList from './components/RecursiveList';
+import RecursiveMenu from './components/RecursiveMenu';
+
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
+
 import { CmsPluginOptions } from './types/Plugin';
 import { MassAction } from './types/Table';
-
-import { massActionHandlers } from './support/massActions';
+import { MenuItem } from './types/Menu';
 //import { DisplayableTab } from './types/Tabs';
+
+import { createErrorCallback } from './support/error';
+import { massActionHandlers } from './support/massActions';
 
 let app: AppFacade;
 
@@ -68,6 +73,7 @@ class CmsPlugin extends Plugin {
         app = appFacade;
 
         app.bind('cms', new CmsFacade(app));
+        app.bind('filter', new FilterFacade());
 
         app.once('booting', () => {
             this.bootModels();
@@ -114,6 +120,7 @@ class CmsPlugin extends Plugin {
 
     bootComponents() {
         app.make('cms').reducer('componentMap', () => ({
+            
             Layout,
             Dashboard,
             ModelIndex,
@@ -147,10 +154,6 @@ class CmsPlugin extends Plugin {
             'ModelIndex.Table.TableBody.TableRow': TableRow,
             'ModelIndex.Table.ShrinkedCell': ShrinkedCell,
             'ModelIndex.Tabs': Tabs,
-
-
-
-            
             
         }), 0);
     }
