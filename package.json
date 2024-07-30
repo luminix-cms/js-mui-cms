@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.0.12",
     "@luminix/core": "^0.0.1-beta.6",
-    "@luminix/react": "^0.0.1-beta.2",
+    "@luminix/react": "^0.0.1-beta.6",
     "@mui/icons-material": "^5.16.5",
     "@mui/material": "^5.16.5",
     "lodash": "^4.17.21",
@@ -34,7 +34,5 @@
     "eslint-plugin-react-refresh": "^0.4.6",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
-  },
-  "dependencies": {
   }
 }
