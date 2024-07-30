@@ -105,6 +105,10 @@ export type PaginationProps = StackProps & {
     variant?: 'default' | 'compact',
 };
 
+export type ModelItemProps = {
+    create?: boolean,
+};
+
 export type QueryProviderProps = {
     Model: typeof Model,
     scope?: Scope<Model, ModelPaginatedResponse>,
