@@ -7,12 +7,19 @@ import { useCollection } from '@luminix/react';
 
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Close from '@mui/icons-material/Close';
 
 
 const notifications = collect([] as Notification[]);
 
-const createNotification = (notification: Notification) => {
+const notify = (notification: Notification) => {
     notifications.push(notification);
+};
+
+const dismiss = () => {
+    return notifications.pull(0);
 };
 
 const NotificationProvider: React.FC<NotificationProviderProps> = ({
@@ -25,34 +32,35 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
     const [open, setOpen] = React.useState(false);    
     const notificationsState = useCollection(notifications);
 
-    const current = notificationsState.first() ?? undefined;
+    const [current, setCurrent] = React.useState<Notification>();
 
     const handleClose = (
-        event?: React.SyntheticEvent | Event,
+        _event?: React.SyntheticEvent | Event,
         reason?: SnackbarCloseReason,
-      ) => {
+    ) => {
         if (reason === 'clickaway') {
           return;
         }
     
         setOpen(false);
+        
     };
 
     React.useEffect(() => {
         if (!open && notificationsState.isNotEmpty()) {
-            notifications.pull(0);
-            setOpen(true);
+            const timeoutId = setTimeout(() => {
+                setCurrent(dismiss() ?? undefined);
+                setOpen(true);
+            }, 100);
+            return () => clearTimeout(timeoutId);
         }
     }, [open, notificationsState]);
-
-
-
 
     return (
         <NotificationContext.Provider value={{
             isOpen: open,
-            create: createNotification,
-            close,
+            notify,
+            dismissNotification: handleClose,
             notifications: notificationsState.all(),
             current,
         }}>
@@ -71,8 +79,24 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         variant={variant as any}
                         sx={{ width: '100%' }}
+                        action={current.actions && [
+                            ...current.actions.map(({ label, callback }, index) => (
+                                <Button
+                                    key={index}
+                                    color="inherit"
+                                    size="small"
+                                    onClick={callback}
+                                >
+                                    {label}
+                                </Button>
+                            )),
+                            <IconButton key="close" aria-label="close" color="inherit" size="small" onClick={handleClose}>
+                                <Close />
+                            </IconButton>
+                        ]}
                     >
                         {current.message}
+                        
                     </Alert>
                 )}
                 

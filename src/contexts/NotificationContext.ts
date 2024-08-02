@@ -3,8 +3,8 @@ import { NotificationContextValue } from '../types/Contexts';
 
 const NotificationContext = React.createContext<NotificationContextValue>({
     isOpen: false,
-    create: () => {},
-    close: () => {},
+    notify: () => {},
+    dismissNotification: () => {},
     notifications: [],
     current: undefined,
 });

@@ -1,15 +1,16 @@
+import React from "react";
 
 
 export type NotificationAction = {
-    label: string;
+    label: React.ReactNode;
     callback: () => void;
 };
 
 export type Notification = {
-    message: string;
+    message: React.ReactNode;
     severity?: 'info' | 'success' | 'warning' | 'error' | string;
     actions?: NotificationAction[];
-
+    title?: React.ReactNode;
 
     
 };

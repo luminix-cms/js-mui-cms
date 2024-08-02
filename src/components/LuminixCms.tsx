@@ -43,7 +43,10 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
         
         <ThemeProvider theme={muiTheme}>
             <CssBaseline />
-            <NotificationProvider>
+            <NotificationProvider
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                variant="filled"
+            >
                 <LuminixProvider
                     routes={(app) => app.make('cms').getRoutes()}
                     plugins={[new CmsPlugin(),]}
