@@ -5,7 +5,8 @@ import {
     DrawerProps, MenuProps, TableProps as MuiTableProps,
     StackProps, TableHeadProps as MuiTableHeadProps, TableBodyProps as MuiTableBodyProps,
     TableRowProps as MuiTableRowProps,
-    ThemeOptions
+    ThemeOptions,
+    SnackbarOrigin
 } from '@mui/material';
 
 import { ListTypeMap } from '@mui/material/List';
@@ -113,3 +114,12 @@ export type QueryProviderProps = {
 export type ActionsProps = {
     variant?: 'default' | 'fab',
 };
+
+export type NotificationProviderProps = {
+    children: React.ReactNode,
+    autoHideDuration?: number,
+    anchorOrigin?: SnackbarOrigin,
+    variant?: 'filled' | 'outlined' | 'standard' | string,
+};
+
+

@@ -13,6 +13,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
+import NotificationProvider from '../providers/NotificationProvider';
+
 const DEFAULT_THEME = {
     palette: {
         primary: {
@@ -38,18 +40,21 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
     }), [theme, prefersDarkMode]);
 
     return (
+        
         <ThemeProvider theme={muiTheme}>
             <CssBaseline />
-            <LuminixProvider
-                routes={(app) => app.make('cms').getRoutes()}
-                plugins={[new CmsPlugin(),]}
-                config={{
-                    app: {
-                        debug: true,
-                        url: 'http://localhost',
-                    },
-                }}
-            />
+            <NotificationProvider>
+                <LuminixProvider
+                    routes={(app) => app.make('cms').getRoutes()}
+                    plugins={[new CmsPlugin(),]}
+                    config={{
+                        app: {
+                            debug: true,
+                            url: 'http://localhost',
+                        },
+                    }}
+                />
+            </NotificationProvider>
         </ThemeProvider>
     );
 };

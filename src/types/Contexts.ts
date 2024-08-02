@@ -5,6 +5,7 @@ import { Collection } from "@luminix/core/dist/types/Collection";
 
 import { CmsConfig } from "./Config";
 import { Column, MassAction } from "./Table";
+import { Notification } from "./Notifications";
 
 export type LayoutContextValue = {
     open: boolean,
@@ -32,4 +33,11 @@ export type ModelContextValue = {
     Model: typeof Model,
 };
 
+export type NotificationContextValue = {
+    isOpen: boolean,
+    create: (notification: Notification) => void,
+    close: () => void,
+    notifications: Notification[],
+    current?: Notification,
+};
 
