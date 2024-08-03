@@ -7,6 +7,7 @@ import { useCollection } from '@luminix/react';
 
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
@@ -14,8 +15,12 @@ import Close from '@mui/icons-material/Close';
 
 const notifications = collect([] as Notification[]);
 
-const notify = (notification: Notification) => {
-    notifications.push(notification);
+const notify = (notification: string | Notification) => {
+    notifications.push(
+        typeof notification === 'string' 
+            ? { message: notification } 
+            : notification
+    );
 };
 
 const dismiss = () => {
@@ -95,6 +100,11 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
                             </IconButton>
                         ]}
                     >
+                        {current.title && (
+                            <AlertTitle>
+                                {current.title}
+                            </AlertTitle>
+                        )}
                         {current.message}
                         
                     </Alert>

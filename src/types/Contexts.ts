@@ -35,7 +35,7 @@ export type ModelContextValue = {
 
 export type NotificationContextValue = {
     isOpen: boolean,
-    notify: (notification: Notification) => void,
+    notify: (notification: string | Notification) => void,
     dismissNotification: () => void,
     notifications: Notification[],
     current?: Notification,

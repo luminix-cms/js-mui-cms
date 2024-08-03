@@ -148,7 +148,7 @@ class CmsPlugin extends Plugin {
                     .map(([key, Model]) => ({
                         key,
                         text: Model.plural(),
-                        // TODO: use route(`luminix.${model}.index`) instead
+                        // TODO: use route(`luminix.cms.${model}.index`) instead
                         to: '/' + _.kebabCase(Model.plural()),
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         icon: (Model as unknown as any).icon(),

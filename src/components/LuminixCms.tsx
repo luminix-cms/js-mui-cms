@@ -13,6 +13,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
+import '@luminix/react/css/ReactForms.css';
+
 import NotificationProvider from '../providers/NotificationProvider';
 
 const DEFAULT_THEME = {

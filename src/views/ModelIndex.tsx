@@ -1,9 +1,13 @@
 import React from 'react';
 import { Model, app } from '@luminix/core';
 import { usePagination } from '@luminix/react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import { Breakpoint } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 
 import useSetPageTitle from '../hooks/useSetPageTitle';
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
@@ -44,6 +48,21 @@ const ModelIndex: React.FunctionComponent = () => {
     return (
         <>
             <Grid container spacing={2}>
+                <Grid xs={12}>
+                    <Breadcrumbs aria-label="breadcrumb">
+                        <Link
+                            underline="hover"
+                            color="inherit"
+                            to="/"
+                            component={RouterLink}
+                        >
+                            Luminix CMS
+                        </Link>
+                        <Typography color="text.primary">
+                            {Model.plural()}
+                        </Typography>
+                    </Breadcrumbs>
+                </Grid>
                 <Grid
                     xs={12}
                     {...({ [breakpoint]: 6 })}
