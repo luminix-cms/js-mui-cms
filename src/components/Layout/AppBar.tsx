@@ -1,6 +1,7 @@
 import React from 'react';
 import { app, config } from '@luminix/core';
 
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,6 +17,7 @@ import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import usePageTitle from '../../hooks/usePageTitle';
 import useHasSearch from '../../hooks/useHasSearch';
 
+import logo from '../../assets/luminix-white-50x50.png';
 
 const DesktopAppBar = styled(
     MuiAppBar,
@@ -90,9 +92,24 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
                     {(!isDesktop && title) || config('app.name', document.title) as string}
                 </Typography>
                 <Box sx={{ flexGrow: 1 }} />
-                <Box sx={{ display: 'flex' }}>
+                <Box 
+                    display="flex"
+                    alignItems="center"
+                >
                     {searching && <SearchBar />}
                     {end}
+                    <Avatar
+                        src={logo}
+                        alt="Luminix"
+                        variant="square"
+                        sx={{
+                            width: 40,
+                            height: 40,
+                            marginLeft: searching 
+                                ? 2
+                                : 0,
+                        }}
+                    />
                 </Box>
             </Toolbar>
         </AppBarComponent>

@@ -16,6 +16,8 @@ import useTable from '../../../../hooks/useTable';
 import { TableRowProps } from '../../../../types/PropTypes';
 import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 import useSelection from '../../../../hooks/useSelection';
+import { useNavigate } from 'react-router-dom';
+import useCurrentModel from '../../../../hooks/useCurrentModel';
 
 type MobileCellContentProps = {
     label: string;
@@ -103,12 +105,20 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
 
     const isDesktop = useIsDesktopMode();
 
+    const navigate = useNavigate();
+    const Model = useCurrentModel();
+
     const {
         isSelected, handleSelectToggle,
     } = useSelection();
 
     return (
-        <MuiTableRow {...props}>
+        <MuiTableRow
+            {...props}
+            sx={{ cursor: 'pointer' }}
+            selected={isSelected(item)}
+            hover
+        >
             {massActions.length > 0 && (
                 <ShrinkedCell>
                     <Checkbox 
@@ -119,7 +129,11 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
             )}
             {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
             {isDesktop && columnsWithContents.map(({ key, label, sortable, content, ...props }) => (
-                <TableCell key={key} {...props}>
+                <TableCell
+                    key={key}
+                    {...props}
+                    onClick={() => navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`)}
+                >
                     <CellContent
                         label={label}
                         content={content}
@@ -127,7 +141,10 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                 </TableCell>
             ))}
             {!isDesktop && (
-                <TableCell sx={{ maxWidth: 0, px: 0 }}>
+                <TableCell
+                    sx={{ maxWidth: 0, px: 0 }}
+                    onClick={() => navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`)}
+                >
                     {columnsWithContents.map(({ key, ...props }) => <MobileCellContent key={key} {...props} />)}
                 </TableCell>
             )}
