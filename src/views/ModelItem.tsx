@@ -1,7 +1,7 @@
 import React from 'react';
-import { app } from '@luminix/core';
-import { ModelForm, useQuery } from '@luminix/react';
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import { app, Model } from '@luminix/core';
+import { ModelForm } from '@luminix/react';
+import { useParams } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 import _ from 'lodash';
 
@@ -10,9 +10,6 @@ import useLayoutConfig from '../hooks/useLayoutConfig';
 import useNotifications from '../hooks/useNotifications';
 import useSetPageTitle from '../hooks/useSetPageTitle';
 
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Breakpoint } from '@mui/material';
 
@@ -23,16 +20,23 @@ const ModelItem: React.FunctionComponent = () => {
     const Model = useCurrentModel();
     const breakpoint = useLayoutConfig('breakpoint', 'md') as Breakpoint;
 
-    const query = React.useMemo(() => Model.query(), [Model]);
+    const Breadcrumbs = app('cms').getComponent('Breadcrumbs');
 
-    const { data, error } = useQuery(query, {
-        method: 'find',
-        id,
-    });
+    const [item, setItem] = React.useState<Model | undefined>();
+
+    React.useEffect(() => {
+        if (id === 'create') {
+            setItem(new Model());
+        } else {
+            Model.find(id!).then((model) => setItem(model ?? undefined));
+        }
+    }, [id, Model]);
     
-    useSetPageTitle(`Edit ${_.lowerFirst(Model.singular())} “${data?.first()?.getLabel() || '...'}”`);
-    
-    const ErrorView = app('cms').getComponent('Error');
+    useSetPageTitle(
+        item?.exists
+            ? `Edit ${_.lowerFirst(Model.singular())} “${item?.getLabel() || '...'}”`
+            : `Create ${_.lowerFirst(Model.singular())}`
+    );
 
     const handleSuccess = React.useCallback((response: AxiosResponse | void) => {
         if (!response) {
@@ -50,51 +54,33 @@ const ModelItem: React.FunctionComponent = () => {
             severity: 'error',
         });
     }, [notify]);
+
+    const additionalProps = React.useMemo(() => app('cms').getModelFormProps(item), [item]);
     
-    if (error) {
-        return <ErrorView error={error} />;
-    }
-    
-    if (!data) {
+    if (!item) {
         return null;
     }
-    
-    const item = data.first()!;
 
     return (
         <Grid container>
             <Grid xs={12}>
-                <Breadcrumbs aria-label="breadcrumb">
-                    <Link
-                        underline="hover"
-                        color="inherit"
-                        to="/"
-                        component={RouterLink}
-                    >
-                        Luminix CMS
-                    </Link>
-                    <Link
-                        underline="hover"
-                        color="inherit"
-                        component={RouterLink}
-                        to={'/' + _.kebabCase(Model.plural())}
-                    >
-                        {Model.plural()}
-                    </Link>
-                    <Typography color="text.primary">
-                        {item.getKey()}
-                    </Typography>
-                </Breadcrumbs>
+                <Breadcrumbs
+                    parts={[
+                        { name: Model.plural(), href: '/' + _.kebabCase(Model.plural()) },
+                        { name: item.getKey() || 'New' },
+                    ]}
+                />
             </Grid>
             <Grid
                 xs={12}
                 {...({ [breakpoint]: 6 })}
             >
                 <ModelForm
+                    submitText="Save"
+                    {...additionalProps}
                     item={item}
                     onSuccess={handleSuccess}
                     onError={handleError}
-                    submitText="Save"
                 />
             </Grid>
         </Grid>

@@ -1,9 +1,10 @@
 
 import React from 'react';
 
-import { AppFacade, Reducible } from '@luminix/core';
+import { AppFacade, Model, Reducible } from '@luminix/core';
 import { RouteObject } from 'react-router-dom';
 import { MenuItem } from '../types/Menu';
+import { ModelFormProps } from '@luminix/react/dist/types/Form';
 
 
 class CmsFacade {
@@ -32,6 +33,10 @@ class CmsFacade {
 
     getMenuItems(): MenuItem[] {
         return this.menuItems([], this.app.make('model').make());
+    }
+
+    getModelFormProps(item: Model): ModelFormProps {
+        return this.wireModelFormProps({}, item);
     }
 
 }

@@ -1,19 +1,16 @@
 import React from 'react';
 import { Model, app } from '@luminix/core';
 import { usePagination } from '@luminix/react';
-import { Link as RouterLink } from 'react-router-dom';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import { Breakpoint } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 
 import useSetPageTitle from '../hooks/useSetPageTitle';
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
 import useLayoutConfig from '../hooks/useLayoutConfig';
 import useSearch from '../hooks/useSearch';
 import useCurrentModel from '../hooks/useCurrentModel';
+
 
 const ModelIndex: React.FunctionComponent = () => {
 
@@ -34,6 +31,7 @@ const ModelIndex: React.FunctionComponent = () => {
     const breakpoint = useLayoutConfig('breakpoint', 'md') as Breakpoint;
 
     const {
+        Breadcrumbs,
         ['ModelIndex.Actions']: Actions,
         ['ModelIndex.Pagination']: Pagination,
         ['ModelIndex.PaginationDetails']: PaginationDetails,
@@ -49,19 +47,11 @@ const ModelIndex: React.FunctionComponent = () => {
         <>
             <Grid container spacing={2}>
                 <Grid xs={12}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            to="/"
-                            component={RouterLink}
-                        >
-                            Luminix CMS
-                        </Link>
-                        <Typography color="text.primary">
-                            {Model.plural()}
-                        </Typography>
-                    </Breadcrumbs>
+                    <Breadcrumbs
+                        parts={[
+                            { name: Model.plural() },
+                        ]}
+                    />
                 </Grid>
                 <Grid
                     xs={12}
@@ -83,7 +73,6 @@ const ModelIndex: React.FunctionComponent = () => {
                         variant="compact"
                         justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
                     />
-                 
                 </Grid>
                 <Grid xs={12}>
                     <ModelTable

@@ -6,7 +6,8 @@ import {
     StackProps, TableHeadProps as MuiTableHeadProps, TableBodyProps as MuiTableBodyProps,
     TableRowProps as MuiTableRowProps,
     ThemeOptions,
-    SnackbarOrigin
+    SnackbarOrigin,
+    BreadcrumbsOwnProps
 } from '@mui/material';
 
 import { ListTypeMap } from '@mui/material/List';
@@ -122,4 +123,9 @@ export type NotificationProviderProps = {
     variant?: 'filled' | 'outlined' | 'standard' | string,
 };
 
-
+export type BreadcrumbsProps = BreadcrumbsOwnProps & {
+    parts?: {
+        name: string,
+        href?: string
+    }[],
+};

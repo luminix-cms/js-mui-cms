@@ -36,6 +36,8 @@ import TableFooter from './components/ModelIndex/Table/TableFooter';
 import TableToolbar from './components/ModelIndex/Table/TableToolbar';
 import Sort from './components/ModelIndex/Sort';
 import Filter from './components/ModelIndex/Filter';
+import Breadcrumbs from './components/Breadcrumbs';
+import { ModelFormProps } from '@luminix/react/dist/types/Form';
 
 let app: AppFacade;
 
@@ -63,7 +65,7 @@ class CmsPlugin extends Plugin {
         this.bootComponents();
         this.bootRoutes();
         this.bootMenu();
-        this.bootModifiers();
+        this.bootDefaultModifiers();
         
     }
 
@@ -106,6 +108,7 @@ class CmsPlugin extends Plugin {
             DesktopPageTitle,
             RecursiveList,
             RecursiveMenu,
+            Breadcrumbs,
             
             'Layout.AppBar': AppBar,
             'Layout.Drawer': Drawer,
@@ -159,7 +162,7 @@ class CmsPlugin extends Plugin {
         }, 0);
     }
 
-    bootModifiers() {
+    bootDefaultModifiers() {
 
         app.make('cms').reducer('modelUserColumns', () => [
             {
@@ -181,6 +184,17 @@ class CmsPlugin extends Plugin {
                 size: 'small',
             },
         ], 1);
+
+        app.make('cms').reducer('wireModelFormProps', (props: ModelFormProps, item?: Model) => {
+            if (item?.getType() === 'user') {
+                return {
+                    ...props,
+                    confirmed: 'password',
+                };
+            }
+
+            return props;
+        });
 
     }
 
