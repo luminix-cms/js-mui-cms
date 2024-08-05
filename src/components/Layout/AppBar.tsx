@@ -97,8 +97,7 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
                     alignItems="center"
                 >
                     {searching && <SearchBar />}
-                    {end}
-                    <Avatar
+                    {end || <Avatar
                         src={logo}
                         alt="Luminix"
                         variant="square"
@@ -109,7 +108,7 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
                                 ? 2
                                 : 0,
                         }}
-                    />
+                    />}
                 </Box>
             </Toolbar>
         </AppBarComponent>
