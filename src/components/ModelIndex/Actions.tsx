@@ -27,6 +27,7 @@ import { styled } from '@mui/material/styles';
 import { Action } from '../../types/Table';
 import { ActionsProps } from '../../types/PropTypes';
 import useCurrentModel from '../../hooks/useCurrentModel';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 const Fab = styled(MuiFab)(({ theme }) => ({
     position: 'fixed',
@@ -44,6 +45,7 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
 
     const Model = useCurrentModel();
 
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
     const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -51,8 +53,8 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
     const DEFAULT_ACTIONS = React.useMemo(() => [
         {
             label: `Create ${Model.singular()}`,
-            callback: () => {
-                console.log('Create');
+            callback: (navigate: NavigateFunction) => {
+                navigate(`/${_.kebabCase(Model.plural())}/create`);
             },
             icon: <AddIcon />,
         },
@@ -70,8 +72,8 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
         preActions
     ) as Action[];
 
-    const handleSplitButtonClick = (callback: () => void,) => {
-        callback();
+    const handleSplitButtonClick = (callback: (navigate: NavigateFunction) => void,) => {
+        callback(navigate);
     };
 
     const handleSplitMenuItemClick = (

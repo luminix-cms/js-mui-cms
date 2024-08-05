@@ -1,8 +1,7 @@
 import React from 'react';
 import { app, Model } from '@luminix/core';
 import { ModelForm } from '@luminix/react';
-import { useParams } from 'react-router-dom';
-import { AxiosResponse } from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
 import _ from 'lodash';
 
 import useCurrentModel from '../hooks/useCurrentModel';
@@ -12,11 +11,13 @@ import useSetPageTitle from '../hooks/useSetPageTitle';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import { Breakpoint } from '@mui/material';
+import { isAxiosError } from 'axios';
 
 const ModelItem: React.FunctionComponent = () => {
 
     const { id } = useParams();
     const { notify } = useNotifications();
+    const navigate = useNavigate();
     const Model = useCurrentModel();
     const breakpoint = useLayoutConfig('breakpoint', 'md') as Breakpoint;
 
@@ -38,19 +39,23 @@ const ModelItem: React.FunctionComponent = () => {
             : `Create ${_.lowerFirst(Model.singular())}`
     );
 
-    const handleSuccess = React.useCallback((response: AxiosResponse | void) => {
-        if (!response) {
-            return;
-        }
+    const handleSuccess = React.useCallback(() => {
         notify(`${Model.singular()} saved successfully!`);
-    }, [notify, Model]);
+
+        if (item?.wasRecentlyCreated) {
+            navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`);
+        }
+
+    }, [notify, navigate, Model, item]);
 
     const handleError = React.useCallback((error: unknown) => {
         if (!(error instanceof Error)) {
             throw error;
         }
         notify({
-            message: error.message,
+            message: isAxiosError(error)
+                ? error.response?.data.message ?? error.message
+                : error.message,
             severity: 'error',
         });
     }, [notify]);
