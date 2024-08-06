@@ -38,6 +38,8 @@ import Sort from './components/ModelIndex/Sort';
 import Filter from './components/ModelIndex/Filter';
 import Breadcrumbs from './components/Breadcrumbs';
 import { ModelFormProps } from '@luminix/react/dist/types/Form';
+import Tabs from './components/ModelIndex/Tabs';
+//import { DisplayableTab } from './types/Tabs';
 
 let app: AppFacade;
 
@@ -128,6 +130,7 @@ class CmsPlugin extends Plugin {
             'ModelIndex.Table.TableToolbar': TableToolbar,
             'ModelIndex.Table.TableBody.TableRow': TableRow,
             'ModelIndex.Table.ShrinkedCell': ShrinkedCell,
+            'ModelIndex.Tabs': Tabs,
 
 
 
@@ -195,6 +198,14 @@ class CmsPlugin extends Plugin {
 
             return props;
         });
+        
+        // app.make('cms').reducer('modelPostTabs', (tabs: DisplayableTab[]) => [
+        //     {
+        //         label: 'Published',
+        //         value: 'published',
+        //     },
+        //     ...tabs,
+        // ]);
 
     }
 
