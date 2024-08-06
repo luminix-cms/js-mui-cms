@@ -47,7 +47,7 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
             <CssBaseline />
             <NotificationProvider
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                variant="filled"
+                variant={prefersDarkMode ? 'outlined' : 'filled'}
             >
                 <LuminixProvider
                     routes={(app) => app.make('cms').getRoutes()}
