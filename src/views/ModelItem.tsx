@@ -72,7 +72,7 @@ const ModelItem: React.FunctionComponent = () => {
                 <Breadcrumbs
                     parts={[
                         { name: Model.plural(), href: '/' + _.kebabCase(Model.plural()) },
-                        { name: item.getKey() || 'New' },
+                        { name: item.exists ? item.getLabel() : 'New' },
                     ]}
                 />
             </Grid>

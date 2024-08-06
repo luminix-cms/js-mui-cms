@@ -17,7 +17,9 @@ import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import usePageTitle from '../../hooks/usePageTitle';
 import useHasSearch from '../../hooks/useHasSearch';
 
-import logo from '../../assets/luminix-white-50x50.png';
+import logo from '../../assets/luminix-40x40.png';
+import whiteLogo from '../../assets/luminix-white-40x40.png';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const DesktopAppBar = styled(
     MuiAppBar,
@@ -48,6 +50,8 @@ const MobileAppBar = styled(
 const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) => {
 
     const isDesktop = useIsDesktopMode();
+
+    const prefersDarkTheme = useMediaQuery('(prefers-color-scheme: dark)');
 
     const AppBarComponent = isDesktop
         ? DesktopAppBar
@@ -97,18 +101,20 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
                     alignItems="center"
                 >
                     {searching && <SearchBar />}
-                    {end || <Avatar
-                        src={logo}
-                        alt="Luminix"
-                        variant="square"
-                        sx={{
-                            width: 40,
-                            height: 40,
-                            marginLeft: searching 
-                                ? 2
-                                : 0,
-                        }}
-                    />}
+                    {end || (
+                        <Avatar
+                            src={prefersDarkTheme ? logo : whiteLogo}
+                            alt="Luminix"
+                            variant="square"
+                            sx={{
+                                width: 40,
+                                height: 40,
+                                marginLeft: searching 
+                                    ? 2
+                                    : 0,
+                            }}
+                        />
+                    )}
                 </Box>
             </Toolbar>
         </AppBarComponent>
