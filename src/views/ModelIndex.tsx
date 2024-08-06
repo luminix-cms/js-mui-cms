@@ -33,8 +33,6 @@ const ModelIndex: React.FunctionComponent = () => {
     const {
         Breadcrumbs,
         ['ModelIndex.Actions']: Actions,
-        ['ModelIndex.Pagination']: Pagination,
-        ['ModelIndex.PaginationDetails']: PaginationDetails,
         ['ModelIndex.Table']: ModelTable,
         ['ModelIndex.Table.TableBody']: ModelTableBody,
         ['ModelIndex.Table.TableHead']: ModelTableHead,
@@ -46,33 +44,18 @@ const ModelIndex: React.FunctionComponent = () => {
     return (
         <>
             <Grid container spacing={2}>
-                <Grid xs={12}>
+                <Grid
+                    xs={12}
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="space-between"
+                >
                     <Breadcrumbs
                         parts={[
                             { name: Model.plural() },
                         ]}
                     />
-                </Grid>
-                <Grid
-                    xs={12}
-                    {...({ [breakpoint]: 6 })}
-                >
                     <Actions variant={isDesktop ? 'default' : 'fab'} />
-                </Grid>
-                <Grid
-                    xs={12}
-                    {...({ [breakpoint]: 6 })}
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
-                    alignItems="center"
-                    gap={2}
-                >
-                    {isDesktop && <PaginationDetails />}
-                    <Pagination
-                        variant="compact"
-                        justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
-                    />
                 </Grid>
                 <Grid xs={12}>
                     <ModelTable

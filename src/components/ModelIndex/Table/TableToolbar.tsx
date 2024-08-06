@@ -2,9 +2,12 @@ import React from 'react';
 
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import Stack from '@mui/material/Stack';
 import useTable from '../../../hooks/useTable';
 import { app } from '@luminix/core';
 import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
+import useLayoutConfig from '../../../hooks/useLayoutConfig';
+import { Breakpoint } from '@mui/material';
 
 const TableToolbar: React.FunctionComponent = () => {
 
@@ -15,16 +18,43 @@ const TableToolbar: React.FunctionComponent = () => {
     const {
         ['ModelIndex.Filter']: Filter,
         ['ModelIndex.Sort']: Sort,
+        ['ModelIndex.Pagination']: Pagination,
+        ['ModelIndex.PaginationDetails']: PaginationDetails,
     } = app('cms').getComponents();
 
     const isDesktop = useIsDesktopMode();
 
+    const breakpoint = useLayoutConfig('breakpoint', 'md') as Breakpoint;
 
     return (
         <TableRow>
             <TableCell colSpan={columnCount} sx={{ p: 1 }}>
-                <Filter />
-                {!isDesktop && <Sort />}
+                <Stack
+                    direction={{ xs: 'column', [breakpoint]: 'row' }}
+                    justifyContent="space-between"
+                >
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                    >
+                        <Filter />
+                        {!isDesktop && <Sort />}
+                    </Stack>
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
+                        spacing={2}
+                    >
+
+                        {isDesktop && <PaginationDetails />}
+                        <Pagination
+                            variant="compact"
+                            justifyContent={{ xs: 'end' }}
+                        />
+                    </Stack>
+                </Stack>
+                
             </TableCell>
         </TableRow>
     );
