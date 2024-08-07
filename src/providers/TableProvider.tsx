@@ -12,13 +12,14 @@ import { TableProps } from '../types/PropTypes';
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
 import useCurrentModel from '../hooks/useCurrentModel';
 import { Collection } from '@luminix/core/dist/types/Collection';
+import { useSearchParams } from 'react-router-dom';
 
-const DEFAULT_MASS_ACTIONS = [
-    {
-        label: 'Delete',
-        name: 'delete',
-    },
-];
+// const DEFAULT_MASS_ACTIONS = [
+//     {
+//         label: 'Delete',
+//         name: 'delete',
+//     },
+// ];
 
 const TableProvider: React.FunctionComponent<TableProps> = ({ items, loading, children, error }) => {
 
@@ -26,6 +27,9 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ items, loading, ch
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const selected: Collection<Model> = React.useMemo(() => collect([]), [Model, items]);
+    const [searchParams] = useSearchParams();
+
+    const currentTab = searchParams.get('tab') ?? 'all';
 
     const DEFAULT_COLUMNS = React.useMemo(() => [
         {
@@ -36,17 +40,9 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ items, loading, ch
 
     const isDesktop = useIsDesktopMode();
 
-    const preMassActions = useApplyReducers(
-        app('cms'),
-        `modelMassActions`,
-        DEFAULT_MASS_ACTIONS
-    ) as MassAction[];
-
-    const massActions = useApplyReducers(
-        app('cms'),
-        `model${_.upperFirst(_.camelCase(Model.getSchemaName()))}MassActions`,
-        preMassActions
-    ) as MassAction[];
+    const massActions: MassAction[] = React.useMemo(() => {
+        return app('cms').getMassActions(Model, currentTab);
+    }, [Model, currentTab]);
     
     const columns = useApplyReducers(
         app('cms'),

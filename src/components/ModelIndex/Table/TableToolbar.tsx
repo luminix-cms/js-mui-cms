@@ -17,6 +17,7 @@ const TableToolbar: React.FunctionComponent = () => {
 
     const {
         ['ModelIndex.Filter']: Filter,
+        ['ModelIndex.MassActions']: MassActions,
         ['ModelIndex.Sort']: Sort,
         ['ModelIndex.Pagination']: Pagination,
         ['ModelIndex.PaginationDetails']: PaginationDetails,
@@ -32,13 +33,21 @@ const TableToolbar: React.FunctionComponent = () => {
                 <Stack
                     direction={{ xs: 'column', [breakpoint]: 'row' }}
                     justifyContent="space-between"
+                    spacing={2}
                 >
                     <Stack
                         direction="row"
                         alignItems="center"
+                        width={{ [breakpoint]: '100%' }}
                     >
                         <Filter />
                         {!isDesktop && <Sort />}
+                        <MassActions
+                            sx={{
+                                marginLeft: 'auto',
+                                minWidth: 160,
+                            }}
+                        />
                     </Stack>
                     <Stack
                         direction="row"
@@ -46,7 +55,6 @@ const TableToolbar: React.FunctionComponent = () => {
                         justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
                         spacing={2}
                     >
-
                         {isDesktop && <PaginationDetails />}
                         <Pagination
                             variant="compact"

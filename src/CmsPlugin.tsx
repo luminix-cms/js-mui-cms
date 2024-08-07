@@ -39,6 +39,11 @@ import Filter from './components/ModelIndex/Filter';
 import Breadcrumbs from './components/Breadcrumbs';
 import { ModelFormProps } from '@luminix/react/dist/types/Form';
 import Tabs from './components/ModelIndex/Tabs';
+import BackButton from './components/Layout/BackButton';
+import MassActions from './components/ModelIndex/MassActions';
+import { CmsPluginOptions } from './types/Plugin';
+import { MassAction } from './types/Table';
+import { createErrorCallback } from './support/error';
 //import { DisplayableTab } from './types/Tabs';
 
 let app: AppFacade;
@@ -48,6 +53,12 @@ let app: AppFacade;
 class CmsPlugin extends Plugin {
 
     name = 'Luminix CMS Plugin';
+
+    constructor(
+        public options: CmsPluginOptions = {}
+    ) {
+        super();
+    }
 
     
 
@@ -67,8 +78,10 @@ class CmsPlugin extends Plugin {
         this.bootComponents();
         this.bootRoutes();
         this.bootMenu();
-        this.bootDefaultModifiers();
-        
+        this.bootMassActions();
+        if (this.options.applyUserDefaults ?? true) {
+            this.bootDefaultUserModifiers();
+        }
     }
 
     bootModels() {
@@ -116,9 +129,11 @@ class CmsPlugin extends Plugin {
             'Layout.Drawer': Drawer,
             'Layout.AppBar.MenuButton': MenuButton,
             'Layout.SearchBar': SearchBar,
+            'Layout.BackButton': BackButton,
 
             'ModelIndex.Actions': Actions,
             'ModelIndex.Filter': Filter,
+            'ModelIndex.MassActions': MassActions,
             'ModelIndex.Pagination': Pagination,
             'ModelIndex.PaginationDetails': PaginationDetails,
             'ModelIndex.PerPageSwitch': PerPageSwitch,
@@ -165,7 +180,7 @@ class CmsPlugin extends Plugin {
         }, 0);
     }
 
-    bootDefaultModifiers() {
+    bootDefaultUserModifiers() {
 
         app.make('cms').reducer('modelUserColumns', () => [
             {
@@ -209,6 +224,68 @@ class CmsPlugin extends Plugin {
 
     }
 
+    bootMassActions() {
+
+        console.log('booting mass actions');
+
+        app.make('cms').reducer('massActions', (actions: MassAction[], ModelClass: typeof Model, currentTab: string) => {
+
+            const defaultActions: MassAction[] = [];
+
+            defaultActions.push({
+                key: 'delete',
+                label: 'Delete',
+                callback: ({ selected, notify, refresh }) => {
+                    ModelClass.delete(selected.pluck(ModelClass.getSchema().primaryKey).all())
+                        .then(() => {
+                            notify(`Successfully deleted ${selected.count()} ${selected.count() === 1
+                                ? ModelClass.plural()
+                                : ModelClass.singular()
+                            }`);
+                            refresh();
+                        })
+                        .catch(createErrorCallback(notify));
+                }
+            });
+
+            // if (!ModelClass.getSchema().softDeletes) {
+            //     return [
+            //         {
+            //             key: 'delete',
+            //             label: 'Delete',
+            //             callback: ({ selected, notify }) => {
+            //                 ModelClass.delete(selected.pluck(ModelClass.getSchema().primaryKey).all())
+            //                     .then(() => {
+            //                         notify(`Successfully deleted ${selected.count()} ${textCase(selected.count() === 1
+            //                             ? ModelClass.plural()
+            //                             : ModelClass.singular()
+            //                         )}`);
+            //                     })
+            //             }
+            //         },
+            //     ];
+            // }
+    
+            // if (currentTab === 'trashed') {
+            //     return [
+            //         {
+            //             key: 'restore',
+            //             label: 'Restore',
+            //             callback: ({ selected }) => {
+            //                 ModelClass.restore(selected.pluck(ModelClass.getSchema().primaryKey).all())
+            //             }
+            //         },
+            //     ];
+            // }
+
+            return [
+                ...actions,
+                ...defaultActions
+            ];
+
+        }, 0);
+
+    }
 
 }
 

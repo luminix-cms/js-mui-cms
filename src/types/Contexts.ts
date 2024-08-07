@@ -5,7 +5,7 @@ import { Collection } from "@luminix/core/dist/types/Collection";
 
 import { CmsConfig } from "./Config";
 import { Column, MassAction } from "./Table";
-import { Notification } from "./Notifications";
+import { Notification, NotifyFunction } from "./Notifications";
 
 export type LayoutContextValue = {
     open: boolean,
@@ -16,6 +16,8 @@ export type LayoutContextValue = {
     setCurrentPage: Dispatch<SetStateAction<string>>,
     showSearch: boolean,
     setShowSearch: Dispatch<SetStateAction<boolean>>,
+    showBackButton: boolean,
+    setShowBackButton: Dispatch<SetStateAction<boolean>>,
 };
 
 export type TableContextValue = {
@@ -35,7 +37,7 @@ export type ModelContextValue = {
 
 export type NotificationContextValue = {
     isOpen: boolean,
-    notify: (notification: string | Notification) => void,
+    notify: NotifyFunction,
     dismissNotification: () => void,
     notifications: Notification[],
     current?: Notification,

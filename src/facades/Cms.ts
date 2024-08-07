@@ -5,6 +5,9 @@ import { AppFacade, Model, Reducible } from '@luminix/core';
 import { RouteObject } from 'react-router-dom';
 import { MenuItem } from '../types/Menu';
 import { ModelFormProps } from '@luminix/react/dist/types/Form';
+import { MassAction } from '../types/Table';
+
+import _ from 'lodash';
 
 
 class CmsFacade {
@@ -37,6 +40,16 @@ class CmsFacade {
 
     getModelFormProps(item: Model): ModelFormProps {
         return this.wireModelFormProps({}, item);
+    }
+
+    getMassActions(ModelClass: typeof Model, currentTab: string): MassAction[] {
+        console.log('getting mass actions for ', _.upperFirst(_.camelCase(ModelClass.getSchemaName())));
+
+        return this[`mass${_.upperFirst(_.camelCase(ModelClass.getSchemaName()))}Actions`](
+            this.massActions([], ModelClass, currentTab),
+            ModelClass,
+            currentTab,
+        );
     }
 
 }

@@ -10,6 +10,8 @@ const DEFAULT_VALUE: LayoutContextValue = {
     setCurrentPage: () => {},
     showSearch: false,
     setShowSearch: () => {},
+    showBackButton: false,
+    setShowBackButton: () => {},
 };
 
 const LayoutContext = React.createContext(DEFAULT_VALUE);

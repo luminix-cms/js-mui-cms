@@ -16,6 +16,7 @@ const LayoutProvider: React.FunctionComponent<{ children: React.ReactNode }> = (
     const [open, setOpen] = React.useState(false);
     const [currentPage, setCurrentPage] = React.useState('');
     const [showSearch, setShowSearch] = React.useState(false);
+    const [showBackButton, setShowBackButton] = React.useState(false);
 
     const layout = config('luminix.cms.layout', {}) as CmsConfig['layout'];
 
@@ -24,7 +25,7 @@ const LayoutProvider: React.FunctionComponent<{ children: React.ReactNode }> = (
     const value: LayoutContextValue = {
         open, setOpen, layout, isBreakpointUp,
         currentPage, setCurrentPage, showSearch,
-        setShowSearch,
+        setShowSearch, showBackButton, setShowBackButton
     };
 
     React.useEffect(() => {

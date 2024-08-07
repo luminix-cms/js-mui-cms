@@ -11,6 +11,6 @@ export type Notification = {
     severity?: 'info' | 'success' | 'warning' | 'error' | string;
     actions?: NotificationAction[];
     title?: React.ReactNode;
-
-    
 };
+
+export type NotifyFunction = (notification: string | Notification) => void;

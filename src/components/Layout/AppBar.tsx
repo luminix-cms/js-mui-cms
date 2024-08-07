@@ -20,6 +20,7 @@ import useHasSearch from '../../hooks/useHasSearch';
 import logo from '../../assets/luminix-40x40.png';
 import whiteLogo from '../../assets/luminix-white-40x40.png';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import useHasBackButton from '../../hooks/useHasBackButton';
 
 const DesktopAppBar = styled(
     MuiAppBar,
@@ -60,11 +61,13 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
     const { 
         ['Layout.AppBar.MenuButton']: MenuButton,
         ['Layout.SearchBar']: SearchBar,
+        ['Layout.BackButton']: BackButton,
     } = app('cms').getComponents();
 
     const { open } = useMenu();
 
     const searching = useHasSearch();
+    const hasBackButton = useHasBackButton();
 
     const height = useLayoutConfig('appBar.height') as number;
     const drawerWidth = useLayoutConfig('drawer.width', 280) as number;
@@ -85,7 +88,8 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
             {...props}
         >
             <Toolbar>
-                {(!isDesktop || !open) && <MenuButton />}
+                {((isDesktop && !open) || (!isDesktop && !hasBackButton)) && <MenuButton />}
+                {!isDesktop && hasBackButton && <BackButton />}
                 {!isDesktop ? start : null}
                 <Typography
                     width="100%"

@@ -12,6 +12,8 @@ import useSetPageTitle from '../hooks/useSetPageTitle';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Breakpoint } from '@mui/material';
 import { isAxiosError } from 'axios';
+import useBackButton from '../hooks/useBackButton';
+import useHandleError from '../hooks/useHandleError';
 
 const ModelItem: React.FunctionComponent = () => {
 
@@ -38,6 +40,7 @@ const ModelItem: React.FunctionComponent = () => {
             ? `Edit ${_.lowerFirst(Model.singular())} “${item?.getLabel() || '...'}”`
             : `Create ${_.lowerFirst(Model.singular())}`
     );
+    useBackButton();
 
     const handleSuccess = React.useCallback(() => {
         notify(`${Model.singular()} saved successfully!`);
@@ -48,17 +51,7 @@ const ModelItem: React.FunctionComponent = () => {
 
     }, [notify, navigate, Model, item]);
 
-    const handleError = React.useCallback((error: unknown) => {
-        if (!(error instanceof Error)) {
-            throw error;
-        }
-        notify({
-            message: isAxiosError(error)
-                ? error.response?.data.message ?? error.message
-                : error.message,
-            severity: 'error',
-        });
-    }, [notify]);
+    const handleError = useHandleError();
 
     const additionalProps = React.useMemo(() => app('cms').getModelFormProps(item), [item]);
     

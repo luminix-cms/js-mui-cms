@@ -16,7 +16,7 @@ const PaginationDetails: React.FunctionComponent = () => {
     } = usePagination();
 
     return (
-        <Typography variant="caption">
+        <Typography variant="caption" noWrap>
             {from}–{to} of {total}
         </Typography>
     );
