@@ -48,7 +48,7 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
             <CssBaseline />
             <NotificationProvider
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                variant={prefersDarkMode ? 'outlined' : 'filled'}
+                variant={prefersDarkMode ? 'standard' : 'filled'}
             >
                 <DialogProvider>
                     <LuminixProvider

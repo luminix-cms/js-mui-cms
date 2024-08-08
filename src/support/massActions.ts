@@ -10,7 +10,7 @@ export const massActionHandlers: Record<string, (ModelClass: typeof Model) => (e
     delete: (ModelClass) => async ({ selected, notify, dialog, refresh }) => {
 
         const confirm = await dialog({
-            title: 'Confirm deletion',
+            title: 'Confirm permanent deletion',
             message: `Are you sure you want to ${ModelClass.getSchema().softDeletes ? 'send to trash' : 'delete permanently'} ${selected.count()} ${_.lowerFirst(selected.count() === 1
                 ? ModelClass.singular()
                 : ModelClass.plural())}?`,
@@ -79,7 +79,7 @@ export const massActionHandlers: Record<string, (ModelClass: typeof Model) => (e
         try {
             await ModelClass.forceDelete(selected.pluck(ModelClass.getSchema().primaryKey).all());
 
-            notify(`Successfully deleted permanently ${selected.count()} ${_.lowerFirst(selected.count() === 1
+            notify(`Successfully deleted ${selected.count()} ${_.lowerFirst(selected.count() === 1
                 ? ModelClass.singular()
                 : ModelClass.plural()
             )}`);

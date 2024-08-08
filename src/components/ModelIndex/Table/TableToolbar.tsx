@@ -20,7 +20,7 @@ const TableToolbar: React.FunctionComponent = () => {
         ['ModelIndex.MassActions']: MassActions,
         ['ModelIndex.Sort']: Sort,
         ['ModelIndex.Pagination']: Pagination,
-        ['ModelIndex.PaginationDetails']: PaginationDetails,
+        // ['ModelIndex.PaginationDetails']: PaginationDetails,
     } = app('cms').getComponents();
 
     const isDesktop = useIsDesktopMode();
@@ -43,10 +43,7 @@ const TableToolbar: React.FunctionComponent = () => {
                         <Filter />
                         {!isDesktop && <Sort />}
                         <MassActions
-                            sx={{
-                                marginLeft: 'auto',
-                                // inWidth: 160,
-                            }}
+                            sx={{ marginLeft: 'auto' }}
                         />
                     </Stack>
                     <Stack
@@ -55,7 +52,6 @@ const TableToolbar: React.FunctionComponent = () => {
                         justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
                         spacing={2}
                     >
-                        {isDesktop && <PaginationDetails />}
                         <Pagination
                             variant="compact"
                             justifyContent={{ xs: 'end' }}

@@ -17,7 +17,7 @@ type DialogProviderState = {
 };
 
 
-function DialogProvider({ children, ...props }: Partial<DialogProps>): React.ReactNode {
+function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onClose'>): React.ReactNode {
 
     const [{ current, resolve }, setState] = React.useState<DialogProviderState>({});
 

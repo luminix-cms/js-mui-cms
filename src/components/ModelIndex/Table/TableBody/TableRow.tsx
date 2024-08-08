@@ -115,9 +115,9 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
     return (
         <MuiTableRow
             {...props}
-            sx={{ cursor: 'pointer' }}
+            sx={{ cursor: !item.deletedAt ? 'pointer' : 'default' }}
             selected={isSelected(item)}
-            hover
+            hover={!item.deletedAt}
         >
             {massActions.length > 0 && (
                 <ShrinkedCell>
@@ -132,7 +132,11 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                 <TableCell
                     key={key}
                     {...props}
-                    onClick={() => navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`)}
+                    onClick={() => {
+                        if (!item.deletedAt) {
+                            navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`);
+                        }
+                    }}
                 >
                     <CellContent
                         label={label}
@@ -143,7 +147,11 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
             {!isDesktop && (
                 <TableCell
                     sx={{ maxWidth: 0, px: 0 }}
-                    onClick={() => navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`)}
+                    onClick={() => {
+                        if (!item.deletedAt) {
+                            navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`);
+                        }
+                    }}
                 >
                     {columnsWithContents.map(({ key, ...props }) => <MobileCellContent key={key} {...props} />)}
                 </TableCell>
