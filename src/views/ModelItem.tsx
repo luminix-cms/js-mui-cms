@@ -6,19 +6,19 @@ import _ from 'lodash';
 
 import useCurrentModel from '../hooks/useCurrentModel';
 import useLayoutConfig from '../hooks/useLayoutConfig';
-import useNotifications from '../hooks/useNotifications';
 import useSetPageTitle from '../hooks/useSetPageTitle';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import { Breakpoint } from '@mui/material';
-import { isAxiosError } from 'axios';
+
 import useBackButton from '../hooks/useBackButton';
 import useHandleError from '../hooks/useHandleError';
+import useNotify from '../hooks/useNotify';
 
 const ModelItem: React.FunctionComponent = () => {
 
     const { id } = useParams();
-    const { notify } = useNotifications();
+    const notify = useNotify();
     const navigate = useNavigate();
     const Model = useCurrentModel();
     const breakpoint = useLayoutConfig('breakpoint', 'md') as Breakpoint;

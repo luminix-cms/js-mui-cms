@@ -16,6 +16,7 @@ import '@fontsource/roboto/700.css';
 import '@luminix/react/css/ReactForms.css';
 
 import NotificationProvider from '../providers/NotificationProvider';
+import DialogProvider from '../providers/DialogProvider';
 
 const DEFAULT_THEME = {
     palette: {
@@ -49,16 +50,18 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 variant={prefersDarkMode ? 'outlined' : 'filled'}
             >
-                <LuminixProvider
-                    routes={(app) => app.make('cms').getRoutes()}
-                    plugins={[new CmsPlugin(),]}
-                    config={{
-                        app: {
-                            debug: true,
-                            url: 'http://localhost',
-                        },
-                    }}
-                />
+                <DialogProvider>
+                    <LuminixProvider
+                        routes={(app) => app.make('cms').getRoutes()}
+                        plugins={[new CmsPlugin(),]}
+                        config={{
+                            app: {
+                                debug: true,
+                                url: 'http://localhost',
+                            },
+                        }}
+                    />
+                </DialogProvider>
             </NotificationProvider>
         </ThemeProvider>
     );

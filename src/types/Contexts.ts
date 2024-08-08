@@ -6,6 +6,7 @@ import { Collection } from "@luminix/core/dist/types/Collection";
 import { CmsConfig } from "./Config";
 import { Column, MassAction } from "./Table";
 import { Notification, NotifyFunction } from "./Notifications";
+import { DialogFunction, DialogMessage } from "./Dialog";
 
 export type LayoutContextValue = {
     open: boolean,
@@ -41,5 +42,13 @@ export type NotificationContextValue = {
     dismissNotification: () => void,
     notifications: Notification[],
     current?: Notification,
+};
+
+export type DialogContextValue = {
+    isOpen: boolean,
+    dialog: DialogFunction,
+    dismissDialog: () => void,
+    current?: DialogMessage,
+
 };
 

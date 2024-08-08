@@ -45,7 +45,7 @@ const TableToolbar: React.FunctionComponent = () => {
                         <MassActions
                             sx={{
                                 marginLeft: 'auto',
-                                minWidth: 160,
+                                // inWidth: 160,
                             }}
                         />
                     </Stack>

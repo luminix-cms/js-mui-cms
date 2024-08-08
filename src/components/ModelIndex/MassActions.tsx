@@ -1,78 +1,101 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { usePagination } from '@luminix/react';
 
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Stack, { StackProps } from '@mui/material/Stack';
+
 import useSelection from '../../hooks/useSelection';
-import useCurrentModel from '../../hooks/useCurrentModel';
-import { useSearchParams } from 'react-router-dom';
 import useTable from '../../hooks/useTable';
+import useNotify from '../../hooks/useNotify';
+import useDialog from '../../hooks/useDialog';
 
-function MassActions(props: FormControlProps): React.ReactNode {
 
+function MassActions(props: StackProps): React.ReactNode {
     const [action, setAction] = React.useState('');
 
     const { selected } = useSelection();
-    const Model = useCurrentModel();
-    const [searchParams] = useSearchParams();
+    const { refresh } = usePagination();
+    const notify = useNotify();
+    const dialog = useDialog();
+    const navigate = useNavigate();
 
     const { massActions } = useTable();
-
-    const currentTab = searchParams.get('tab') ?? 'all';
-
-    // const DEFAULT_ACTIONS = React.useMemo(() => {
-
-    // }, [Model]);
-
-    // const preActions = useApplyReducers(
-    //     app('cms'),
-    //     `modelActions`,
-    //     DEFAULT_ACTIONS
-    // ) as Action[];
-
-    // const actions = useApplyReducers(
-    //     app('cms'),
-    //     `model${_.upperFirst(_.camelCase(Model.getSchemaName()))}Actions`,
-    //     preActions
-    // ) as Action[];
 
     const handleChange = (event: SelectChangeEvent) => {
       setAction(event.target.value);
     };
 
+    React.useEffect(() => {
+        if (selected.isEmpty()) {
+            setAction('');
+        }
+    }, [selected]);
+
+    if (massActions.length === 0) {
+        return null;
+    }
+
     return (
-        <FormControl
-            sx={{ m: 1, minWidth: 120 }}
-            size="small"
+        <Stack
+            direction="row"
+            alignItems="center"
             {...props}
         >
-            <InputLabel id="mass-actions-select-label">Age</InputLabel>
-            <Select
-                labelId="mass-actions-select-label"
-                id="mass-actions-select"
-                value={action}
-                label="Age"
-                onChange={handleChange}
-                disabled={selected.isEmpty()}
+            <FormControl
+                sx={{ m: 1, minWidth: 200 }}
+                size="small"
             >
-                <MenuItem value="">
-                    <em>None</em>
-                </MenuItem>
-                {/* <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem> */}
-                {massActions.map((action) => (
-                    <MenuItem
-                        key={action.key}
-                        value={action.key}
-                    >
-                        {action.label}
+                <InputLabel id="mass-actions-select-label">
+                    {selected.isEmpty() ? 'Select items to apply' : 'Select action'}
+                </InputLabel>
+                <Select
+                    labelId="mass-actions-select-label"
+                    id="mass-actions-select"
+                    value={action}
+                    label={selected.isEmpty()
+                        ? 'Select items to apply'
+                        : 'Select action'
+                    }
+                    onChange={handleChange}
+                    disabled={selected.isEmpty()}
+                >
+                    <MenuItem value="">
+                        <em>None</em>
                     </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+                    {massActions.map((action) => (
+                        <MenuItem
+                            key={action.key}
+                            value={action.key}
+                        >
+                            {action.label}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+            <Button
+                size="small"
+                disabled={selected.isEmpty() || !action}
+                onClick={() => {
+                    massActions
+                        .find((a) => a.key === action)
+                        ?.callback({
+                            selected,
+                            notify,
+                            refresh,
+                            navigate,
+                            dialog,
+                        });
+                }}
+            >
+                Apply
+            </Button>
+        </Stack>
     );
 }
 

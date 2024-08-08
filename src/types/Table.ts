@@ -2,6 +2,7 @@ import { Model } from '@luminix/core';
 import { Collection } from '@luminix/core/dist/types/Collection';
 import { TableCellProps } from '@mui/material';
 import { NotifyFunction } from './Notifications';
+import { DialogFunction } from './Dialog';
 
 export type Action = {
     label: string;
@@ -20,6 +21,7 @@ export type MassActionCallbackEvent = {
     navigate: (path: string) => void;
     refresh: () => void;
     notify: NotifyFunction;
+    dialog: DialogFunction;
 };
 
 export type Column = TableCellProps & {

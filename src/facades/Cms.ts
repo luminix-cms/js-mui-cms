@@ -43,7 +43,7 @@ class CmsFacade {
     }
 
     getMassActions(ModelClass: typeof Model, currentTab: string): MassAction[] {
-        console.log('getting mass actions for ', _.upperFirst(_.camelCase(ModelClass.getSchemaName())));
+        //console.log('getting mass actions for ', _.upperFirst(_.camelCase(ModelClass.getSchemaName())));
 
         return this[`mass${_.upperFirst(_.camelCase(ModelClass.getSchemaName()))}Actions`](
             this.massActions([], ModelClass, currentTab),

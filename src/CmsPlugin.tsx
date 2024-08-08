@@ -43,7 +43,8 @@ import BackButton from './components/Layout/BackButton';
 import MassActions from './components/ModelIndex/MassActions';
 import { CmsPluginOptions } from './types/Plugin';
 import { MassAction } from './types/Table';
-import { createErrorCallback } from './support/error';
+
+import { massActionHandlers } from './support/massActions';
 //import { DisplayableTab } from './types/Tabs';
 
 let app: AppFacade;
@@ -226,57 +227,30 @@ class CmsPlugin extends Plugin {
 
     bootMassActions() {
 
-        console.log('booting mass actions');
-
         app.make('cms').reducer('massActions', (actions: MassAction[], ModelClass: typeof Model, currentTab: string) => {
-
             const defaultActions: MassAction[] = [];
 
-            defaultActions.push({
-                key: 'delete',
-                label: 'Delete',
-                callback: ({ selected, notify, refresh }) => {
-                    ModelClass.delete(selected.pluck(ModelClass.getSchema().primaryKey).all())
-                        .then(() => {
-                            notify(`Successfully deleted ${selected.count()} ${selected.count() === 1
-                                ? ModelClass.plural()
-                                : ModelClass.singular()
-                            }`);
-                            refresh();
-                        })
-                        .catch(createErrorCallback(notify));
-                }
-            });
+            const { softDeletes } = ModelClass.getSchema();
 
-            // if (!ModelClass.getSchema().softDeletes) {
-            //     return [
-            //         {
-            //             key: 'delete',
-            //             label: 'Delete',
-            //             callback: ({ selected, notify }) => {
-            //                 ModelClass.delete(selected.pluck(ModelClass.getSchema().primaryKey).all())
-            //                     .then(() => {
-            //                         notify(`Successfully deleted ${selected.count()} ${textCase(selected.count() === 1
-            //                             ? ModelClass.plural()
-            //                             : ModelClass.singular()
-            //                         )}`);
-            //                     })
-            //             }
-            //         },
-            //     ];
-            // }
-    
-            // if (currentTab === 'trashed') {
-            //     return [
-            //         {
-            //             key: 'restore',
-            //             label: 'Restore',
-            //             callback: ({ selected }) => {
-            //                 ModelClass.restore(selected.pluck(ModelClass.getSchema().primaryKey).all())
-            //             }
-            //         },
-            //     ];
-            // }
+            if (currentTab !== 'trashed') {
+                defaultActions.push({
+                    key: 'delete',
+                    label: softDeletes ? 'Send to Trash' : 'Delete permanently',
+                    callback: massActionHandlers.delete(ModelClass),
+                });
+            } else {
+                defaultActions.push({
+                    key: 'restore',
+                    label: 'Restore',
+                    callback: massActionHandlers.restore(ModelClass),
+                });
+
+                defaultActions.push({
+                    key: 'forceDelete',
+                    label: 'Delete permanently',
+                    callback: massActionHandlers.forceDelete(ModelClass),
+                });
+            }
 
             return [
                 ...actions,

@@ -23,10 +23,6 @@ const notify = (notification: string | Notification) => {
     );
 };
 
-const dismiss = () => {
-    return notifications.pull(0);
-};
-
 const NotificationProvider: React.FC<NotificationProviderProps> = ({
     children,
     autoHideDuration = 6000,
@@ -34,7 +30,6 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
     anchorOrigin,
 }) => {
 
-    const [open, setOpen] = React.useState(false);    
     const notificationsState = useCollection(notifications);
 
     const [current, setCurrent] = React.useState<Notification>();
@@ -47,23 +42,22 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
           return;
         }
     
-        setOpen(false);
+        setCurrent(undefined);
         
     };
 
     React.useEffect(() => {
-        if (!open && notificationsState.isNotEmpty()) {
+        if (!current && notificationsState.isNotEmpty()) {
             const timeoutId = setTimeout(() => {
-                setCurrent(dismiss() ?? undefined);
-                setOpen(true);
+                setCurrent(notifications.pull(0) ?? undefined);
             }, 100);
             return () => clearTimeout(timeoutId);
         }
-    }, [open, notificationsState]);
+    }, [current, notificationsState]);
 
     return (
         <NotificationContext.Provider value={{
-            isOpen: open,
+            isOpen: !!current,
             notify,
             dismissNotification: handleClose,
             notifications: notificationsState.all(),
@@ -71,7 +65,7 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
         }}>
             {children}
             <Snackbar 
-                open={open && !!current}
+                open={!!current}
                 autoHideDuration={autoHideDuration}
                 anchorOrigin={anchorOrigin}
                 onClose={handleClose}
