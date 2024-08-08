@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { Model } from '@luminix/core';
+import { Model, Plugin } from '@luminix/core';
 
 import {
     DrawerProps as MuiDrawerProps, AppBarProps as MuiAppBarProps, BoxProps,
@@ -22,7 +20,8 @@ import { Scope } from '@luminix/core/dist/types/Builder';
 // import { TableContextValue } from './Contexts';
 
 export type LuminixCmsProps = {
-    theme?: ThemeOptions
+    theme?: ThemeOptions,
+    plugins?: Plugin[],
 };
 
 export type LayoutProps = BoxProps & {

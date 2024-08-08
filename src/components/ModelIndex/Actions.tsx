@@ -28,6 +28,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { Action } from '../../types/Table';
 import { ActionsProps } from '../../types/PropTypes';
+import { useTranslation } from 'react-i18next';
 
 const Fab = styled(MuiFab)(({ theme }) => ({
     position: 'fixed',
@@ -50,16 +51,19 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
     const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const { t } = useTranslation();
 
     const DEFAULT_ACTIONS = React.useMemo(() => [
         {
-            label: `Create ${Model.singular()}`,
+            //label: t(`Create ${Model.singular()}`),
+
+            label: t('Create :model', { model: t(Model.singular()) }),
             callback: (navigate: NavigateFunction) => {
                 navigate(`/${_.kebabCase(Model.plural())}/create`);
             },
             icon: <AddIcon />,
         },
-    ], [Model]);
+    ], [Model, t]);
 
     const preActions = useApplyReducers(
         app('cms'),

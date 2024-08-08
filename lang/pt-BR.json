@@ -1,0 +1,11 @@
+{
+    "model": { 
+        "create": "Criar {{model}}"
+    },
+    "Create :model": "Criar :model",
+    "Create User": "Criar Usuário",
+    "User": "Usuário",
+    "Users": "Usuários",
+    "Edit User": "Editar Usuário",
+    "Delete User": "Excluir Usuário"
+}

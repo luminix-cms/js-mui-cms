@@ -18,6 +18,9 @@ import '@luminix/react/css/ReactForms.css';
 
 import NotificationProvider from '../providers/NotificationProvider';
 import DialogProvider from '../providers/DialogProvider';
+// import i18NextPlugin from '../plugins/i18NextPlugin';
+
+// import ptBR from '../../lang/pt-BR.json';
 
 const DEFAULT_THEME = {
     palette: {
@@ -31,7 +34,10 @@ const DEFAULT_THEME = {
     
 };
 
-const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_THEME }) => {
+const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
+    theme = DEFAULT_THEME,
+    plugins
+}) => {
 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -53,7 +59,10 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({ theme = DEFAULT_
                 <DialogProvider>
                     <LuminixProvider
                         routes={(app) => app.make('cms').getRoutes()}
-                        plugins={[ new CmsPlugin() ]}
+                        plugins={[
+                            new CmsPlugin(),
+                            ...plugins || [],
+                        ]}
                         config={{
                             app: {
                                 debug: true,
