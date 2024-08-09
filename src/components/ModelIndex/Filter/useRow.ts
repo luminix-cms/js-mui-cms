@@ -105,15 +105,8 @@ export default function useRow( index: number, column: FilteredColumn ) {
     };
 
     React.useEffect(() => {
-        console.log('value updated', {
-            value,
-            type_of: typeof value,
-        });
-    }, [ value, value.length ]);
-
-    React.useEffect(() => {
-        console.log('will update row...');
-
+        // console.log('will update row...');
+        
         setColumnsFilter((prev: FilteredColumn[]) => {
             const newColumns = prev.map((column: FilteredColumn, columnIndex: number) => {
                 if (index === columnIndex) {
@@ -132,7 +125,7 @@ export default function useRow( index: number, column: FilteredColumn ) {
             return newColumns;
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ key, operator, type, value, value.length, isRelation ]);
+    }, [ key, operator, type, value, isRelation ]);
 
     return {
         columns, 

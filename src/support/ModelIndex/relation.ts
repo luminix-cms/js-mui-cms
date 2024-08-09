@@ -5,14 +5,31 @@ import { Collection } from "@luminix/core/dist/types/Collection";
 
 export const loadRelationOptions = async (
     ModelClass: typeof Model, 
-    key: string
+    key: string, 
+    loadedOptions: Model[], 
 ): Promise<Collection<Model>> => {
 
     const relation = ModelClass.getSchema().relations[key].model;
 
     const { data } = await model().make(relation).get();
 
-    return data;
+    const newOptions = data.all()
+        .filter((option) => !loadedOptions.find((v) => v.getKey() === option.getKey()));
+
+    const newOptionsLength = newOptions.length;
+    const loadedLength = loadedOptions.length;
+
+    console.log({
+        newOptionsLength,
+        loadedLength,
+    });
+
+    const perPage = 15;
+
+    if ((newOptionsLength + loadedLength) > perPage) {
+        return collect([ ...loadedOptions, ...newOptions.slice(0, perPage - loadedLength)]);
+    }
+    return collect([ ...loadedOptions, ...newOptions ]);
 };
 
 export const aggregateRelationOptions = async (
@@ -32,7 +49,7 @@ export const aggregateRelationOptions = async (
         .searchBy(term)
         .get();
 
-    const uniqueCollection = collect([...loadedOptions, ...data]).unique(primaryKey);
+    const uniqueCollection = collect([ ...loadedOptions, ...data ]).unique(primaryKey);
         
     return uniqueCollection;
 }

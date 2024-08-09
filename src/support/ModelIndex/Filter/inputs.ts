@@ -2,13 +2,13 @@
 
 import _ from 'lodash';
 
+import { model, Model } from '@luminix/core';
+
 export const changeValueFromArray = (input: any): any =>
 {
     if (!Array.isArray(input)) {
-        console.log('1 not array. will not change...', input);
         return input;
     }
-    console.log('1 is array. will change...', input);
 
     let output: any;
     
@@ -24,10 +24,8 @@ export const changeValueFromArray = (input: any): any =>
 export const changeValueToArray = (input: any): any =>
 {
     if (Array.isArray(input)) {
-        console.log('2 is array. will not change...', input);
         return input;
     }
-    console.log('2 not array. will change...', input);
 
     let output: any;
 
@@ -35,6 +33,31 @@ export const changeValueToArray = (input: any): any =>
         output = [];
     } else {
         output = [input, ''];
+    }
+
+    return output;
+};
+
+export const mountRelationModelOption = async (
+    ModelClass: typeof Model, 
+    key: string, 
+    input: string[] | number[], 
+): Promise<Model[]> => {
+        
+    const relation = ModelClass.getSchema().relations[key];
+
+    const RelatedModel = model().make(relation.model);
+
+    const primaryKey = RelatedModel.getSchema().primaryKey;
+
+    const output: Model[] = [];
+
+    for (const value of input) {
+
+        const { data } = await RelatedModel.where(primaryKey, value).get();
+        console.log('data', data.all());
+        
+        output.push(data.first() as Model);
     }
 
     return output;

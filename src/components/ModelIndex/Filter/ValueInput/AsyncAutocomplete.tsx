@@ -17,6 +17,7 @@ import MuiAutocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { loadRelationOptions, aggregateRelationOptions } from '../../../../support/ModelIndex/relation';
+import { mountRelationModelOption } from '../../../../support/ModelIndex/Filter/inputs';
 
 const AsyncAutocomplete: React.FunctionComponent = () => {
 
@@ -38,33 +39,19 @@ const AsyncAutocomplete: React.FunctionComponent = () => {
         [open, loadedOptions]
     );
     
-    const handleInputChange = async (_event: any, newInputValue: string) => {
+    const handleSearch = async (_event: any, newInputValue: string) => {
         setSearchValue(newInputValue);
 
-        let newOptions = collect<Model>([]);
-
         if (!_.isEmpty(newInputValue)) {
-            newOptions = await aggregateRelationOptions(Model, key, newInputValue, loadedOptions);
-        } else {
-            newOptions = await loadRelationOptions(Model, key);
+            setLoadedOptions(await aggregateRelationOptions(Model, key, newInputValue, collect(inputValue)));
         }
-
-        setLoadedOptions(newOptions);
     }
 
-    React.useEffect(() => {
+    React.useEffect(() => {        
         if (value.length > 0) {
-            setInputValue(
-                value.map((_v: any) => ({
-                    id: parseInt(_v),
-                    getKey() {
-                        return parseInt(_v);
-                    },
-                    getLabel() {
-                        return _v.toString();
-                    },
-                })
-            ));
+            (async () => {
+                setInputValue(await mountRelationModelOption(Model, key, value));
+            })();
         }
     }, []);
 
@@ -78,8 +65,7 @@ const AsyncAutocomplete: React.FunctionComponent = () => {
 
         (async () => {
             if (active) {
-                const newOptions = await loadRelationOptions(Model, key);
-                setLoadedOptions(newOptions);
+                setLoadedOptions(await loadRelationOptions(Model, key, inputValue));
             }
         })();
 
@@ -87,12 +73,20 @@ const AsyncAutocomplete: React.FunctionComponent = () => {
     }, [loading]);
 
     React.useEffect(() => {
-        setValue(inputValue.map((v: any) => v.getKey()));
+        setValue(inputValue.map((v) => v.getKey()));
+
+        if (!_.isEmpty(searchValue)) {
+            setLoadedOptions(collect([]));
+        } else {
+            (async () => {
+                setLoadedOptions(await loadRelationOptions(Model, key, inputValue));
+            })();
+        }
     }, [inputValue]);
     
     return (
         <MuiAutocomplete
-            sx={{ width: 462 }}
+            sx={{ width: 377 }}
             //
             open={open}
             onOpen={() => {
@@ -107,11 +101,12 @@ const AsyncAutocomplete: React.FunctionComponent = () => {
                 setInputValue(newValue);
             }}
             inputValue={searchValue}
-            onInputChange={handleInputChange}
+            onInputChange={handleSearch}
             //
             options={loadedOptions.all() || []}
             getOptionLabel={(option) => option.getLabel()}
             isOptionEqualToValue={(option, value) => option.getKey() === value.getKey()}
+            filterOptions={(x) => x}
             //
             renderInput={(params) => (
                 <RenderInput 
@@ -122,6 +117,7 @@ const AsyncAutocomplete: React.FunctionComponent = () => {
             //
             size="small"
             loading={loading}
+            disableCloseOnSelect
             autoHighlight
             multiple
         />
