@@ -1,23 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import _ from 'lodash';
+
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { app } from '@luminix/core';
+import { useApplyReducers, usePagination } from '@luminix/react';
+
+import useTable from '../../../../hooks/useTable';
+import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
+import useSelection from '../../../../hooks/useSelection';
+import useCurrentModel from '../../../../hooks/useCurrentModel';
+import useNotifications from '../../../../hooks/useNotifications';
+import useDialog from '../../../../hooks/useDialog';
 
 import { styled } from '@mui/material/styles';
-
 import MuiTableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import _ from 'lodash';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-import useTable from '../../../../hooks/useTable';
 import { TableRowProps } from '../../../../types/PropTypes';
-import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
-import useSelection from '../../../../hooks/useSelection';
-import { useNavigate } from 'react-router-dom';
-import useCurrentModel from '../../../../hooks/useCurrentModel';
+import { Action } from '../../../../types/Table';
 
 type MobileCellContentProps = {
     label: string;
@@ -90,9 +101,17 @@ const MobileCellContent: React.FunctionComponent<MobileCellContentProps> = ({ la
 
 const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) => {
 
-    const {
-        massActions, columns,
-    } = useTable();
+    const isDesktop = useIsDesktopMode();
+    const navigate = useNavigate();
+
+    const Model = useCurrentModel();
+
+    const dialog = useDialog();
+
+    const { massActions, columns } = useTable();
+
+    const { refresh } = usePagination();
+    const { notify } = useNotifications();
 
     const columnsWithContents = React.useMemo(() => columns.map((props) => ({
         ...props,
@@ -103,14 +122,58 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
     } = app('cms').getComponents();
 
-    const isDesktop = useIsDesktopMode();
+    const DEFAULT_ACTIONS = React.useMemo(() => [
+        {
+            label: `Delete ${Model.singular()}`,
+            callback: async () => {
+                const confirm = await dialog({
+                    title: 'Confirm permanent deletion',
+                    message: `Are you sure you want to ${Model.getSchema().softDeletes ? 'send to trash' : 'delete permanently'} ${Model.singular()}?`,
+                    type: 'confirm'
+                });
 
-    const navigate = useNavigate();
-    const Model = useCurrentModel();
+                if (!confirm) {
+                    return;
+                }
+
+                item.delete().then(() => {
+                    notify(`${Model.singular()} deleted successfully`);
+                    refresh();
+                });
+            },
+            icon: <DeleteIcon />,
+        },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ], [Model]);
+
+    const preActions = useApplyReducers(
+        app('cms'),
+        `itemActions`,
+        DEFAULT_ACTIONS
+    ) as Action[];
+
+    const actions = useApplyReducers(
+        app('cms'),
+        `item${_.upperFirst(_.camelCase(Model.getSchemaName()))}Actions`,
+        preActions
+    ) as Action[];
 
     const {
         isSelected, handleSelectToggle,
     } = useSelection();
+
+    /* * */
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const open = Boolean(anchorEl);
+
+    const handleOpenFilter = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleCloseFilter = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <MuiTableRow
@@ -157,9 +220,34 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                 </TableCell>
             )}
             <ShrinkedCell>
-                <IconButton>
-                    <MoreVertIcon />
-                </IconButton>
+                <IconButton
+                        aria-describedby="model-item-actions"
+                        aria-label="filter"
+                        onClick={handleOpenFilter}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+
+                    <Menu
+                        id="model-item-actions"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleCloseFilter}
+                        MenuListProps={{
+                            'aria-labelledby': 'model-item-action',
+                        }}
+                    >
+                        {actions.map((action) => (
+                            <MenuItem
+                                key={action.label}
+                                onClick={action.callback}
+                                sx={{ px: 1, gap: .75 }}
+                            >
+                                {action.icon}
+                                {action.label}
+                            </MenuItem>
+                        ))}
+                    </Menu>
             </ShrinkedCell>
         </MuiTableRow>
     );

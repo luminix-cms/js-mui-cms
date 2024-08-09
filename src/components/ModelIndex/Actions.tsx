@@ -1,11 +1,13 @@
+import _ from 'lodash';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavigateFunction } from 'react-router-dom';
 
 import { app } from '@luminix/core';
 import { useApplyReducers } from '@luminix/react';
-import _ from 'lodash';
+
+import useCurrentModel from '../../hooks/useCurrentModel';
 
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
@@ -27,8 +29,6 @@ import { styled } from '@mui/material/styles';
 
 import { Action } from '../../types/Table';
 import { ActionsProps } from '../../types/PropTypes';
-import useCurrentModel from '../../hooks/useCurrentModel';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 const Fab = styled(MuiFab)(({ theme }) => ({
     position: 'fixed',
