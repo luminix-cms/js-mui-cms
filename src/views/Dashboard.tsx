@@ -1,10 +1,12 @@
 import React from "react";
 import useSetPageTitle from '../hooks/useSetPageTitle';
+import { useTranslation } from "react-i18next";
 
 
 const Dashboard: React.FunctionComponent = () => {
 
-    useSetPageTitle('Dashboard');
+    const { t } = useTranslation();
+    useSetPageTitle(t('Dashboard'));
 
 
     return (

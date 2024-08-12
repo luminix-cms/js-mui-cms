@@ -1,19 +1,30 @@
 import { Outlet } from "react-router-dom";
 import _ from "lodash";
+import { PaginationProvider } from "@luminix/react";
 
 import { CmsRoutesReducer } from "./types/Reducers";
 import LayoutProvider from "./providers/LayoutProvider";
-import { PaginationProvider } from "@luminix/react";
 import ModelProvider from "./providers/ModelProvider";
+import DialogProvider from "./providers/DialogProvider";
+import NotificationProvider from "./providers/NotificationProvider";
 
 const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem, Error }, models) => [
     {
         element: (
-            <LayoutProvider>
-                <Layout>
-                    <Outlet />
-                </Layout>
-            </LayoutProvider>
+            <NotificationProvider
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                variant={window.matchMedia('(prefers-color-scheme: dark)').matches
+                    ? 'standard'
+                    : 'filled'}
+            >
+                <DialogProvider>
+                    <LayoutProvider>
+                        <Layout>
+                            <Outlet />
+                        </Layout>
+                    </LayoutProvider>
+                </DialogProvider>
+            </NotificationProvider>
         ),
         errorElement: (
             <Error />

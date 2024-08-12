@@ -3,6 +3,7 @@ import { Collection } from '@luminix/core/dist/types/Collection';
 import { TableCellProps } from '@mui/material';
 import { NotifyFunction } from './Notifications';
 import { DialogFunction } from './Dialog';
+import { TFunction } from 'i18next';
 
 export type Action = {
     label: string;
@@ -22,6 +23,7 @@ export type MassActionCallbackEvent = {
     refresh: () => void;
     notify: NotifyFunction;
     dialog: DialogFunction;
+    t: TFunction;
 };
 
 export type Column = TableCellProps & {

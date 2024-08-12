@@ -7,13 +7,26 @@ import _ from "lodash";
 
 export const massActionHandlers: Record<string, (ModelClass: typeof Model) => (e: MassActionCallbackEvent) => void> = {
 
-    delete: (ModelClass) => async ({ selected, notify, dialog, refresh }) => {
+    delete: (ModelClass) => async ({ selected, notify, dialog, refresh, t }) => {
+
+        const action = ModelClass.getSchema().softDeletes
+            ? 'send to trash'
+            : 'delete permanently';
+
+        const afterMath = ModelClass.getSchema().softDeletes
+            ? 'sent to trash'
+            : 'deleted';
 
         const confirm = await dialog({
-            title: 'Confirm permanent deletion',
-            message: `Are you sure you want to ${ModelClass.getSchema().softDeletes ? 'send to trash' : 'delete permanently'} ${selected.count()} ${_.lowerFirst(selected.count() === 1
-                ? ModelClass.singular()
-                : ModelClass.plural())}?`,
+            title: ModelClass.getSchema().softDeletes
+                ? t('Confirm send to trash')
+                : t('Confirm delete permanently'),
+            message: t(`Are you sure you want to ${action} :count :model?`, {
+                count: selected.count(),
+                model: _.lowerFirst(selected.count() === 1
+                    ? ModelClass.singular()
+                    : ModelClass.plural())
+            }),
             type: 'confirm'
         });
 
@@ -24,10 +37,12 @@ export const massActionHandlers: Record<string, (ModelClass: typeof Model) => (e
         try {
             await ModelClass.delete(selected.pluck(ModelClass.getSchema().primaryKey).all());
 
-            notify(`Successfully ${ModelClass.getSchema().softDeletes ? 'sent to trash' : 'deleted'} ${selected.count()} ${_.lowerFirst(selected.count() === 1
-                ? ModelClass.singular()
-                : ModelClass.plural()
-            )}`);
+            notify(t(`Successfully ${afterMath} :count :model`, {
+                count: selected.count(),
+                model: _.lowerFirst(selected.count() === 1
+                    ? ModelClass.singular()
+                    : ModelClass.plural())
+            }));
 
             refresh();
         } catch (error) {
@@ -36,12 +51,15 @@ export const massActionHandlers: Record<string, (ModelClass: typeof Model) => (e
     },
 
 
-    restore: (ModelClass) => async ({ selected, notify, dialog, refresh }) => {
+    restore: (ModelClass) => async ({ selected, notify, dialog, refresh, t }) => {
         const confirm = await dialog({
-            title: 'Confirm restore',
-            message: `Are you sure you want to restore ${selected.count()} ${_.lowerFirst(selected.count() === 1
-                ? ModelClass.singular()
-                : ModelClass.plural())}?`,
+            title: t('Confirm restore'),
+            message: t('Are you sure you want to restore :count :model?', {
+                count: selected.count(),
+                model: _.lowerFirst(selected.count() === 1
+                    ? ModelClass.singular()
+                    : ModelClass.plural())
+            }),
             type: 'confirm'
         });
 
@@ -51,10 +69,14 @@ export const massActionHandlers: Record<string, (ModelClass: typeof Model) => (e
 
         try {
             await ModelClass.restore(selected.pluck(ModelClass.getSchema().primaryKey).all());
-            notify(`Successfully restored ${selected.count()} ${_.lowerFirst(selected.count() === 1
-                ? ModelClass.singular()
-                : ModelClass.plural()
-            )}`);
+
+            notify(t('Successfully restored :count :model', {
+                count: selected.count(),
+                model: _.lowerFirst(selected.count() === 1
+                    ? ModelClass.singular()
+                    : ModelClass.plural())
+            }));
+
             refresh();
         } catch (error) {
             createErrorCallback(notify)(error);
@@ -62,13 +84,16 @@ export const massActionHandlers: Record<string, (ModelClass: typeof Model) => (e
 
     },
 
-    forceDelete: (ModelClass) => async ({ selected, notify, dialog, refresh }) => {
+    forceDelete: (ModelClass) => async ({ selected, notify, dialog, refresh, t }) => {
 
         const confirm = await dialog({
-            title: 'Confirm permanent deletion',
-            message: `Are you sure you want to delete permanently ${selected.count()} ${_.lowerFirst(selected.count() === 1
-                ? ModelClass.singular()
-                : ModelClass.plural())}?`,
+            title: t('Confirm permanent deletion'),
+            message: t('Are you sure you want to delete permanently :count :model?', {
+                count: selected.count(),
+                model: _.lowerFirst(selected.count() === 1
+                    ? ModelClass.singular()
+                    : ModelClass.plural())
+            }),
             type: 'confirm'
         });
 
@@ -79,10 +104,13 @@ export const massActionHandlers: Record<string, (ModelClass: typeof Model) => (e
         try {
             await ModelClass.forceDelete(selected.pluck(ModelClass.getSchema().primaryKey).all());
 
-            notify(`Successfully deleted ${selected.count()} ${_.lowerFirst(selected.count() === 1
-                ? ModelClass.singular()
-                : ModelClass.plural()
-            )}`);
+            notify(t('Successfully deleted :count :model', {
+                count: selected.count(),
+                model: _.lowerFirst(selected.count() === 1
+                    ? ModelClass.singular()
+                    : ModelClass.plural())
+            }));
+
             refresh();
         } catch (error) {
             createErrorCallback(notify)(error);

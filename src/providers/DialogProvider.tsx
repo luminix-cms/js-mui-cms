@@ -10,6 +10,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useOptimistic from '../hooks/useOptimistic';
+import { useTranslation } from 'react-i18next';
 
 type DialogProviderState = {
     current?: DialogMessage;
@@ -20,7 +21,6 @@ type DialogProviderState = {
 function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onClose'>): React.ReactNode {
 
     const [{ current, resolve }, setState] = React.useState<DialogProviderState>({});
-
     const optimisticCurrent = useOptimistic(current);
 
     const dialog = React.useCallback((message: string | DialogMessage) => {
@@ -33,6 +33,8 @@ function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onCl
             });
         });
     }, []);
+
+    const { t } = useTranslation();
 
     const handleClose = () => {
         if (resolve) {
@@ -75,16 +77,16 @@ function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onCl
                     {'confirm' === optimisticCurrent?.type && (
                         <>
                             <Button onClick={handleClose}>
-                                {optimisticCurrent?.cancelText ?? 'No'}
+                                {optimisticCurrent?.cancelText ?? t('No')}
                             </Button>
                             <Button onClick={handleConfirm} autoFocus>
-                                {optimisticCurrent?.confirmText ?? 'Yes'}
+                                {optimisticCurrent?.confirmText ?? t('Yes')}
                             </Button>
                         </>
                     )}
                     {'alert' === (optimisticCurrent?.type ?? 'alert') && (
                         <Button onClick={handleClose} autoFocus>
-                            {optimisticCurrent?.confirmText ?? 'Ok'}
+                            {optimisticCurrent?.confirmText ?? t('Ok')}
                         </Button>
                     )}
                 </DialogActions>

@@ -14,6 +14,7 @@ import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import _ from 'lodash';
 import { SearchBarProps } from '../../types/PropTypes';
 import useKeyChord from '../../hooks/useKeyChord';
+import { useTranslation } from 'react-i18next';
 
 
 const SearchField = styled(TextField)(({ theme }) => ({
@@ -45,6 +46,7 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = () => {
     const [q, setQ] = React.useState(currentSearch);
     const [focus, setFocus] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement | null>(null);
+    const { t } = useTranslation();
 
     React.useEffect(() => {
         setQ(currentSearch);
@@ -95,9 +97,9 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = () => {
             >
                 <SearchField
                     placeholder={isDesktop
-                        ? '(Ctrl + /) Search...'
-                        : 'Search...'}
-                    value={q} 
+                        ? `(Ctrl + /) ${t('Search...')}`
+                        : `${t('Search...')}`}
+                    value={q}
                     InputProps={{
                         endAdornment: <SearchIcon />,
                     }}

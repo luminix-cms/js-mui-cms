@@ -3,12 +3,11 @@ import _ from 'lodash';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { isAxiosError } from 'axios';
-
 import { app, Model } from '@luminix/core';
 import { ModelForm } from '@luminix/react';
 
 import { ModelItemProps } from '../types/PropTypes';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentModel from '../hooks/useCurrentModel';
 import useLayoutConfig from '../hooks/useLayoutConfig';
@@ -22,15 +21,23 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) => {
 
+    const [item, setItem] = React.useState<Model | undefined>();
+
     const { id } = useParams();
+    const { t } = useTranslation();
     const notify = useNotify();
     const navigate = useNavigate();
     const Model = useCurrentModel();
     const breakpoint = useLayoutConfig('breakpoint', 'md') as Breakpoint;
 
-    const Breadcrumbs = app('cms').getComponent('Breadcrumbs');
+    useSetPageTitle(
+        item?.exists
+            ? t('Edit :model “:label“', { model: Model.singular(), label: item?.getLabel() || '...' })
+            : t('Create :model', { model: Model.singular() })
+    );
+    useBackButton();
 
-    const [item, setItem] = React.useState<Model | undefined>();
+    const Breadcrumbs = app('cms').getComponent('Breadcrumbs');
 
     React.useEffect(() => {
         if (id === 'create') {
@@ -39,13 +46,6 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
             Model.find(id!).then((model) => setItem(model ?? undefined));
         }
     }, [id, Model]);
-    
-    useSetPageTitle(
-        item?.exists
-            ? `Edit ${_.lowerFirst(Model.singular())} “${item?.getLabel() || '...'}”`
-            : `Create ${_.lowerFirst(Model.singular())}`
-    );
-    useBackButton();
 
     const handleSuccess = React.useCallback(() => {
         notify(`${Model.singular()} saved successfully!`);
@@ -70,7 +70,7 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
                 <Breadcrumbs
                     parts={[
                         { name: Model.plural(), href: '/' + _.kebabCase(Model.plural()) },
-                        { name: item.exists ? item.getLabel() : 'New' },
+                        { name: item.exists ? item.getLabel() : t('New') },
                     ]}
                 />
             </Grid>

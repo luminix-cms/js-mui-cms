@@ -8,8 +8,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import { useTranslation } from 'react-i18next';
 
 const PerPageSwitch: React.FunctionComponent = () => {
+
+    const { t } = useTranslation();
 
     const {
         meta: {
@@ -41,7 +44,7 @@ const PerPageSwitch: React.FunctionComponent = () => {
             gap={1}
         >
             <Typography variant="caption">
-                Rows per page:
+                {t('Rows per page')}:
             </Typography>
             <Select
                 value={perPage}

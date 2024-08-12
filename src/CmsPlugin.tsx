@@ -72,7 +72,7 @@ class CmsPlugin extends Plugin {
 
         app = appFacade;
 
-        app.bind('cms', new CmsFacade(app));
+        app.bind('cms', new CmsFacade());
         app.bind('filter', new FilterFacade());
 
         app.once('booting', () => {
@@ -242,7 +242,7 @@ class CmsPlugin extends Plugin {
             if (currentTab !== 'trashed') {
                 defaultActions.push({
                     key: 'delete',
-                    label: softDeletes ? 'Send to Trash' : 'Delete permanently',
+                    label: softDeletes ? 'Send to trash' : 'Delete permanently',
                     callback: massActionHandlers.delete(ModelClass),
                 });
             } else {

@@ -1,8 +1,12 @@
-import { Model, Plugin } from '@luminix/core';
+import { Model, Plugin, ReducibleInterface } from '@luminix/core';
 import { AppFacade, AppFacades, ModelFacade } from '@luminix/core/dist/types/App';
 import { ConfigFacade } from '@luminix/core/dist/types/Config';
 import i18n, { InitOptions } from 'i18next';
+import _ from 'lodash';
 import { initReactI18next } from 'react-i18next';
+import { Column, MassAction } from '../types/Table';
+import { MenuItem } from '../types/Menu';
+import { InputProps } from '@luminix/react/dist/types/Form';
 
 class i18NextPlugin extends Plugin {
 
@@ -20,12 +24,17 @@ class i18NextPlugin extends Plugin {
         });
     }
 
-    boot({ config }: AppFacades): void {
-        this.registerI18Next(config);
+    boot({ config, cms, model, forms }: AppFacades): void {
+        this.initI18Next(config);
+
+        this.translateModelColumns(model, cms);
+        this.translateMenuEntries(cms);
+        this.translateMassActions(cms);
+        this.translateFormLabels(forms);
     }
 
 
-    private registerI18Next(config: ConfigFacade): void {
+    private initI18Next(config: ConfigFacade): void {
         
         i18n.use(initReactI18next)
             .init({
@@ -53,21 +62,90 @@ class i18NextPlugin extends Plugin {
             'model',
             (Base: typeof Model) => {
                 return class extends Base {
-
                     static singular(): string {
-                        console.log('called user translation');
                         return i18n.t(Base.singular());
                     }
 
                     static plural(): string {
-                        console.log('called user translation');
                         return i18n.t(Base.plural());
                     }
-
                 }
             },
             0
         )
+    }
+
+    private translateModelColumns(
+        model: ModelFacade,
+        cms: ReducibleInterface
+    ) {
+        for (const className of Object.keys(model.make())) {
+            cms.reducer(
+                `model${_.upperFirst(_.camelCase(className))}Columns`,
+                (columns: Column[]) => {
+                    return columns.map((column) => {
+                        return {
+                            ...column,
+                            label: i18n.t(column.label),
+                        }
+                    });
+                },
+                99
+            );
+        }
+
+    }
+
+    private translateMenuEntries(cms: ReducibleInterface) {
+        cms.reducer(
+            'menuItems',
+            (items: MenuItem[]) => {
+                const dashboard = items.find((menuItem) => {
+                    return menuItem.key === 'dashboard';
+                });
+                if (dashboard) {
+                    dashboard.text = i18n.t(dashboard.text);
+                }
+                return items;
+            },
+            5
+        );
+    }
+
+    private translateMassActions(cms: ReducibleInterface) {
+        cms.reducer(
+            'massActions',
+            (actions: MassAction[]) => {
+                return actions.map((action) => {
+                    return {
+                        ...action,
+                        label: i18n.t(action.label),
+                    }
+                });
+            },
+            99
+        );
+    }
+
+    private translateFormLabels(forms: ReducibleInterface) {
+        forms.reducer(
+            'getDefaultInputProps',
+            (props: InputProps<string> | InputProps<string>[]) => {
+                if (!Array.isArray(props)) {
+                    if (props.label) {
+                        props.label = i18n.t(props.label);
+                    }
+                } else {
+                    props.map((prop) => {
+                        if (prop.label) {
+                            prop.label = i18n.t(prop.label);
+                        }
+                    });
+                }
+                return props;
+            },
+            99,
+        );
     }
 }
 

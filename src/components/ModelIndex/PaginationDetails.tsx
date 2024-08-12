@@ -3,10 +3,12 @@ import React from 'react';
 import { usePagination } from '@luminix/react';
 
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 
 
 const PaginationDetails: React.FunctionComponent = () => {
 
+    const { t } = useTranslation();
     const {
         meta: {
             total = 0,
@@ -17,7 +19,12 @@ const PaginationDetails: React.FunctionComponent = () => {
 
     return (
         <Typography variant="caption" noWrap>
-            {from}–{to} of {total}
+            {/* {from}–{to} {t('of')} {total} */}
+            {t(':from–:to of :total', {
+                from,
+                to,
+                total,
+            })}
         </Typography>
     );
 

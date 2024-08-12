@@ -1,19 +1,22 @@
 
 import React from 'react';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
+import { useApplyReducers } from '@luminix/react';
+import { app } from '@luminix/core';
 
 import MuiTabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { useSearchParams } from 'react-router-dom';
+
 import useCurrentModel from '../../hooks/useCurrentModel';
 import { DisplayableTab } from '../../types/Tabs';
-import { useApplyReducers } from '@luminix/react';
-import { app } from '@luminix/core';
 
 function Tabs(): React.ReactNode {
 
     const Model = useCurrentModel();
+    const { t } = useTranslation();
 
     const [searchParams, setSearchParams] = useSearchParams();
     const tab = searchParams.get('tab') || 'all';
@@ -30,7 +33,7 @@ function Tabs(): React.ReactNode {
 
     const defaultTabs: DisplayableTab[] = React.useMemo(() => {
         return Model.getSchema().softDeletes
-            ? [{ label: 'Trashed', value: 'trashed' }]
+            ? [{ label: t('Trashed'), value: 'trashed' }]
             : []
     }, [Model]);
 
@@ -55,7 +58,7 @@ function Tabs(): React.ReactNode {
                 allowScrollButtonsMobile
             >
                 <Tab
-                    label="All"
+                    label={t('All')}
                     value="all"
                 />
                 {tabs.map((tab) => (

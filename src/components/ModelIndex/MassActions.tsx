@@ -14,6 +14,7 @@ import useSelection from '../../hooks/useSelection';
 import useTable from '../../hooks/useTable';
 import useNotify from '../../hooks/useNotify';
 import useDialog from '../../hooks/useDialog';
+import { useTranslation } from 'react-i18next';
 
 
 function MassActions(props: StackProps): React.ReactNode {
@@ -21,6 +22,7 @@ function MassActions(props: StackProps): React.ReactNode {
 
     const { selected } = useSelection();
     const { refresh } = usePagination();
+    const { t } = useTranslation();
     const notify = useNotify();
     const dialog = useDialog();
     const navigate = useNavigate();
@@ -41,6 +43,10 @@ function MassActions(props: StackProps): React.ReactNode {
         return null;
     }
 
+    const label = selected.isEmpty()
+        ? t('Select items to apply')
+        : t('Select action');
+
     return (
         <Stack
             direction="row"
@@ -52,21 +58,18 @@ function MassActions(props: StackProps): React.ReactNode {
                 size="small"
             >
                 <InputLabel id="mass-actions-select-label">
-                    {selected.isEmpty() ? 'Select items to apply' : 'Select action'}
+                    {label}
                 </InputLabel>
                 <Select
                     labelId="mass-actions-select-label"
                     id="mass-actions-select"
                     value={action}
-                    label={selected.isEmpty()
-                        ? 'Select items to apply'
-                        : 'Select action'
-                    }
+                    label={label}
                     onChange={handleChange}
                     disabled={selected.isEmpty()}
                 >
                     <MenuItem value="">
-                        <em>None</em>
+                        <em>{t('None')}</em>
                     </MenuItem>
                     {massActions.map((action) => (
                         <MenuItem
@@ -90,10 +93,11 @@ function MassActions(props: StackProps): React.ReactNode {
                             refresh,
                             navigate,
                             dialog,
+                            t,
                         });
                 }}
             >
-                Apply
+                {t('Apply')}
             </Button>
         </Stack>
     );

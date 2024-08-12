@@ -16,8 +16,6 @@ import '@fontsource/roboto/700.css';
 
 import '@luminix/react/css/ReactForms.css';
 
-import NotificationProvider from '../providers/NotificationProvider';
-import DialogProvider from '../providers/DialogProvider';
 import i18NextPlugin from '../plugins/i18NextPlugin';
 // import i18NextPlugin from '../plugins/i18NextPlugin';
 
@@ -54,27 +52,20 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
     return (
         <ThemeProvider theme={muiTheme}>
             <CssBaseline />
-            <NotificationProvider
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                variant={prefersDarkMode ? 'standard' : 'filled'}
-            >
-                <DialogProvider>
-                    <LuminixProvider
-                        routes={(app) => app.make('cms').getRoutes()}
-                        plugins={[
-                            new i18NextPlugin(i18nOptions),
-                            new CmsPlugin(),
-                            ...plugins || [],
-                        ]}
-                        config={{
-                            app: {
-                                debug: true,
-                                url: 'http://localhost',
-                            },
-                        }}
-                    />
-                </DialogProvider>
-            </NotificationProvider>
+            <LuminixProvider
+                routes={(app) => app.make('cms').getRoutes()}
+                plugins={[
+                    new CmsPlugin(),
+                    new i18NextPlugin(i18nOptions),
+                    ...plugins || [],
+                ]}
+                config={{
+                    app: {
+                        debug: true,
+                        url: 'http://localhost',
+                    },
+                }}
+            />
         </ThemeProvider>
     );
 };
