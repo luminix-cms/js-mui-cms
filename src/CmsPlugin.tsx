@@ -93,20 +93,24 @@ class CmsPlugin extends Plugin {
 
     bootModels() {
 
-        app.make('model').reducer('model', (model: typeof Model, abstract: string) => {
-            return class extends model {
-                static icon() {
-                    if (abstract === 'user') {
+        app.make('model').reducer(
+            'model',
+            (Base: typeof Model, abstract: string) => {
+                return class extends Base {
+                    static icon() {
+                        if (abstract === 'user') {
+                            return (
+                                <PeopleOutlinedIcon />
+                            );
+                        }
                         return (
-                            <PeopleOutlinedIcon />
+                            <CategoryOutlinedIcon />
                         );
                     }
-                    return (
-                        <CategoryOutlinedIcon />
-                    );
                 }
-            }
-        }, 0);
+            },
+            0
+        );
 
     }
 

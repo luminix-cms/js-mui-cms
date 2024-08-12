@@ -1,22 +1,23 @@
 
 import React from 'react';
 
-import { AppFacade, Model, Reducible } from '@luminix/core';
+import { model, Model, Reducible } from '@luminix/core';
 import { RouteObject } from 'react-router-dom';
 import { MenuItem } from '../types/Menu';
 import { ModelFormProps } from '@luminix/react/dist/types/Form';
 import { MassAction } from '../types/Table';
 
 import _ from 'lodash';
+import { ReducerCallback } from '@luminix/core/dist/types/Reducer';
 
 
 class CmsFacade {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
+    [key: string]: ReducerCallback;
 
     
     constructor(
-        private app: AppFacade
+        // private app: AppFacade
     ) {
 
     }
@@ -31,11 +32,11 @@ class CmsFacade {
 
     getRoutes(): RouteObject[]
     {
-        return this.cmsRoutes([], this.getComponents(), this.app.make('model').make());
+        return this.cmsRoutes([], this.getComponents(), model().make());
     }
 
     getMenuItems(): MenuItem[] {
-        return this.menuItems([], this.app.make('model').make());
+        return this.menuItems([], model().make());
     }
 
     getModelFormProps(item: Model): ModelFormProps {

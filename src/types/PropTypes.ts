@@ -17,11 +17,13 @@ import { MenuItem } from './Menu';
 import { ModelPaginatedResponse } from '@luminix/core/dist/types/Model';
 import { Collection, CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
 import { Scope } from '@luminix/core/dist/types/Builder';
+import { InitOptions } from 'i18next';
 // import { TableContextValue } from './Contexts';
 
 export type LuminixCmsProps = {
     theme?: ThemeOptions,
     plugins?: Plugin[],
+    i18nOptions?: InitOptions,
 };
 
 export type LayoutProps = BoxProps & {

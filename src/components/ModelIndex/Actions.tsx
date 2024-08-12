@@ -57,7 +57,7 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
         {
             //label: t(`Create ${Model.singular()}`),
 
-            label: t('Create :model', { model: t(Model.singular()) }),
+            label: t('Create :model', { model: Model.singular() }),
             callback: (navigate: NavigateFunction) => {
                 navigate(`/${_.kebabCase(Model.plural())}/create`);
             },
