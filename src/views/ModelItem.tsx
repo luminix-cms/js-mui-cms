@@ -48,7 +48,7 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
     }, [id, Model]);
 
     const handleSuccess = React.useCallback(() => {
-        notify(`${Model.singular()} saved successfully!`);
+        notify(t(':model saved successfully', { model: Model.singular() }));
 
         if (item?.wasRecentlyCreated) {
             navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`);

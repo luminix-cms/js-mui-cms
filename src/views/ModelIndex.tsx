@@ -28,8 +28,6 @@ const ModelIndex: React.FunctionComponent = () => {
 
     const isDesktop = useIsDesktopMode();
 
-    // const breakpoint = useLayoutConfig('breakpoint', 'md') as Breakpoint;
-
     const {
         Breadcrumbs,
         ['ModelIndex.Actions']: Actions,

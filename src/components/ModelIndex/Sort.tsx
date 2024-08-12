@@ -21,9 +21,11 @@ import SwapVertIcon from '@mui/icons-material/SwapVert';
 
 import useTable from '../../hooks/useTable';
 import { collect } from '@luminix/core';
+import { useTranslation } from 'react-i18next';
 
 const Sort: React.FunctionComponent = () => {
 
+    const { t } = useTranslation();
     const [searchParams, setSearchParms] = useSearchParams();
 
     const {
@@ -87,7 +89,7 @@ const Sort: React.FunctionComponent = () => {
             </IconButton>
             <Dialog open={open} onClose={handleClose} fullWidth>
                 <DialogTitle>
-                    Sort {Model.plural()}
+                    {t('Sort :model', { model: Model.plural() })}
                     <IconButton
                         onClick={handleClose}
                         sx={{ position: 'absolute', right: 8, top: 8 }}
@@ -105,7 +107,9 @@ const Sort: React.FunctionComponent = () => {
                             }
                         }}
                     >
-                        <Typography variant="caption">Column</Typography>
+                        <Typography variant="caption">
+                            {t('Column')}
+                        </Typography>
                         <Divider />
                         {collect(columns).whereStrict('sortable', '!=', false).map(({ key, label }) => (
                             <FormControlLabel
@@ -117,7 +121,9 @@ const Sort: React.FunctionComponent = () => {
                         ))}
                     </RadioGroup>
 
-                    <Typography variant="caption">Direction</Typography>
+                    <Typography variant="caption">
+                        {t('Direction')}
+                    </Typography>
                     <Divider />
                     <RadioGroup
                         value={direction}
@@ -128,7 +134,7 @@ const Sort: React.FunctionComponent = () => {
                             control={<Radio />}
                             label={
                                 <>
-                                    Ascending
+                                    {t('Ascending')}
                                     <ArrowUpwardIcon />
                                 </>
                             }
@@ -139,7 +145,7 @@ const Sort: React.FunctionComponent = () => {
                             control={<Radio />}
                             label={
                                 <>
-                                    Descending
+                                    {t('Descending')}
                                     <ArrowDownwardIcon />
                                 </>
                             }
@@ -147,8 +153,12 @@ const Sort: React.FunctionComponent = () => {
                     </RadioGroup>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClear} sx={{ mr: 'auto' }}>Clear</Button>
-                    <Button onClick={handleApply} variant="contained" >Apply</Button>
+                    <Button onClick={handleClear} sx={{ mr: 'auto' }}>
+                        {t('Clear')}
+                    </Button>
+                    <Button onClick={handleApply} variant="contained" >
+                        {t('Apply')}
+                    </Button>
                 </DialogActions>
             </Dialog>
         </>
