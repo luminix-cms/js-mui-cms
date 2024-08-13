@@ -19,11 +19,11 @@ function Tabs(): React.ReactNode {
     const tab = searchParams.get('tab') || 'all';
 
     const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
-        setSearchParams((params) => {
-            const newParams = new URLSearchParams(params);
-            newValue === 'all'
-                ? newParams.delete('tab')
-                : newParams.set('tab', newValue);
+        setSearchParams(() => {
+            const newParams = new URLSearchParams();
+            if (newValue !== 'all') {
+                newParams.set('tab', newValue);
+            }
             return newParams;
         });
     };
