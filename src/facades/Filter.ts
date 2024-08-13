@@ -36,7 +36,7 @@ class FilterFacade {
 
     getOperators(): string[]
     {
-        return config('luminix.cms.filterOperators') as string[];
+        return config('luminix.admin.filter.operators') as string[];
     }
 
     getMatchingOperators(column: FilterColumn): InputOption[]
@@ -79,10 +79,10 @@ class FilterFacade {
 
     getFilterableColumns(ModelClass: typeof Model): FilterColumn[]
     {
-        const { attributes, relations } = ModelClass.getSchema();
+        const { attributes = [], relations = {} } = ModelClass.getSchema();
 
         return [
-            ...(attributes ?? []).filter((attribute) => !attribute.hidden).map((attribute) => {
+            ...attributes.filter((attribute) => !attribute.hidden).map((attribute) => {
     
                 let type = attribute.phpType ?? 'string';
     
@@ -98,7 +98,7 @@ class FilterFacade {
                 };
             }),
             // TODO: review typing of 'acc' 
-            ...Object.entries(relations).reduce((acc, [ key ]) => {
+            ...Object.entries(relations ?? {}).reduce((acc, [ key ]) => {
                 return [
                     ...acc,
                     {
