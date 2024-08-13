@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { useNavigate, NavigateFunction } from 'react-router-dom';
 
 import { app } from '@luminix/core';
 import { useApplyReducers } from '@luminix/react';
@@ -46,6 +46,7 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
     const Model = useCurrentModel();
 
     const navigate = useNavigate();
+
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
     const [selectedIndex, setSelectedIndex] = React.useState(0);

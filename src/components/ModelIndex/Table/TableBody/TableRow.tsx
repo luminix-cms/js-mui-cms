@@ -12,6 +12,8 @@ import useTable from '../../../../hooks/useTable';
 import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 import useSelection from '../../../../hooks/useSelection';
 import useCurrentModel from '../../../../hooks/useCurrentModel';
+import useNotifications from '../../../../hooks/useNotifications';
+import useDialog from '../../../../hooks/useDialog';
 
 import { styled } from '@mui/material/styles';
 import MuiTableRow from '@mui/material/TableRow';
@@ -27,7 +29,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { TableRowProps } from '../../../../types/PropTypes';
 import { Action } from '../../../../types/Table';
-import useNotifications from '../../../../hooks/useNotifications';
 
 type MobileCellContentProps = {
     label: string;
@@ -100,11 +101,14 @@ const MobileCellContent: React.FunctionComponent<MobileCellContentProps> = ({ la
 
 const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) => {
 
+    const isDesktop = useIsDesktopMode();
+    const navigate = useNavigate();
+
     const Model = useCurrentModel();
 
-    const {
-        massActions, columns,
-    } = useTable();
+    const dialog = useDialog();
+
+    const { massActions, columns } = useTable();
 
     const { refresh } = usePagination();
     const { notify } = useNotifications();
@@ -121,10 +125,22 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
     const DEFAULT_ACTIONS = React.useMemo(() => [
         {
             label: `Delete ${Model.singular()}`,
-            callback: () => item.delete().then(() => {
-                notify(`${Model.singular()} deleted successfully`);
-                refresh();
-            }),
+            callback: async () => {
+                const confirm = await dialog({
+                    title: 'Confirm permanent deletion',
+                    message: `Are you sure you want to ${Model.getSchema().softDeletes ? 'send to trash' : 'delete permanently'} ${Model.singular()}?`,
+                    type: 'confirm'
+                });
+
+                if (!confirm) {
+                    return;
+                }
+
+                item.delete().then(() => {
+                    notify(`${Model.singular()} deleted successfully`);
+                    refresh();
+                });
+            },
             icon: <DeleteIcon />,
         },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,10 +157,6 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
         `item${_.upperFirst(_.camelCase(Model.getSchemaName()))}Actions`,
         preActions
     ) as Action[];
-
-    const isDesktop = useIsDesktopMode();
-
-    const navigate = useNavigate();
 
     const {
         isSelected, handleSelectToggle,
