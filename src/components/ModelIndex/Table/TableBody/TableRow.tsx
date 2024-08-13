@@ -5,7 +5,7 @@ import _ from 'lodash';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { app } from '@luminix/core';
+import { app, config } from '@luminix/core';
 import { useApplyReducers, usePagination } from '@luminix/react';
 
 import useTable from '../../../../hooks/useTable';
@@ -54,7 +54,9 @@ const CellContent: React.FunctionComponent<MobileCellContentProps> = ({ content:
 
     if (rawContent instanceof Date) {
         return (
-            <CellText>{rawContent.toLocaleString()}</CellText>
+            <CellText>
+                {rawContent.toLocaleString(config('app.locale', 'en') as string)}
+            </CellText>
         );
     }
 
@@ -81,7 +83,10 @@ const MobileCellContent: React.FunctionComponent<MobileCellContentProps> = ({ la
 
     if (rawContent instanceof Date) {
         return (
-            <CellText><label>{label}:</label> {rawContent.toLocaleString()}</CellText>
+            <CellText>
+                <label>{label}:</label>
+                {rawContent.toLocaleString(config('app.locale', 'en') as string)}
+            </CellText>
         );
     }
 
