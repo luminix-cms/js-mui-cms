@@ -40,8 +40,8 @@ export default function useOptimistic<T>(state: T) {
             setOptimistic(state);
         }
     }, [state]);
-
-    return optimistic;
+    
+    return state || optimistic;
 
 }
 

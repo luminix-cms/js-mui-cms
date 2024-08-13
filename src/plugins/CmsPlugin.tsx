@@ -3,54 +3,53 @@ import _ from 'lodash';
 import { AppFacade, Model, Plugin } from '@luminix/core';
 import { ModelFormProps } from '@luminix/react/dist/types/Form';
 
-import CmsFacade from './facades/Cms';
-import FilterFacade from './facades/Filter';
+import CmsFacade from '../facades/Cms';
+import FilterFacade from '../facades/Filter';
 
-import routes from './routes';
+import routes from '../routes';
 
-import Dashboard from './views/Dashboard';
-import Error from './views/Error';
-import Layout from './views/Layout/Layout';
-import ModelIndex from './views/ModelIndex';
-import ModelItem from './views/ModelItem';
+import Dashboard from '../views/Dashboard';
+import Error from '../views/Error';
+import Layout from '../views/Layout/Layout';
+import ModelIndex from '../views/ModelIndex';
+import ModelItem from '../views/ModelItem';
 
-import Actions from './components/ModelIndex/Actions';
-import AppBar from './components/Layout/AppBar';
-import BackButton from './components/Layout/BackButton';
-import Drawer from './components/Layout/Drawer';
-import DesktopPageTitle from './components/DesktopPageTitle';
-import Filter from './components/ModelIndex/Filter';
-import MassActions from './components/ModelIndex/MassActions';
-import MenuButton from './components/Layout/AppBar/MenuButton';
-import Pagination from './components/ModelIndex/Pagination';
-import PaginationDetails from './components/ModelIndex/PaginationDetails';
-import PerPageSwitch from './components/ModelIndex/PerPageSwitch';
-import SearchBar from './components/Layout/SearchBar';
-import ShrinkedCell from './components/ModelIndex/Table/ShrinkedCell';
-import Sort from './components/ModelIndex/Sort';
-import Table from './components/ModelIndex/Table';
-import TableHead from './components/ModelIndex/Table/TableHead';
-import TableBody from './components/ModelIndex/Table/TableBody';
-import TableRow from './components/ModelIndex/Table/TableBody/TableRow';
-import TableFooter from './components/ModelIndex/Table/TableFooter';
-import TableToolbar from './components/ModelIndex/Table/TableToolbar';
-import Tabs from './components/ModelIndex/Tabs';
+import Actions from '../components/ModelIndex/Actions';
+import AppBar from '../components/Layout/AppBar';
+import BackButton from '../components/Layout/BackButton';
+import Drawer from '../components/Layout/Drawer';
+import DesktopPageTitle from '../components/DesktopPageTitle';
+import Filter from '../components/ModelIndex/Filter';
+import MassActions from '../components/ModelIndex/MassActions';
+import MenuButton from '../components/Layout/AppBar/MenuButton';
+import Pagination from '../components/ModelIndex/Pagination';
+import PaginationDetails from '../components/ModelIndex/PaginationDetails';
+import PerPageSwitch from '../components/ModelIndex/PerPageSwitch';
+import SearchBar from '../components/Layout/SearchBar';
+import ShrinkedCell from '../components/ModelIndex/Table/ShrinkedCell';
+import Sort from '../components/ModelIndex/Sort';
+import Table from '../components/ModelIndex/Table';
+import TableHead from '../components/ModelIndex/Table/TableHead';
+import TableBody from '../components/ModelIndex/Table/TableBody';
+import TableRow from '../components/ModelIndex/Table/TableBody/TableRow';
+import TableFooter from '../components/ModelIndex/Table/TableFooter';
+import TableToolbar from '../components/ModelIndex/Table/TableToolbar';
+import Tabs from '../components/ModelIndex/Tabs';
 
-import Breadcrumbs from './components/Breadcrumbs';
-import RecursiveList from './components/RecursiveList';
-import RecursiveMenu from './components/RecursiveMenu';
+import Breadcrumbs from '../components/Breadcrumbs';
+import RecursiveList from '../components/RecursiveList';
+import RecursiveMenu from '../components/RecursiveMenu';
 
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 
-import { CmsPluginOptions } from './types/Plugin';
-import { MassAction } from './types/Table';
-import { MenuItem } from './types/Menu';
+import { CmsPluginOptions } from '../types/Plugin';
+import { MassAction } from '../types/Table';
+import { MenuItem } from '../types/Menu';
 //import { DisplayableTab } from './types/Tabs';
 
-import { createErrorCallback } from './support/error';
-import { massActionHandlers } from './support/massActions';
+import { massActionHandlers } from '../support/massActions';
 
 let app: AppFacade;
 

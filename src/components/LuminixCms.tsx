@@ -6,7 +6,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import CmsPlugin from '../CmsPlugin';
+import CmsPlugin from '../plugins/CmsPlugin';
 import { LuminixCmsProps } from '../types/PropTypes';
 
 import '@fontsource/roboto/300.css';
@@ -17,9 +17,6 @@ import '@fontsource/roboto/700.css';
 import '@luminix/react/css/ReactForms.css';
 
 import i18NextPlugin from '../plugins/i18NextPlugin';
-// import i18NextPlugin from '../plugins/i18NextPlugin';
-
-// import ptBR from '../../lang/pt-BR.json';
 
 const DEFAULT_THEME = {
     palette: {
