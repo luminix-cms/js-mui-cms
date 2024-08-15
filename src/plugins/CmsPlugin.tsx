@@ -117,7 +117,7 @@ class CmsPlugin extends Plugin {
         app.make('cms').reducer('cmsRoutes', routes, 0);
         app.make('route').reducer('routerOptions', (opts) => ({
             ...opts,
-            basename: app.make('config').get('luminix.cms.url', '/luminix-admin')
+            basename: app.make('config').get('luminix.admin.url', '/admin')
         }));
     }
 

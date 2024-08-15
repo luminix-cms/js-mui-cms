@@ -12,10 +12,12 @@ import { TableBodyProps } from '../../../types/PropTypes';
 import { Model, app, collect } from '@luminix/core';
 import { CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
 import useCurrentModel from '../../../hooks/useCurrentModel';
+import { useTranslation } from 'react-i18next';
 
 const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props }) => {
 
     const Model = useCurrentModel();
+    const { t } = useTranslation();
 
     const {
         items, loading, columnCount,
@@ -38,7 +40,9 @@ const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props
                 <TableRow>
                     <TableCell colSpan={columnCount} sx={{ textAlign: 'center', py: 10 }}>
                         <Typography>
-                            No {Model.plural().toLocaleLowerCase()} found
+                            {t('No :model found', {
+                                model: Model.plural().toLocaleLowerCase()
+                            })}
                         </Typography>
                         <br />
                         <Actions />
