@@ -4,6 +4,8 @@ import React from 'react';
 
 import { app } from '@luminix/core';
 
+import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
+
 import ModelFilterRowContext from '../../../contexts/ModelFilterRowContext';
 
 import Box from '@mui/material/Box';
@@ -16,6 +18,8 @@ import TextField from './ValueInput/TextField';
 
 const ValueInput: React.FunctionComponent = () => {
 
+    const isDesktop = useIsDesktopMode();
+
     const FilterFacade = app('filter');
 
     const { type, operator } = React.useContext(ModelFilterRowContext);
@@ -26,14 +30,19 @@ const ValueInput: React.FunctionComponent = () => {
     );
 
     if ([ 'null', 'notNull' ].includes(operator)) {
+        if (!isDesktop) {
+            return null;
+        }
+
         return (
-            <Box width={312} />
+            <Box width={230} />
         );
     }
 
     if (doubleFields) {
         switch (FilterFacade.getInputType(type)) {
-            case 'date': return (
+            case 'date':
+            case 'datetime-local': return (
                 <>
                     <DatePicker index={0} />
                     <DatePicker index={1} />
@@ -50,7 +59,8 @@ const ValueInput: React.FunctionComponent = () => {
     }
 
     switch (FilterFacade.getInputType(type)) {
-        case 'date': return (
+        case 'date':
+        case 'datetime-local': return (
             <DatePicker />
         )
         case 'autocomplete': return (

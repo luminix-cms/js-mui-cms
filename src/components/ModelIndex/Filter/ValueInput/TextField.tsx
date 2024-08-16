@@ -2,8 +2,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { app } from '@luminix/core';
+
+import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 
 import ModelFilterRowContext from '../../../../contexts/ModelFilterRowContext';
 
@@ -13,6 +16,10 @@ import { FilterValueInput } from '../../../../types/Filter';
 
 const TextField: React.FunctionComponent<FilterValueInput> = ({ index = null }) => {
 
+    const { t } = useTranslation();
+
+    const isDesktop = useIsDesktopMode();
+
     const FilterFacade = app('filter');
 
     const {
@@ -21,8 +28,8 @@ const TextField: React.FunctionComponent<FilterValueInput> = ({ index = null }) 
     } = React.useContext(ModelFilterRowContext);
 
     const inputLabel = index !== null
-        ? `Value ${index + 1}`
-        : 'Value';
+        ? `${t('Value')} ${index + 1}`
+        : `${t('Value')}`;
 
     const inputValue = React.useMemo(
         () => index !== null ? value[index] : value, 
@@ -45,8 +52,9 @@ const TextField: React.FunctionComponent<FilterValueInput> = ({ index = null }) 
         <MuiTextField
             type={FilterFacade.getInputType(type)}
             label={inputLabel}
-            value={inputValue}
+            value={inputValue || ''}
             onChange={handleValue}
+            sx={{ width: isDesktop ? 167.5 : '100%' }}
             size="small"
         />
     );

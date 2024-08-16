@@ -1,22 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { app } from '@luminix/core';
 
+import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
+import useLayoutConfig from '../../../hooks/useLayoutConfig';
+
 import ModelFilterContext from '../../../contexts/ModelFilterContext';
 
+import { Breakpoint } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 
 import Row from './Row';
+
 
 import { FilteredColumn } from '../../../types/Filter';
 
 import { translateColumnsToQuery } from '../../../support/ModelIndex/Filter/searchParams';
 
 const Content: React.FunctionComponent = () => {
+
+    const { t } = useTranslation();
+
+    const isDesktop = useIsDesktopMode();
+    const breakpoint = useLayoutConfig('breakpoint', 'md') as Breakpoint;
 
     const FilterFacade = app('filter');
 
@@ -50,16 +62,25 @@ const Content: React.FunctionComponent = () => {
 
     return (
         <Box 
-            sx={{ minWidth: 567.5 }}
+            sx={{ minWidth: { [breakpoint]: 567.5 } }}
             p={2} 
         >
             <Stack>
                 {columnsFilter.map((column, index) => (
-                    <Row
-                        key={`row_${column.key}`}
-                        index={index}
-                        column={column}
-                    />
+                    <>
+                        <Row
+                            key={`row_${column.key}`}
+                            index={index}
+                            column={column}
+                        />
+                        
+                        {!isDesktop && (
+                            <Divider sx={{ 
+                                mt: 1.25, 
+                                mb: 1.5, 
+                            }} />
+                        )}
+                    </>
                 ))}
             </Stack>
 
@@ -69,7 +90,7 @@ const Content: React.FunctionComponent = () => {
                     onClick={handleAddColumn}
                     fullWidth
                 >
-                    + Add Column
+                    {`+ ${t('Add Column')}`}
                 </Button>
             </Stack>
 
@@ -79,7 +100,7 @@ const Content: React.FunctionComponent = () => {
                 mt={2}
             >
                 <Button onClick={clearFilters} >
-                    Clear
+                    {t('Clear')}
                 </Button>
 
                 <Button
@@ -87,7 +108,7 @@ const Content: React.FunctionComponent = () => {
                     onClick={handleApplyFilters}
                     disabled={FilterFacade.checkIfCanApplyFilters(columnsFilter)}
                 >
-                    Apply
+                    {t('Apply')}
                 </Button>
             </Stack>
         </Box>

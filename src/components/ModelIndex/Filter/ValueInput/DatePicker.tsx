@@ -2,6 +2,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { app } from '@luminix/core';
+
+import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 
 import ModelFilterRowContext from '../../../../contexts/ModelFilterRowContext';
 
@@ -11,11 +16,26 @@ import { FilterValueInput } from '../../../../types/Filter';
 
 const DatePicker: React.FunctionComponent<FilterValueInput> = ({ index = null }) => {
 
-    const { value, setValue } = React.useContext(ModelFilterRowContext);
+    const { t } = useTranslation();
+
+    const isDesktop = useIsDesktopMode();
+
+    const FilterFacade = app('filter');
+
+    const { 
+        type, 
+        value, setValue, 
+    } = React.useContext(ModelFilterRowContext);
+
+    const hasTime = FilterFacade.getInputType(type) === 'datetime-local';
+
+    const width = hasTime ? 230 : 167.5;
+
+    /* * */
 
     const inputLabel = index !== null
-        ? `Date ${index + 1}`
-        : 'Date';
+        ? `${t('Date')} ${index + 1}`
+        : `${t('Date')}`;
 
     const inputValue = React.useMemo(
         () => index !== null ? value[index] : value, 
@@ -36,12 +56,12 @@ const DatePicker: React.FunctionComponent<FilterValueInput> = ({ index = null })
 
     return (
         <TextField 
+            type={FilterFacade.getInputType(type)}
             label={inputLabel}
-            value={inputValue}
+            value={inputValue || new Date}
             onChange={handleValue}
-            type="date"
             size="small"
-            sx={{ minWidth: 230 }}
+            sx={{ width: isDesktop ? width : '100%' }}
         />
     );
 };
