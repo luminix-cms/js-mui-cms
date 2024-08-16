@@ -14,7 +14,7 @@ import Layout from '../views/Layout/Layout';
 import ModelIndex from '../views/ModelIndex';
 import ModelItem from '../views/ModelItem';
 
-import Actions from '../components/ModelIndex/Actions';
+import StaticActions from '../components/ModelIndex/StaticActions';
 import AppBar from '../components/Layout/AppBar';
 import BackButton from '../components/Layout/BackButton';
 import Drawer from '../components/Layout/Drawer';
@@ -45,11 +45,12 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 
 import { CmsPluginOptions } from '../types/Plugin';
-import { MassAction } from '../types/Table';
+import { StaticAction, MassAction, InstanceAction } from '../types/Table';
 import { MenuItem } from '../types/Menu';
 //import { DisplayableTab } from './types/Tabs';
 
-import { massActionHandlers } from '../support/massActions';
+import { instanceActionHandlers, massActionHandlers } from '../support/handlers';
+import InstanceActions from '../components/ModelIndex/InstanceActions';
 
 let app: AppFacade;
 
@@ -85,6 +86,7 @@ class CmsPlugin extends Plugin {
         this.bootRoutes();
         this.bootMenu();
         this.bootMassActions();
+        this.bootInstanceActions();
         if (this.options.applyUserDefaults ?? true) {
             this.bootDefaultUserModifiers();
         }
@@ -142,13 +144,14 @@ class CmsPlugin extends Plugin {
             'Layout.SearchBar': SearchBar,
             'Layout.BackButton': BackButton,
 
-            'ModelIndex.Actions': Actions,
             'ModelIndex.Filter': Filter,
+            'ModelIndex.InstanceActions': InstanceActions,
             'ModelIndex.MassActions': MassActions,
             'ModelIndex.Pagination': Pagination,
             'ModelIndex.PaginationDetails': PaginationDetails,
             'ModelIndex.PerPageSwitch': PerPageSwitch,
             'ModelIndex.Sort': Sort,
+            'ModelIndex.StaticActions': StaticActions,
             'ModelIndex.Table': Table,
             'ModelIndex.Table.TableHead': TableHead,
             'ModelIndex.Table.TableBody': TableBody,
@@ -265,6 +268,40 @@ class CmsPlugin extends Plugin {
 
         }, 0);
 
+    }
+
+    bootInstanceActions() {
+
+        app.make('cms').reducer('instanceActions', (actions: InstanceAction[], ModelClass: typeof Model, currentTab: string) => {
+            const defaultActions: InstanceAction[] = [];
+
+            const { softDeletes } = ModelClass.getSchema();
+
+            if (currentTab !== 'trashed') {
+                defaultActions.push({
+                    label: softDeletes ? 'Send to trash' : 'Delete permanently',
+                    callback: instanceActionHandlers.delete(ModelClass),
+                });
+            } else {
+                defaultActions.push({
+                    key: 'restore',
+                    label: 'Restore',
+                    callback: instanceActionHandlers.restore(ModelClass),
+                });
+
+                defaultActions.push({
+                    key: 'forceDelete',
+                    label: 'Delete permanently',
+                    callback: instanceActionHandlers.forceDelete(ModelClass),
+                });
+            }
+
+            return [
+                ...actions,
+                ...defaultActions,
+            ];
+
+        }, 0);
     }
 
 }

@@ -25,7 +25,7 @@ const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props
 
     const {
 
-        ['ModelIndex.Actions']: Actions,
+        ['ModelIndex.StaticActions']: StaticActions,
     } = app('cms').getComponents();
 
     const renderedChildren = React.isValidElement(children) 
@@ -45,7 +45,7 @@ const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props
                             })}
                         </Typography>
                         <br />
-                        <Actions />
+                        <StaticActions />
                     </TableCell>
                 </TableRow>
             )}

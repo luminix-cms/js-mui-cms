@@ -5,9 +5,15 @@ import { NotifyFunction } from './Notifications';
 import { DialogFunction } from './Dialog';
 import { TFunction } from 'i18next';
 
-export type Action = {
+export type StaticAction = {
     label: string;
-    callback: () => void;
+    callback: (e: ActionCallbackEvent) => void;
+    icon?: React.ReactNode;
+}
+
+export type InstanceAction = {
+    label: string;
+    callback: (e: InstanceActionCallbackEvent) => void;
     icon?: React.ReactNode;
 }
 
@@ -17,13 +23,20 @@ export type MassAction = {
     callback: (e: MassActionCallbackEvent) => void;
 };
 
-export type MassActionCallbackEvent = {
-    selected: Collection<Model>;
+export type ActionCallbackEvent = {
     navigate: (path: string) => void;
     refresh: () => void;
     notify: NotifyFunction;
     dialog: DialogFunction;
     t: TFunction;
+}
+
+export type InstanceActionCallbackEvent = ActionCallbackEvent & {
+    item: Model;
+};
+
+export type MassActionCallbackEvent = ActionCallbackEvent & {
+    selected: Collection<Model>;
 };
 
 export type Column = TableCellProps & {

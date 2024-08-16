@@ -26,7 +26,7 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-import { Action } from '../../types/Table';
+import { StaticAction } from '../../types/Table';
 import { ActionsProps } from '../../types/PropTypes';
 import { useTranslation } from 'react-i18next';
 
@@ -69,13 +69,13 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
         app('cms'),
         `modelActions`,
         DEFAULT_ACTIONS
-    ) as Action[];
+    ) as StaticAction[];
 
     const actions = useApplyReducers(
         app('cms'),
         `model${_.upperFirst(_.camelCase(Model.getSchemaName()))}Actions`,
         preActions
-    ) as Action[];
+    ) as StaticAction[];
 
     const handleSplitButtonClick = (callback: (navigate: NavigateFunction) => void,) => {
         callback(navigate);

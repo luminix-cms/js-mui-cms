@@ -5,7 +5,7 @@ import { model, Model, Reducible } from '@luminix/core';
 import { RouteObject } from 'react-router-dom';
 import { MenuItem } from '../types/Menu';
 import { ModelFormProps } from '@luminix/react/dist/types/Form';
-import { MassAction } from '../types/Table';
+import { StaticAction, MassAction } from '../types/Table';
 
 import _ from 'lodash';
 import { ReducerCallback } from '@luminix/core/dist/types/Reducer';
@@ -44,10 +44,24 @@ class CmsFacade {
     }
 
     getMassActions(ModelClass: typeof Model, currentTab: string): MassAction[] {
-        //console.log('getting mass actions for ', _.upperFirst(_.camelCase(ModelClass.getSchemaName())));
-
         return this[`mass${_.upperFirst(_.camelCase(ModelClass.getSchemaName()))}Actions`](
             this.massActions([], ModelClass, currentTab),
+            ModelClass,
+            currentTab,
+        );
+    }
+
+    getInstanceActions(ModelClass: typeof Model, currentTab: string): StaticAction[] {
+        return this[`instance${_.upperFirst(_.camelCase(ModelClass.getSchemaName()))}Actions`](
+            this.instanceActions([], ModelClass, currentTab),
+            ModelClass,
+            currentTab,
+        );
+    }
+
+    getStaticActions(ModelClass: typeof Model, currentTab: string): StaticAction[] {
+        return this[`static${_.upperFirst(_.camelCase(ModelClass.getSchemaName()))}Actions`](
+            this.staticActions([], ModelClass, currentTab),
             ModelClass,
             currentTab,
         );

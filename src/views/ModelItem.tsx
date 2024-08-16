@@ -40,12 +40,12 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
     const Breadcrumbs = app('cms').getComponent('Breadcrumbs');
 
     React.useEffect(() => {
-        if (id === 'create') {
+        if (create) {
             setItem(new Model());
         } else {
             Model.find(id!).then((model) => setItem(model ?? undefined));
         }
-    }, [id, Model]);
+    }, [id, Model, create]);
 
     const handleSuccess = React.useCallback(() => {
         notify(t(':model saved successfully', { model: Model.singular() }));

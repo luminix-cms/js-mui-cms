@@ -30,7 +30,7 @@ const ModelIndex: React.FunctionComponent = () => {
 
     const {
         Breadcrumbs,
-        ['ModelIndex.Actions']: Actions,
+        ['ModelIndex.StaticActions']: StaticActions,
         ['ModelIndex.Table']: ModelTable,
         ['ModelIndex.Table.TableBody']: ModelTableBody,
         ['ModelIndex.Table.TableHead']: ModelTableHead,
@@ -53,7 +53,7 @@ const ModelIndex: React.FunctionComponent = () => {
                         { name: Model.plural() },
                     ]}
                 />
-                <Actions variant={isDesktop ? 'default' : 'fab'} />
+                <StaticActions variant={isDesktop ? 'default' : 'fab'} />
             </Grid>
             <Grid sx={{ pb: 0 }}>
                 <Tabs />

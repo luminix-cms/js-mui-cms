@@ -20,12 +20,13 @@ class i18NextPlugin extends Plugin {
 
     register(app: AppFacade): void {
         app.once('booting', () => {
+            this.initI18Next(app.make('config'));
+
             this.translateModelNames(app.make('model'));
         });
     }
 
-    boot({ config, cms, model, forms }: AppFacades): void {
-        this.initI18Next(config);
+    boot({ cms, model, forms }: AppFacades): void {
 
         this.translateModelColumns(model, cms);
         this.translateMenuEntries(cms);
@@ -52,7 +53,8 @@ class i18NextPlugin extends Plugin {
                     prefixEscaped: ':\\b', // start with : and follow by word boundary
                     suffixEscaped: '(?:\\b)', // match with word boundary as suffix but don't capture it
                     ...this.options.interpolation,
-                }
+                },
+                debug: config.get('app.debug', false) as boolean,
             });
     }
 

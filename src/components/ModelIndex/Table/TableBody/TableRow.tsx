@@ -19,16 +19,11 @@ import { styled } from '@mui/material/styles';
 import MuiTableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { TableRowProps } from '../../../../types/PropTypes';
-import { Action } from '../../../../types/Table';
+import { StaticAction } from '../../../../types/Table';
 
 type MobileCellContentProps = {
     label: string;
@@ -125,60 +120,48 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
 
     const {
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
+        ['ModelIndex.InstanceActions']: InstanceActions,
     } = app('cms').getComponents();
 
-    const DEFAULT_ACTIONS = React.useMemo(() => [
-        {
-            label: `Delete ${Model.singular()}`,
-            callback: async () => {
-                const confirm = await dialog({
-                    title: 'Confirm permanent deletion',
-                    message: `Are you sure you want to ${Model.getSchema().softDeletes ? 'send to trash' : 'delete permanently'} ${Model.singular()}?`,
-                    type: 'confirm'
-                });
+    // const DEFAULT_ACTIONS = React.useMemo(() => [
+    //     {
+    //         label: `Delete ${Model.singular()}`,
+    //         callback: async () => {
+    //             const confirm = await dialog({
+    //                 title: 'Confirm permanent deletion',
+    //                 message: `Are you sure you want to ${Model.getSchema().softDeletes ? 'send to trash' : 'delete permanently'} ${Model.singular()}?`,
+    //                 type: 'confirm'
+    //             });
 
-                if (!confirm) {
-                    return;
-                }
+    //             if (!confirm) {
+    //                 return;
+    //             }
 
-                item.delete().then(() => {
-                    notify(`${Model.singular()} deleted successfully`);
-                    refresh();
-                });
-            },
-            icon: <DeleteIcon />,
-        },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    ], [Model]);
+    //             item.delete().then(() => {
+    //                 notify(`${Model.singular()} deleted successfully`);
+    //                 refresh();
+    //             });
+    //         },
+    //         icon: <DeleteIcon />,
+    //     },
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ], [Model]);
 
-    const preActions = useApplyReducers(
-        app('cms'),
-        `itemActions`,
-        DEFAULT_ACTIONS
-    ) as Action[];
+    // const preActions = useApplyReducers(
+    //     app('cms'),
+    //     `itemActions`,
+    //     DEFAULT_ACTIONS
+    // ) as Action[];
 
-    const actions = useApplyReducers(
-        app('cms'),
-        `item${_.upperFirst(_.camelCase(Model.getSchemaName()))}Actions`,
-        preActions
-    ) as Action[];
+    // const actions = useApplyReducers(
+    //     app('cms'),
+    //     `item${_.upperFirst(_.camelCase(Model.getSchemaName()))}Actions`,
+    //     preActions
+    // ) as Action[];
 
     const {
         isSelected, handleSelectToggle,
     } = useSelection();
-
-    /* * */
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const open = Boolean(anchorEl);
-
-    const handleOpenFilter = (event: any) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleCloseFilter = () => {
-        setAnchorEl(null);
-    };
 
     return (
         <MuiTableRow
@@ -225,34 +208,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                 </TableCell>
             )}
             <ShrinkedCell>
-                <IconButton
-                    aria-describedby="model-item-actions"
-                    aria-label="filter"
-                    onClick={handleOpenFilter}
-                >
-                    <MoreVertIcon />
-                </IconButton>
-
-                <Menu
-                    id="model-item-actions"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleCloseFilter}
-                    MenuListProps={{
-                        'aria-labelledby': 'model-item-action',
-                    }}
-                >
-                    {actions.map((action) => (
-                        <MenuItem
-                            key={action.label}
-                            onClick={action.callback}
-                            sx={{ px: 1, gap: .75 }}
-                        >
-                            {action.icon}
-                            {action.label}
-                        </MenuItem>
-                    ))}
-                </Menu>
+                <InstanceActions item={item} />
             </ShrinkedCell>
         </MuiTableRow>
     );
