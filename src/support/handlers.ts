@@ -127,8 +127,8 @@ export const instanceActionHandlers: InstanceActionHandlers = {
     delete: (ModelClass) => async ({ item, notify, dialog, refresh, t }) => {
 
         const action = ModelClass.getSchema().softDeletes
-            ? 'send to trash'
-            : 'delete permanently';
+            ? 'send :model “:label” to trash'
+            : 'delete :model “:label” permanently';
 
         const afterMath = ModelClass.getSchema().softDeletes
             ? 'sent to trash'
@@ -138,8 +138,9 @@ export const instanceActionHandlers: InstanceActionHandlers = {
             title: ModelClass.getSchema().softDeletes
                 ? t('Confirm send to trash')
                 : t('Confirm delete permanently'),
-            message: t(`Are you sure you want to ${action} :model?`, {
-                model: _.lowerFirst(ModelClass.singular())
+            message: t(`Are you sure you want to ${action}?`, {
+                model: _.lowerFirst(ModelClass.singular()),
+                label: item.getLabel(),
             }),
             type: 'confirm'
         });
@@ -192,8 +193,9 @@ export const instanceActionHandlers: InstanceActionHandlers = {
 
         const confirm = await dialog({
             title: t('Confirm permanent deletion'),
-            message: t('Are you sure you want to delete permanently :model?', {
-                model: _.lowerFirst(ModelClass.singular())
+            message: t('Are you sure you want to delete :model “:label” permanently ?', {
+                model: _.lowerFirst(ModelClass.singular()),
+                label: item.getLabel(),
             }),
             type: 'confirm'
         });
