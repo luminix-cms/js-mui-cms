@@ -169,7 +169,7 @@ const Row: React.FunctionComponent<FilterRow> = ({ index, column }) => {
                                         key={`operator_${key}_option`}
                                         value={key}
                                     >
-                                        {label}
+                                        {t(label)}
                                     </MenuItem>
                                 ))}
                             </Select>
