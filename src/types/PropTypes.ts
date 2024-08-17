@@ -7,7 +7,9 @@ import {
     TableRowProps as MuiTableRowProps,
     ThemeOptions,
     SnackbarOrigin,
-    BreadcrumbsOwnProps
+    BreadcrumbsOwnProps,
+    SnackbarProps,
+    AlertProps
 } from '@mui/material';
 
 import { ListTypeMap } from '@mui/material/List';
@@ -121,11 +123,8 @@ export type ActionsProps = {
     variant?: 'default' | 'fab',
 };
 
-export type NotificationProviderProps = {
-    children: React.ReactNode,
-    autoHideDuration?: number,
-    anchorOrigin?: SnackbarOrigin,
-    variant?: 'filled' | 'outlined' | 'standard' | string,
+export type NotificationProviderProps = SnackbarProps & {
+    variant?: AlertProps['variant'],
 };
 
 export type BreadcrumbsProps = BreadcrumbsOwnProps & {

@@ -43,13 +43,14 @@ import RecursiveMenu from '../components/RecursiveMenu';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
+import AddIcon from '@mui/icons-material/Add';
 
 import { CmsPluginOptions } from '../types/Plugin';
 import { StaticAction, MassAction, InstanceAction } from '../types/Table';
 import { MenuItem } from '../types/Menu';
 //import { DisplayableTab } from './types/Tabs';
 
-import { instanceActionHandlers, massActionHandlers } from '../support/handlers';
+import { instanceActionHandlers, massActionHandlers, staticActionHandlers } from '../support/handlers';
 import InstanceActions from '../components/ModelIndex/InstanceActions';
 
 let app: AppFacade;
@@ -87,6 +88,7 @@ class CmsPlugin extends Plugin {
         this.bootMenu();
         this.bootMassActions();
         this.bootInstanceActions();
+        this.bootStaticActions();
         if (this.options.applyUserDefaults ?? true) {
             this.bootDefaultUserModifiers();
         }
@@ -284,13 +286,11 @@ class CmsPlugin extends Plugin {
                 });
             } else {
                 defaultActions.push({
-                    key: 'restore',
                     label: 'Restore',
                     callback: instanceActionHandlers.restore(ModelClass),
                 });
 
                 defaultActions.push({
-                    key: 'forceDelete',
                     label: 'Delete permanently',
                     callback: instanceActionHandlers.forceDelete(ModelClass),
                 });
@@ -301,6 +301,23 @@ class CmsPlugin extends Plugin {
                 ...defaultActions,
             ];
 
+        }, 0);
+    }
+
+    bootStaticActions() {
+        app.make('cms').reducer('staticActions', (actions: StaticAction[], ModelClass: typeof Model, currentTab: string) => {
+            if (currentTab === 'trashed') {
+                return actions;
+            }
+            console.log('adding actions');
+            return [
+                ...actions,
+                {
+                    label: 'Create',
+                    callback: staticActionHandlers.create(ModelClass),
+                    icon: <AddIcon />,
+                },
+            ];
         }, 0);
     }
 

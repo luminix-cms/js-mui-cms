@@ -35,7 +35,7 @@ const TableToolbar: React.FunctionComponent = () => {
                 <Stack
                     direction={{ xs: 'column', [breakpoint]: 'row' }}
                     justifyContent="space-between"
-                    spacing={2}
+                    spacing={1}
                 >
                     <Stack
                         direction="row"
@@ -44,21 +44,21 @@ const TableToolbar: React.FunctionComponent = () => {
                     >
                         <Filter />
                         {!isDesktop && <Sort />}
-                        <MassActions
-                            sx={{ marginLeft: 'auto' }}
-                        />
                     </Stack>
-                    <Stack
-                        direction="row"
-                        alignItems="center"
-                        justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
-                        spacing={2}
-                    >
-                        <Pagination
-                            variant="compact"
-                            justifyContent={{ xs: 'end' }}
-                        />
-                    </Stack>
+                    {isDesktop && (
+                        <Stack
+                            direction="row"
+                            alignItems="center"
+                            justifyContent={{ xs: 'center', [breakpoint]: 'flex-end' }}
+                            rowGap={2}
+                        >
+                            <Pagination
+                                variant="compact"
+                                justifyContent="end"
+                            />
+                        </Stack>
+                    )}
+                    <MassActions />
                 </Stack>
                 
             </TableCell>

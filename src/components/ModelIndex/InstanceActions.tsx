@@ -1,26 +1,19 @@
 import React from 'react';
-
+import { app, Model } from '@luminix/core';
+import { useSearchParams } from 'react-router-dom';
 
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 import { InstanceAction } from '../../types/Table';
-import { app, Model } from '@luminix/core';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import useNotify from '../../hooks/useNotify';
-import useDialog from '../../hooks/useDialog';
-import { useTranslation } from 'react-i18next';
-import { usePagination } from '@luminix/react';
+import useActionEvent from '../../hooks/useActionEvent';
 
 const InstanceActions = ({ item }: { item: Model }) => {
 
-    const { refresh } = usePagination();
-    const { t } = useTranslation();
-    const notify = useNotify();
-    const dialog = useDialog();
-    const navigate = useNavigate();
+    const e = useActionEvent();
 
     const [searchParams] = useSearchParams();
 
@@ -34,10 +27,10 @@ const InstanceActions = ({ item }: { item: Model }) => {
 
     const open = Boolean(anchorEl);
 
-    const handleOpenFilter = (event: any) => {
+    const handleOpen = (event: any) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleCloseFilter = () => {
+    const handleClose = () => {
         setAnchorEl(null);
     };
 
@@ -46,7 +39,7 @@ const InstanceActions = ({ item }: { item: Model }) => {
             <IconButton
                 aria-describedby="model-item-actions"
                 aria-label="filter"
-                onClick={handleOpenFilter}
+                onClick={handleOpen}
             >
                 <MoreVertIcon />
             </IconButton>
@@ -55,7 +48,7 @@ const InstanceActions = ({ item }: { item: Model }) => {
                 id="model-item-actions"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleCloseFilter}
+                onClose={handleClose}
                 MenuListProps={{
                     'aria-labelledby': 'model-item-action',
                 }}
@@ -63,14 +56,13 @@ const InstanceActions = ({ item }: { item: Model }) => {
                 {actions.map((action) => (
                     <MenuItem
                         key={action.label}
-                        onClick={() => action.callback({
-                            item,
-                            refresh,
-                            notify,
-                            dialog,
-                            navigate,
-                            t,
-                        })}
+                        onClick={() => {
+                            action.callback({
+                                item,
+                                ...e,
+                            });
+                            handleClose();
+                        }}
                         sx={{ px: 1, gap: .75 }}
                     >
                         {action.icon}

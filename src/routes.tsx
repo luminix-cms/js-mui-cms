@@ -16,6 +16,7 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
                 variant={window.matchMedia('(prefers-color-scheme: dark)').matches
                     ? 'standard'
                     : 'filled'}
+                autoHideDuration={9999990}
             >
                 <DialogProvider>
                     <LayoutProvider>

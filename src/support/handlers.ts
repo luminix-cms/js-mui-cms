@@ -131,8 +131,8 @@ export const instanceActionHandlers: InstanceActionHandlers = {
             : 'delete :model “:label” permanently';
 
         const afterMath = ModelClass.getSchema().softDeletes
-            ? 'sent to trash'
-            : 'deleted';
+            ? 'sent :model “:label”  to trash'
+            : 'deleted :model “:label”';
 
         const confirm = await dialog({
             title: ModelClass.getSchema().softDeletes
@@ -152,8 +152,9 @@ export const instanceActionHandlers: InstanceActionHandlers = {
         try {
             await item.delete();
 
-            notify(t(`Successfully ${afterMath} :model`, {
-                model: _.lowerFirst(ModelClass.singular())
+            notify(t(`Successfully ${afterMath}`, {
+                model: _.lowerFirst(ModelClass.singular()),
+                label: item.getLabel()
             }));
 
             refresh();
@@ -166,8 +167,9 @@ export const instanceActionHandlers: InstanceActionHandlers = {
 
         const confirm = await dialog({
             title: t('Confirm restore'),
-            message: t('Are you sure you want to restore :model?', {
-                model: _.lowerFirst(ModelClass.singular())
+            message: t('Are you sure you want to restore :model “:label”?', {
+                model: _.lowerFirst(ModelClass.singular()),
+                label: item.getLabel(),
             }),
             type: 'confirm'
         });
@@ -179,8 +181,9 @@ export const instanceActionHandlers: InstanceActionHandlers = {
         try {
             await item.restore();
 
-            notify(t('Successfully restored :model', {
-                model: _.lowerFirst(ModelClass.singular())
+            notify(t('Successfully restored :model “:label”', {
+                model: _.lowerFirst(ModelClass.singular()),
+                label: item.getLabel(),
             }));
 
             refresh();
@@ -207,8 +210,9 @@ export const instanceActionHandlers: InstanceActionHandlers = {
         try {
             await item.forceDelete();
 
-            notify(t('Successfully deleted :model', {
-                model: _.lowerFirst(ModelClass.singular())
+            notify(t('Successfully deleted :model “:label”', {
+                model: _.lowerFirst(ModelClass.singular()),
+                label: item.getLabel(),
             }));
 
             refresh();

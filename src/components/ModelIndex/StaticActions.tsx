@@ -2,10 +2,9 @@ import _ from 'lodash';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useNavigate, NavigateFunction } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import { app } from '@luminix/core';
-import { useApplyReducers } from '@luminix/react';
 
 import useCurrentModel from '../../hooks/useCurrentModel';
 
@@ -23,12 +22,13 @@ import MuiSpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 
-import AddIcon from '@mui/icons-material/Add';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { StaticAction } from '../../types/Table';
 import { ActionsProps } from '../../types/PropTypes';
-import { useTranslation } from 'react-i18next';
+import useDisplaceNotifications from '../../hooks/useDisplaceNotifications';
+import useIsDesktopMode from '../../hooks/useIsDesktopMode';
+import useActionEvent from '../../hooks/useActionEvent';
 
 const Fab = styled(MuiFab)(({ theme }) => ({
     position: 'fixed',
@@ -42,44 +42,32 @@ const SpeedDial = styled(MuiSpeedDial)(({ theme }) => ({
     right: theme.spacing(2),
 }));
 
-const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' }) => {
+const StaticActions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' }) => {
 
     const Model = useCurrentModel();
-
-    const navigate = useNavigate();
-
+    const isDesktop = useIsDesktopMode();
+    const [searchParams] = useSearchParams();
+    const currentTab = searchParams.get('tab') ?? 'all';
+    
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
     const [selectedIndex, setSelectedIndex] = React.useState(0);
-    const { t } = useTranslation();
 
-    const DEFAULT_ACTIONS = React.useMemo(() => [
-        {
-            //label: t(`Create ${Model.singular()}`),
+    const e = useActionEvent();
 
-            label: t('Create :model', { model: Model.singular() }),
-            callback: (navigate: NavigateFunction) => {
-                navigate(`/${_.kebabCase(Model.plural())}/create`);
-            },
-            icon: <AddIcon />,
-        },
-    ], [Model, t]);
+    const actions: StaticAction[] = React.useMemo(() => {
+        return app('cms').getStaticActions(Model, currentTab);
+    }, [Model, currentTab]);
 
-    const preActions = useApplyReducers(
-        app('cms'),
-        `modelActions`,
-        DEFAULT_ACTIONS
-    ) as StaticAction[];
+    useDisplaceNotifications(
+        variant === 'fab' && actions.length > 0
+            ? (isDesktop ? 12 : 10)
+            : false
+    );
 
-    const actions = useApplyReducers(
-        app('cms'),
-        `model${_.upperFirst(_.camelCase(Model.getSchemaName()))}Actions`,
-        preActions
-    ) as StaticAction[];
-
-    const handleSplitButtonClick = (callback: (navigate: NavigateFunction) => void,) => {
-        callback(navigate);
-    };
+    if (actions.length === 0) {
+        return null;
+    }
 
     const handleSplitMenuItemClick = (
         _: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -110,7 +98,7 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
             return ReactDOM.createPortal(
                 <Fab
                     color="primary"
-                    onClick={() => handleSplitButtonClick(actions[0].callback)}
+                    onClick={() => actions[0].callback(e)}
                 >
                     {actions[0].icon || actions[0].label.charAt(0).toUpperCase()}
                 </Fab>,
@@ -132,7 +120,7 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
                         key={action.label}
                         icon={action.icon || action.label.charAt(0).toUpperCase()}
                         tooltipTitle={action.label}
-                        onClick={() => handleSplitButtonClick(action.callback)}
+                        onClick={() => action.callback(e)}
                     />
                 ))}
             </SpeedDial>,
@@ -149,7 +137,7 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
                 ref={anchorRef}
                 aria-label={actions[selectedIndex].label}
             >
-                <Button onClick={() => handleSplitButtonClick(actions[selectedIndex].callback)}>
+                <Button onClick={() => actions[selectedIndex].callback(e)}>
                     {actions[selectedIndex].label}
                 </Button>
                 {actions.length > 1 && (
@@ -204,4 +192,4 @@ const Actions: React.FunctionComponent<ActionsProps> = ({ variant = 'default' })
     );
 };
 
-export default Actions;
+export default StaticActions;

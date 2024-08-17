@@ -30,6 +30,7 @@ const ModelIndex: React.FunctionComponent = () => {
 
     const {
         Breadcrumbs,
+        ['ModelIndex.Pagination']: Pagination,
         ['ModelIndex.StaticActions']: StaticActions,
         ['ModelIndex.Table']: ModelTable,
         ['ModelIndex.Table.TableBody']: ModelTableBody,
@@ -55,7 +56,12 @@ const ModelIndex: React.FunctionComponent = () => {
                 />
                 <StaticActions variant={isDesktop ? 'default' : 'fab'} />
             </Grid>
-            <Grid sx={{ pb: 0 }}>
+            {!isDesktop && (
+                <Grid display="flex" justifyContent="center" xs={12}>
+                    <Pagination variant="compact" />
+                </Grid>
+            )}
+            <Grid xs={12} sx={{ pb: 0 }}>
                 <Tabs />
             </Grid>
             <Grid xs={12} sx={{ pt: 0 }}>

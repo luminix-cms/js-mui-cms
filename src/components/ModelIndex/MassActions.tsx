@@ -1,7 +1,5 @@
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { usePagination } from '@luminix/react';
 
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -12,20 +10,15 @@ import Stack, { StackProps } from '@mui/material/Stack';
 
 import useSelection from '../../hooks/useSelection';
 import useTable from '../../hooks/useTable';
-import useNotify from '../../hooks/useNotify';
-import useDialog from '../../hooks/useDialog';
 import { useTranslation } from 'react-i18next';
-
+import useActionEvent from '../../hooks/useActionEvent';
 
 function MassActions(props: StackProps): React.ReactNode {
     const [action, setAction] = React.useState('');
 
     const { selected } = useSelection();
-    const { refresh } = usePagination();
     const { t } = useTranslation();
-    const notify = useNotify();
-    const dialog = useDialog();
-    const navigate = useNavigate();
+    const e = useActionEvent();
 
     const { massActions } = useTable();
 
@@ -89,11 +82,7 @@ function MassActions(props: StackProps): React.ReactNode {
                         .find((a) => a.key === action)
                         ?.callback({
                             selected,
-                            notify,
-                            refresh,
-                            navigate,
-                            dialog,
-                            t,
+                            ...e,
                         });
                 }}
             >

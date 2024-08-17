@@ -72,6 +72,8 @@ export type NotificationContextValue = {
     dismissNotification: () => void,
     notifications: Notification[],
     current?: Notification,
+    displacement: string,
+    setDisplacement: React.Dispatch<React.SetStateAction<string>>,
 };
 
 export type DialogContextValue = {

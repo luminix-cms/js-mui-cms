@@ -1,3 +1,4 @@
+import { AlertProps } from "@mui/material";
 import React from "react";
 
 
@@ -8,7 +9,7 @@ export type NotificationAction = {
 
 export type Notification = {
     message: React.ReactNode;
-    severity?: 'info' | 'success' | 'warning' | 'error' | string;
+    severity?: AlertProps['severity']; // 'info' | 'success' | 'warning' | 'error' | string;
     actions?: NotificationAction[];
     title?: React.ReactNode;
 };

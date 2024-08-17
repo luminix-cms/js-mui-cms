@@ -12,6 +12,9 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
 
+import { useTheme } from '@mui/material/styles';
+import useIsDesktopMode from '../hooks/useIsDesktopMode';
+
 
 const notifications = collect([] as Notification[]);
 
@@ -28,11 +31,21 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
     autoHideDuration = 6000,
     variant,
     anchorOrigin,
+    sx,
+    ...props
 }) => {
 
     const notificationsState = useCollection(notifications);
 
+    const isDesktop = useIsDesktopMode();
+    const theme = useTheme();
+
+    const defaultDisplacement = theme.spacing(isDesktop ? 3 : 1);
+
     const [current, setCurrent] = React.useState<Notification>();
+    const [displacement, setDisplacement] = React.useState(defaultDisplacement);
+
+    const { vertical = 'bottom' } = anchorOrigin || {};
 
     const handleClose = (
         _event?: React.SyntheticEvent | Event,
@@ -62,6 +75,8 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
             dismissNotification: handleClose,
             notifications: notificationsState.all(),
             current,
+            displacement,
+            setDisplacement,
         }}>
             {children}
             <Snackbar 
@@ -69,14 +84,17 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
                 autoHideDuration={autoHideDuration}
                 anchorOrigin={anchorOrigin}
                 onClose={handleClose}
+                sx={{
+                    ...sx,
+                    [vertical]: `${displacement} !important`,
+                }}
+                {...props}
             >
                 {current && (
                     <Alert
                         onClose={handleClose}
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        severity={current.severity as any}
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        variant={variant as any}
+                        severity={current.severity}
+                        variant={variant}
                         sx={{ width: '100%' }}
                         action={current.actions && [
                             ...current.actions.map(({ label, callback }, index) => (

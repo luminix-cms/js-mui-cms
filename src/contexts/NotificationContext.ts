@@ -7,6 +7,8 @@ const NotificationContext = React.createContext<NotificationContextValue>({
     dismissNotification: () => {},
     notifications: [],
     current: undefined,
+    displacement: '8px',
+    setDisplacement: () => {},
 });
 
 export default NotificationContext;
