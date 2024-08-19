@@ -13,6 +13,7 @@ const ModelFilterContext = React.createContext<ModelFilterContextValue>({
     setColumnsFilter: () => {},
     searchParams: new URLSearchParams(), 
     setSearchParams: () => {},
+    handleApplyFilters: () => {},
     clearSearchParams: () => {},
     clearFilters: () => {},
 });

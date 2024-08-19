@@ -4,6 +4,7 @@ export type FilterColumn = {
     key: string,
     label: string,
     type: string,
+    nullable: boolean,
     is_relation: boolean,
 }
 
@@ -12,7 +13,12 @@ export type FilteredColumn = {
     operator: string,
     type: string,
     value: any,
+    nullable: boolean,
     is_relation: boolean,
+}
+
+export type FilterContent = {
+    dialog?: boolean, 
 }
 
 export type FilterRow = {

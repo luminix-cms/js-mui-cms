@@ -48,6 +48,7 @@ export type ModelFilterContextValue = {
     setColumnsFilter: React.Dispatch<React.SetStateAction<FilteredColumn[]>>,
     searchParams: URLSearchParams, 
     setSearchParams: SetURLSearchParams,
+    handleApplyFilters: () => void,
     clearSearchParams: () => void,
     clearFilters: () => void,
 };

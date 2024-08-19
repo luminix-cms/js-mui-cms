@@ -8,6 +8,7 @@ import { FilterColumn, FilteredColumn } from '../../../types/Filter';
 
 import { searchParamsToObject } from '../../searchParams';
 import { fromIsoString } from '../../date';
+import { trim } from '../../string';
 
 /**
  * Translates the received parameters object from url 'searchParams', 
@@ -86,12 +87,17 @@ export const translateColumnsFromQuery = (columns: FilterColumn[], searchParams:
                             break;
                         }
                     }
+
+                    if ([ 'startsWith', 'endsWith', 'like' ].includes(operator)) {
+                        _value = trim(_value, '%');
+                    }
                     
                     filteredColumns.push({
                         key: column.key, 
                         operator, 
                         type: column.type, 
                         value: _value, 
+                        nullable: column.nullable,
                         is_relation: column.is_relation, 
                     });
                 });
@@ -120,7 +126,7 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
 
         let operation = _.upperFirst(operator);
 
-        if ([ 'equals' ].includes(operation.toLowerCase())) {
+        if ([ 'equals' ].includes(_.camelCase(operator))) {
             operation = '';
         }
 
@@ -128,6 +134,12 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
             value.forEach((v, i) => {
 
                 let _value = v;
+
+                switch (operator) {
+                    case 'startsWith': _value = `${v}%`; break;
+                    case 'endsWith': _value = `%${v}`; break;
+                    case 'like': _value = `%${v}%`; break;
+                }
 
                 switch (FilterFacade.getInputType(type)) {
                     case 'datetime-local': {
@@ -141,6 +153,12 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
         } else {
             
             let _value = value;
+
+            switch (operator) {
+                case 'startsWith': _value = `${value}%`; break;
+                case 'endsWith': _value = `%${value}`; break;
+                case 'like': _value = `%${value}%`; break;
+            }
 
             switch (FilterFacade.getInputType(type)) {
                 case 'datetime-local': {

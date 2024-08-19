@@ -22,6 +22,8 @@ export default function useRow( index: number, column: FilteredColumn ) {
     const [operator, setOperator] = React.useState(column.operator);
     const [type, setType] = React.useState(column.type);
     const [value, setValue] = React.useState(column.value);
+    
+    const [nullable, setNullable] = React.useState(column.nullable);
     const [isRelation, setIsRelation] = React.useState(column.is_relation);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,19 +39,19 @@ export default function useRow( index: number, column: FilteredColumn ) {
         const befittingColumn = columns.find((c) => c.key === newKey);
         const newType = befittingColumn?.type ?? 'text';
 
-        if (key !== newKey) {
+        const is_nullable = befittingColumn?.nullable ?? false;
+        const is_relation = befittingColumn?.is_relation ?? false;
 
-            const is_relation = befittingColumn?.is_relation ?? false;
-
-            if (is_relation) {
-                setOperator('relation');
-                setValue([]);
-            } else if (isRelation) {
-                setOperator('equals');
-            }
-
-            setIsRelation(is_relation);
+        if (is_relation) {
+            setOperator('relation');
+            setValue([]);
+        } else if (isRelation) {
+            setOperator('equals');
         }
+
+        setIsRelation(is_relation);
+
+        setNullable(is_nullable);
 
         if (newType !== type) {
             if ([ 'boolean' ].includes(FilterFacade.getInputType(newType))) {
@@ -116,6 +118,7 @@ export default function useRow( index: number, column: FilteredColumn ) {
                         operator,
                         type,
                         value,
+                        nullable,
                         is_relation: isRelation,
                     };
                 }
@@ -125,7 +128,7 @@ export default function useRow( index: number, column: FilteredColumn ) {
             return newColumns;
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ key, operator, type, value, isRelation ]);
+    }, [ key, operator, type, value, nullable, isRelation ]);
 
     return {
         columns, 
@@ -133,6 +136,7 @@ export default function useRow( index: number, column: FilteredColumn ) {
         operator, setOperator,
         type, setType,
         value, setValue,
+        nullable, setNullable,
         isRelation, setIsRelation,
         handleKey,
         handleOperator,

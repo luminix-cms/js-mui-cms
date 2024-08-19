@@ -19,11 +19,6 @@ export const loadRelationOptions = async (
     const newOptionsLength = newOptions.length;
     const loadedLength = loadedOptions.length;
 
-    console.log({
-        newOptionsLength,
-        loadedLength,
-    });
-
     const perPage = 15;
 
     if ((newOptionsLength + loadedLength) > perPage) {

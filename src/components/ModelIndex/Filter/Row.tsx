@@ -100,7 +100,7 @@ const Row: React.FunctionComponent<FilterRow> = ({ index, column }) => {
                         <FormControl sx={{
                             width: !isDesktop 
                                 ? `calc(100% - ${isBoolean ? 88 : 44}px)` 
-                                : 165,
+                                : 195,
                         }} >
                             <InputLabel 
                                 id="filter-column-select-label" 
@@ -112,6 +112,7 @@ const Row: React.FunctionComponent<FilterRow> = ({ index, column }) => {
                                 labelId="filter-column-select-label"
                                 id="filter-column-select"
                                 value={key}
+                                label={t('Column')}
                                 onChange={handleKey}
                                 size="small"
                             >
@@ -120,7 +121,7 @@ const Row: React.FunctionComponent<FilterRow> = ({ index, column }) => {
                                         key={`column_${key}_option`}
                                         value={key}
                                     >
-                                        {label}
+                                        {t(label)}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -149,7 +150,7 @@ const Row: React.FunctionComponent<FilterRow> = ({ index, column }) => {
                         <FormControl sx={{
                             width: !isDesktop 
                                 ? '100%' 
-                                : 135,
+                                : 147.5,
                         }}  >
                             <InputLabel 
                                 id="filter-operator-select-label"
@@ -161,6 +162,7 @@ const Row: React.FunctionComponent<FilterRow> = ({ index, column }) => {
                                 labelId="filter-operator-select-label"
                                 id="filter-operator-select"
                                 value={operator}
+                                label={t('Operator')}
                                 onChange={handleOperator}
                                 size="small"
                             >

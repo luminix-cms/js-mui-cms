@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
 import { app } from '@luminix/core';
@@ -10,18 +11,26 @@ import useCurrentModel from '../../hooks/useCurrentModel';
 
 import Badge from '@mui/material/Badge';
 import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
+
+import CloseIcon from '@mui/icons-material/Close';
 
 import Content from './Filter/Content';
 
 import { FilterColumn, FilteredColumn } from '../../types/Filter';
 
 import { searchParamsToObject } from '../../support/searchParams';
-import { translateColumnsFromQuery } from '../../support/ModelIndex/Filter/searchParams';
+import { translateColumnsFromQuery, translateColumnsToQuery } from '../../support/ModelIndex/Filter/searchParams';
 
 const Filter: React.FunctionComponent = () => {
+
+    const { t } = useTranslation();
 
     const FilterFacade = app('filter');
 
@@ -49,6 +58,14 @@ const Filter: React.FunctionComponent = () => {
         setTimeout(() => {
             setColumnsFilter([]);
         }, 300);
+    };
+
+    const handleApplyFilters = () => {
+        clearSearchParams();
+
+        const searchParams = translateColumnsToQuery(columnsFilter);
+
+        setSearchParams(searchParams, { replace: true });
     };
 
     const clearSearchParams = () => {
@@ -85,6 +102,7 @@ const Filter: React.FunctionComponent = () => {
                 anchorEl, setAnchorEl,
                 columnsFilter, setColumnsFilter, 
                 searchParams, setSearchParams,
+                handleApplyFilters, 
                 clearSearchParams,
                 clearFilters,
             }} 
@@ -124,7 +142,37 @@ const Filter: React.FunctionComponent = () => {
                         onClose={handleCloseFilter}
                         fullWidth
                     >
-                        <Content />
+                        <DialogTitle>
+                            {t('Filter :model', { model: Model.plural() })}
+
+                            <IconButton
+                                onClick={handleCloseFilter}
+                                sx={{ position: 'absolute', right: 8, top: 8 }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </DialogTitle>
+                        
+                        <DialogContent dividers >
+                            <Content dialog />
+                        </DialogContent>
+
+                        <DialogActions>
+                            <Button 
+                                onClick={clearFilters} 
+                                sx={{ mr: 'auto' }} 
+                            >
+                                {t('Clear')}
+                            </Button>
+
+                            <Button
+                                variant="contained"
+                                onClick={handleApplyFilters}
+                                disabled={FilterFacade.checkIfCanApplyFilters(columnsFilter)}
+                            >
+                                {t('Apply')}
+                            </Button>
+                        </DialogActions>
                     </Dialog>
                 )
             }

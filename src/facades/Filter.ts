@@ -49,11 +49,28 @@ class FilterFacade {
                         return false;
                     }
                 }
-                if ([ 'number', 'date' ].includes(this.getInputType(column.type))) {
-                    if ([ 'like', 'notLike' ].includes(operator)) {
+
+                if ([ 'text' ].includes(this.getInputType(column.type))) {
+                    if ([ 
+                        'greaterThan', 'greaterThanOrEquals', 
+                        'lessThan', 'lessThanOrEquals', 
+                        'between', 'notBetween',
+                    ].includes(operator)) {
                         return false;
                     }
                 }
+                if ([ 'number', 'date', 'datetime-local', 'boolean' ].includes(this.getInputType(column.type))) {
+                    if ([ 'like' ].includes(operator)) {
+                        return false;
+                    }
+                }
+
+                if (!column.nullable) {
+                    if ([ 'null', 'notNull' ].includes(operator)) {
+                        return false;
+                    }
+                }
+
                 return operator;
             })
             .map((operator) => {
@@ -61,14 +78,14 @@ class FilterFacade {
                 let label = operator;
 
                 switch (operator) {
-                    case 'equals': label = '=='; break;
+                    case 'equals': label = '='; break;
                     case 'notEquals': label = '!='; break;
                     case 'greaterThan': label = '>'; break;
                     case 'greaterThanOrEquals': label = '>='; break;
                     case 'lessThan': label = '<'; break;
                     case 'lessThanOrEquals': label = '<='; break;
                     //
-                    default: break;
+                    default: label = _.startCase(label); break;
                 }
 
                 return {
@@ -83,29 +100,34 @@ class FilterFacade {
         const { attributes = [], relations = {} } = ModelClass.getSchema();
 
         return [
-            ...attributes.filter((attribute) => !attribute.hidden).map((attribute) => {
-    
-                let type = attribute.phpType ?? 'string';
-    
-                if (!_.isNull(attribute.cast) && !_.isEmpty(attribute.cast)) {
-                    type = attribute.cast;
-                }
-    
-                return {
-                    key: attribute.name,
-                    label: _.upperFirst(attribute.name).replaceAll('_', ' '),
-                    type,
-                    is_relation: false,
-                };
-            }),
+            ...attributes.filter((attribute) => {
+                return !attribute.hidden && !attribute.appended;
+            })
+                .map((attribute) => {
+        
+                    let type = attribute.phpType ?? 'string';
+        
+                    if (!_.isNull(attribute.cast) && !_.isEmpty(attribute.cast)) {
+                        type = attribute.cast;
+                    }
+        
+                    return {
+                        key: attribute.name,
+                        label: _.startCase(attribute.name),
+                        type,
+                        nullable: attribute.nullable,
+                        is_relation: false,
+                    };
+                }),
             // TODO: review typing of 'acc' 
             ...Object.entries(relations ?? {}).reduce((acc, [ key ]) => {
                 return [
                     ...acc,
                     {
                         key: key,
-                        label: _.upperFirst(key).replaceAll('_', ' '),
+                        label: _.startCase(key),
                         type: 'autocomplete',
+                        nullable: false,
                         is_relation: true,
                     }
                 ]
