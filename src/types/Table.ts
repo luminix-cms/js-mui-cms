@@ -6,12 +6,14 @@ import { DialogFunction } from './Dialog';
 import { TFunction } from 'i18next';
 
 export type StaticAction = {
+    key?: string;
     label: string;
     callback: (e: ActionCallbackEvent) => void;
     icon?: React.ReactNode;
 }
 
 export type InstanceAction = {
+    key?: string;
     label: string;
     callback: (e: InstanceActionCallbackEvent) => void;
     icon?: React.ReactNode;

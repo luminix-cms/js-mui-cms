@@ -131,7 +131,7 @@ export const instanceActionHandlers: InstanceActionHandlers = {
             : 'delete :model “:label” permanently';
 
         const afterMath = ModelClass.getSchema().softDeletes
-            ? 'sent :model “:label”  to trash'
+            ? 'sent :model “:label” to trash'
             : 'deleted :model “:label”';
 
         const confirm = await dialog({
@@ -153,7 +153,7 @@ export const instanceActionHandlers: InstanceActionHandlers = {
             await item.delete();
 
             notify(t(`Successfully ${afterMath}`, {
-                model: _.lowerFirst(ModelClass.singular()),
+                model: ModelClass.singular(),
                 label: item.getLabel()
             }));
 
@@ -182,7 +182,7 @@ export const instanceActionHandlers: InstanceActionHandlers = {
             await item.restore();
 
             notify(t('Successfully restored :model “:label”', {
-                model: _.lowerFirst(ModelClass.singular()),
+                model: ModelClass.singular(),
                 label: item.getLabel(),
             }));
 
@@ -196,7 +196,7 @@ export const instanceActionHandlers: InstanceActionHandlers = {
 
         const confirm = await dialog({
             title: t('Confirm permanent deletion'),
-            message: t('Are you sure you want to delete :model “:label” permanently ?', {
+            message: t('Are you sure you want to delete :model “:label” permanently?', {
                 model: _.lowerFirst(ModelClass.singular()),
                 label: item.getLabel(),
             }),
@@ -211,7 +211,7 @@ export const instanceActionHandlers: InstanceActionHandlers = {
             await item.forceDelete();
 
             notify(t('Successfully deleted :model “:label”', {
-                model: _.lowerFirst(ModelClass.singular()),
+                model: ModelClass.singular(),
                 label: item.getLabel(),
             }));
 

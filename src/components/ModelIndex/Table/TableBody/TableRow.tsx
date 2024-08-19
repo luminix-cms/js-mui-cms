@@ -4,26 +4,20 @@ import _ from 'lodash';
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { app, config } from '@luminix/core';
-import { useApplyReducers, usePagination } from '@luminix/react';
 
 import useTable from '../../../../hooks/useTable';
 import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 import useSelection from '../../../../hooks/useSelection';
 import useCurrentModel from '../../../../hooks/useCurrentModel';
-import useNotifications from '../../../../hooks/useNotifications';
-import useDialog from '../../../../hooks/useDialog';
 
 import { styled } from '@mui/material/styles';
 import MuiTableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import { TableRowProps } from '../../../../types/PropTypes';
-import { StaticAction } from '../../../../types/Table';
 
 type MobileCellContentProps = {
     label: string;
@@ -106,12 +100,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
 
     const Model = useCurrentModel();
 
-    const dialog = useDialog();
-
     const { massActions, columns } = useTable();
-
-    const { refresh } = usePagination();
-    const { notify } = useNotifications();
 
     const columnsWithContents = React.useMemo(() => columns.map((props) => ({
         ...props,
@@ -122,42 +111,6 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
         ['ModelIndex.InstanceActions']: InstanceActions,
     } = app('cms').getComponents();
-
-    // const DEFAULT_ACTIONS = React.useMemo(() => [
-    //     {
-    //         label: `Delete ${Model.singular()}`,
-    //         callback: async () => {
-    //             const confirm = await dialog({
-    //                 title: 'Confirm permanent deletion',
-    //                 message: `Are you sure you want to ${Model.getSchema().softDeletes ? 'send to trash' : 'delete permanently'} ${Model.singular()}?`,
-    //                 type: 'confirm'
-    //             });
-
-    //             if (!confirm) {
-    //                 return;
-    //             }
-
-    //             item.delete().then(() => {
-    //                 notify(`${Model.singular()} deleted successfully`);
-    //                 refresh();
-    //             });
-    //         },
-    //         icon: <DeleteIcon />,
-    //     },
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // ], [Model]);
-
-    // const preActions = useApplyReducers(
-    //     app('cms'),
-    //     `itemActions`,
-    //     DEFAULT_ACTIONS
-    // ) as Action[];
-
-    // const actions = useApplyReducers(
-    //     app('cms'),
-    //     `item${_.upperFirst(_.camelCase(Model.getSchemaName()))}Actions`,
-    //     preActions
-    // ) as Action[];
 
     const {
         isSelected, handleSelectToggle,

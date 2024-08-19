@@ -4,7 +4,7 @@ import { ConfigFacade } from '@luminix/core/dist/types/Config';
 import i18n, { InitOptions } from 'i18next';
 import _ from 'lodash';
 import { initReactI18next } from 'react-i18next';
-import { Column, MassAction } from '../types/Table';
+import { Column, MassAction, StaticAction } from '../types/Table';
 import { MenuItem } from '../types/Menu';
 import { InputProps } from '@luminix/react/dist/types/Form';
 
@@ -30,8 +30,10 @@ class i18NextPlugin extends Plugin {
 
         this.translateModelColumns(model, cms);
         this.translateMenuEntries(cms);
+        this.translateInstanceActions(cms);
         this.translateMassActions(cms);
         this.translateFormLabels(forms);
+        this.translateStaticActions(cms);
     }
 
 
@@ -127,6 +129,36 @@ class i18NextPlugin extends Plugin {
             },
             99
         );
+    }
+
+    private translateInstanceActions(cms: ReducibleInterface) {
+        cms.reducer(
+            'instanceActions',
+            (actions: MassAction[]) => {
+                return actions.map((action) => {
+                    return {
+                        ...action,
+                        label: i18n.t(action.label),
+                    }
+                });
+            },
+            99
+        );
+    }
+
+    private translateStaticActions(cms: ReducibleInterface) {
+        cms.reducer(
+            'staticActions',
+            (actions: StaticAction[], ModelClass: typeof Model) => {
+                const create = actions.find(({ key }) => key === 'create');
+                if (create) {
+                    create.label = i18n.t('Create :model', {
+                        model: ModelClass.singular(),
+                    });
+                }
+                return actions;
+            }
+        )
     }
 
     private translateFormLabels(forms: ReducibleInterface) {

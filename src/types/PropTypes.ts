@@ -6,7 +6,6 @@ import {
     StackProps, TableHeadProps as MuiTableHeadProps, TableBodyProps as MuiTableBodyProps,
     TableRowProps as MuiTableRowProps,
     ThemeOptions,
-    SnackbarOrigin,
     BreadcrumbsOwnProps,
     SnackbarProps,
     AlertProps
@@ -133,10 +132,6 @@ export type BreadcrumbsProps = BreadcrumbsOwnProps & {
         href?: string
     }[],
 };
-
-export type DefaultObject = {
-    [key: string]: any
-}
 
 export type InputOption = { 
     key: string, 

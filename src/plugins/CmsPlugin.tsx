@@ -94,7 +94,7 @@ class CmsPlugin extends Plugin {
         }
     }
 
-    bootModels() {
+    private bootModels() {
 
         app.make('model').reducer(
             'model',
@@ -117,7 +117,7 @@ class CmsPlugin extends Plugin {
 
     }
 
-    bootRoutes() {
+    private  bootRoutes() {
         app.make('cms').reducer('cmsRoutes', routes, 0);
         app.make('route').reducer('routerOptions', (opts) => ({
             ...opts,
@@ -125,7 +125,7 @@ class CmsPlugin extends Plugin {
         }));
     }
 
-    bootComponents() {
+    private bootComponents() {
         app.make('cms').reducer('componentMap', () => ({
             
             Layout,
@@ -166,7 +166,7 @@ class CmsPlugin extends Plugin {
         }), 0);
     }
 
-    bootMenu() {
+    private bootMenu() {
         app.make('cms').reducer('menuItems', (items: MenuItem[], models: Record<string, typeof Model>) => {
             return [
                 ...items,
@@ -192,7 +192,7 @@ class CmsPlugin extends Plugin {
         }, 0);
     }
 
-    bootDefaultUserModifiers() {
+    private bootDefaultUserModifiers() {
 
         app.make('cms').reducer('modelUserColumns', () => [
             {
@@ -236,7 +236,7 @@ class CmsPlugin extends Plugin {
 
     }
 
-    bootMassActions() {
+    private bootMassActions() {
 
         app.make('cms').reducer('massActions', (actions: MassAction[], ModelClass: typeof Model, currentTab: string) => {
             const defaultActions: MassAction[] = [];
@@ -272,7 +272,7 @@ class CmsPlugin extends Plugin {
 
     }
 
-    bootInstanceActions() {
+    private bootInstanceActions() {
 
         app.make('cms').reducer('instanceActions', (actions: InstanceAction[], ModelClass: typeof Model, currentTab: string) => {
             const defaultActions: InstanceAction[] = [];
@@ -304,16 +304,16 @@ class CmsPlugin extends Plugin {
         }, 0);
     }
 
-    bootStaticActions() {
+    private bootStaticActions() {
         app.make('cms').reducer('staticActions', (actions: StaticAction[], ModelClass: typeof Model, currentTab: string) => {
             if (currentTab === 'trashed') {
                 return actions;
             }
-            console.log('adding actions');
             return [
                 ...actions,
                 {
-                    label: 'Create',
+                    key: 'create',
+                    label: `Create ${ModelClass.singular()}`,
                     callback: staticActionHandlers.create(ModelClass),
                     icon: <AddIcon />,
                 },
