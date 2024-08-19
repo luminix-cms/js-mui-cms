@@ -4,13 +4,15 @@
 import _ from 'lodash';
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { collect, Model } from '@luminix/core';
 import { Collection } from '@luminix/core/dist/types/Collection';
 
-import ModelFilterRowContext from '../../../../contexts/ModelFilterRowContext';
-
+import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 import useCurrentModel from '../../../../hooks/useCurrentModel';
+
+import ModelFilterRowContext from '../../../../contexts/ModelFilterRowContext';
 
 import TextField from '@mui/material/TextField';
 import MuiAutocomplete from '@mui/material/Autocomplete';
@@ -20,6 +22,8 @@ import { loadRelationOptions, aggregateRelationOptions } from '../../../../suppo
 import { mountRelationModelOption } from '../../../../support/ModelIndex/Filter/inputs';
 
 const AsyncAutocomplete: React.FunctionComponent = () => {
+
+    const isDesktop = useIsDesktopMode();
 
     const Model = useCurrentModel();
 
@@ -86,7 +90,7 @@ const AsyncAutocomplete: React.FunctionComponent = () => {
     
     return (
         <MuiAutocomplete
-            sx={{ width: 377 }}
+            sx={{ width: isDesktop ? 377 : '100%' }}
             //
             open={open}
             onOpen={() => {
@@ -126,18 +130,23 @@ const AsyncAutocomplete: React.FunctionComponent = () => {
 
 export default AsyncAutocomplete;
 
-const RenderInput: React.FunctionComponent<any> = ({ params, loading}) => (
-    <TextField
-        {...params}
-        label="Value"
-        InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-                <React.Fragment>
-                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                    {params.InputProps.endAdornment}
-                </React.Fragment>
-            ),
-        }}
-    />
-);
+const RenderInput: React.FunctionComponent<any> = ({ params, loading}) => {
+
+    const { t } = useTranslation();
+
+    return (
+        <TextField
+            {...params}
+            label={t('Value')}
+            InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                    <React.Fragment>
+                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                        {params.InputProps.endAdornment}
+                    </React.Fragment>
+                ),
+            }}
+        />
+    );
+};

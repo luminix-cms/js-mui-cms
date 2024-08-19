@@ -55,7 +55,6 @@ export const mountRelationModelOption = async (
     for (const value of input) {
 
         const { data } = await RelatedModel.where(primaryKey, value).get();
-        console.log('data', data.all());
         
         output.push(data.first() as Model);
     }

@@ -21,9 +21,10 @@ class FilterFacade {
             case 'float':
             case 'number': return 'number';
             //
-            case 'date': 
+            case 'date': return 'date';
+            //
             case 'datetime': 
-            case 'timestamp': return 'date';
+            case 'timestamp': return 'datetime-local';
             //
             case 'autocomplete': return 'autocomplete';
             //

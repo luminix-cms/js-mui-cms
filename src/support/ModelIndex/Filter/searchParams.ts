@@ -7,6 +7,7 @@ import { app } from '@luminix/core';
 import { FilterColumn, FilteredColumn } from '../../../types/Filter';
 
 import { searchParamsToObject } from '../../searchParams';
+import { fromIsoString } from '../../date';
 
 /**
  * Translates the received parameters object from url 'searchParams', 
@@ -71,6 +72,15 @@ export const translateColumnsFromQuery = (columns: FilterColumn[], searchParams:
                             }
                             break;
                         }
+                        case 'datetime-local': {
+                            if (Array.isArray(value)) {
+                                _value = value.map((v) => fromIsoString(v));
+                            } else {
+                                _value = fromIsoString(value);
+                            }
+
+                            break;
+                        }
                         case 'boolean': {
                             _value = _.toNumber(value);
                             break;
@@ -100,11 +110,13 @@ export const translateColumnsFromQuery = (columns: FilterColumn[], searchParams:
  */
 export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
 
+    const FilterFacade = app('filter');
+
     const searchParams = new URLSearchParams();
 
     columns.forEach((column: FilteredColumn) => {
 
-        const { key, operator, value } = column;
+        const { key, operator, value, type } = column;
 
         let operation = _.upperFirst(operator);
 
@@ -114,10 +126,30 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
 
         if (Array.isArray(value)) {
             value.forEach((v, i) => {
-                searchParams.set(`where[${_.camelCase(key)}${operation}][${i}]`, v);
+
+                let _value = v;
+
+                switch (FilterFacade.getInputType(type)) {
+                    case 'datetime-local': {
+                        _value = new Date(v).toISOString();
+                        break;
+                    }
+                }
+
+                searchParams.set(`where[${_.camelCase(key)}${operation}][${i}]`, _value);
             });
         } else {
-            searchParams.set(`where[${_.camelCase(key)}${operation}]`, value);
+            
+            let _value = value;
+
+            switch (FilterFacade.getInputType(type)) {
+                case 'datetime-local': {
+                    _value = new Date(value).toISOString();
+                    break;
+                }
+            }
+
+            searchParams.set(`where[${_.camelCase(key)}${operation}]`, _value);
         }
     });
 

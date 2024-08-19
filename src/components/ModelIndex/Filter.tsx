@@ -90,7 +90,7 @@ const Filter: React.FunctionComponent = () => {
             }} 
         >
             <IconButton
-                aria-describedby="model-filter-popover"
+                aria-describedby="model-filter-popover-button"
                 aria-label="filter"
                 onClick={handleOpenFilter}
             >

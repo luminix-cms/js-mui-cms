@@ -3,12 +3,16 @@
 
 import React from 'react';
 
+import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
+
 import ModelFilterRowContext from '../../../../contexts/ModelFilterRowContext';
 
 import Box from '@mui/material/Box';
 import MuiSwitch from '@mui/material/Switch';
 
 const Switch: React.FunctionComponent = () => {
+    
+    const isDesktop = useIsDesktopMode();
 
     const { value, setValue } = React.useContext(ModelFilterRowContext);
 
@@ -22,11 +26,13 @@ const Switch: React.FunctionComponent = () => {
             <MuiSwitch
                 checked={value}
                 onChange={handleValue}
-                inputProps={{ 'aria-label': 'controlled' }}
+                inputProps={{ 'aria-label': 'filter-controlled' }}
                 size="small"
             />
             
-            <Box width={325} />
+            {isDesktop && (
+                <Box width={325} />
+            )}
         </>
     );
 };
