@@ -1,20 +1,24 @@
 import React from 'react';
+import { app } from '@luminix/core';
 
-import Collapse from '@mui/material/Collapse';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import List from '@mui/material/List';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Typography from '@mui/material/Typography';
+import {
+    Collapse,
+    ListItem,
+    ListItemButton,
+    List,
+    ListItemIcon,
+    ListItemText,
+    Typography,
+} from '@mui/material';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import {
+    ExpandMore as ExpandMoreIcon,
+    ExpandLess as ExpandLessIcon
+} from '@mui/icons-material';
 
 import { MenuItem } from '../types/Menu';
 import { RecursiveListProps } from '../types/PropTypes';
 import useLayoutConfig from '../hooks/useLayoutConfig';
-import { app } from '@luminix/core';
 import Link from './Link';
 
 const RecursiveList: React.FunctionComponent<RecursiveListProps> = ({

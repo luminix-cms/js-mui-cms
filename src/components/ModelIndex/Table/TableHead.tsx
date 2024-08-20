@@ -1,18 +1,20 @@
 
 import React from 'react';
 import { app } from '@luminix/core';
+import { useSearchParams } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
-import MuiTableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import Checkbox from '@mui/material/Checkbox';
-import TableSortLabel from '@mui/material/TableSortLabel';
+import {
+    Box,
+    TableHead as MuiTableHead,
+    TableRow,
+    TableCell,
+    Checkbox,
+    TableSortLabel,
+} from '@mui/material';
 
 import useTable from '../../../hooks/useTable';
 import { TableHeadProps } from '../../../types/PropTypes';
 import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
-import { useSearchParams } from 'react-router-dom';
 import useSelection from '../../../hooks/useSelection';
 
 const TableHead: React.FunctionComponent<TableHeadProps> = ({ children, ...props}) => {

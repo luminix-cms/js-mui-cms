@@ -1,21 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import _ from 'lodash';
-
 import React from 'react';
+import _ from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import { app, config } from '@luminix/core';
+
+import { styled } from '@mui/material/styles';
+
+import {
+    TableRow as MuiTableRow,
+    TableCell,
+    Checkbox,
+    Typography,
+} from '@mui/material';
 
 import useTable from '../../../../hooks/useTable';
 import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 import useSelection from '../../../../hooks/useSelection';
 import useCurrentModel from '../../../../hooks/useCurrentModel';
-
-import { styled } from '@mui/material/styles';
-import MuiTableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import Checkbox from '@mui/material/Checkbox';
-import Typography from '@mui/material/Typography';
 
 import { TableRowProps } from '../../../../types/PropTypes';
 

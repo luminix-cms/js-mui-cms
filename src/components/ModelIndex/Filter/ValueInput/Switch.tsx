@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React from 'react';
@@ -7,8 +6,10 @@ import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 
 import ModelFilterRowContext from '../../../../contexts/ModelFilterRowContext';
 
-import Box from '@mui/material/Box';
-import MuiSwitch from '@mui/material/Switch';
+import {
+    Box,
+    Switch as MuiSwitch,
+} from '@mui/material';
 
 const Switch: React.FunctionComponent = () => {
     

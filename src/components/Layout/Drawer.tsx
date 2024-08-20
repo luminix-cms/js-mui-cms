@@ -1,12 +1,19 @@
 import React from 'react';
+import { app } from '@luminix/core';
 
-import MuiDrawer, { DrawerProps } from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
+import { DrawerProps } from '@mui/material/Drawer';
 
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import {
+    Drawer as MuiDrawer,
+    IconButton,
+    Divider,
+    Box,
+} from '@mui/material';
+
+import {
+    ChevronLeft as ChevronLeftIcon,
+    ChevronRight as ChevronRightIcon
+} from '@mui/icons-material';
 
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 
@@ -16,7 +23,6 @@ import useMenu from '../../hooks/useMenu';
 
 import { StyledDrawerProps } from '../../types/PropTypes';
 
-import { app } from '@luminix/core';
 
 const openedMixin = (theme: Theme, width: number): CSSObject => ({
     width,

@@ -1,8 +1,10 @@
 import React from 'react';
-
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Link } from 'react-router-dom';
+
+import { IconButton } from '@mui/material';
+import { ChevronLeft as ChevronLeftIcon } from '@mui/icons-material';
+
+import { IconButtonProps } from '@mui/material/IconButton';
 
 
 

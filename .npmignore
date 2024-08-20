@@ -1,0 +1,6 @@
+.github/
+public/
+src/
+tests/
+vite.config*.ts
+index.html

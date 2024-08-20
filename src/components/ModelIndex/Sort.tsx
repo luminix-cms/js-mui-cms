@@ -1,27 +1,31 @@
 import React from 'react';
+import { collect } from '@luminix/core';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import Badge from '@mui/material/Badge';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Radio';
-import Typography from '@mui/material/Typography';
+import {
+    Badge,
+    Button,
+    Dialog,
+    DialogContent,
+    DialogActions,
+    DialogTitle,
+    Divider,
+    IconButton,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
+    Typography,
+} from '@mui/material';
 
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import CloseIcon from '@mui/icons-material/Close';
-import SwapVertIcon from '@mui/icons-material/SwapVert';
+import {
+    ArrowDownward as ArrowDownwardIcon,
+    ArrowUpward as ArrowUpwardIcon,
+    Close as CloseIcon,
+    SwapVert as SwapVertIcon
+} from '@mui/icons-material';
 
 import useTable from '../../hooks/useTable';
-import { collect } from '@luminix/core';
-import { useTranslation } from 'react-i18next';
 
 const Sort: React.FunctionComponent = () => {
 

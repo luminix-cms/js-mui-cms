@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import _ from "lodash";
 import { PaginationProvider } from "@luminix/react";
 
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useMediaQuery } from '@mui/material';
 
 import { CmsRoutesReducer } from "./types/Reducers";
 import LayoutProvider from "./providers/LayoutProvider";

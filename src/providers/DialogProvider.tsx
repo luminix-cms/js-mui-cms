@@ -1,16 +1,20 @@
 import React from 'react';
-
-import DialogContext from '../contexts/DialogContext';
-import { DialogMessage } from '../types/Dialog';
-
-import Button from '@mui/material/Button';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import useOptimistic from '../hooks/useOptimistic';
 import { useTranslation } from 'react-i18next';
+
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from '@mui/material';
+
+import { DialogProps } from '@mui/material/Dialog';
+
+import { DialogMessage } from '../types/Dialog';
+import DialogContext from '../contexts/DialogContext';
+import useOptimistic from '../hooks/useOptimistic';
 
 type DialogProviderState = {
     current?: DialogMessage;

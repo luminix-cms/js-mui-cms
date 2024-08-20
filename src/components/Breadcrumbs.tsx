@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
+import {
+    Breadcrumbs as MuiBreadcrumbs, Link, Typography
+} from '@mui/material';
+
 import { config } from '@luminix/core';
 import { BreadcrumbsProps } from '../types/PropTypes';
 

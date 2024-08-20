@@ -9,17 +9,21 @@ import ModelFilterContext from '../../contexts/ModelFilterContext';
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import useCurrentModel from '../../hooks/useCurrentModel';
 
-import Badge from '@mui/material/Badge';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Popover from '@mui/material/Popover';
+import {
+    Badge,
+    Dialog,
+    IconButton,
+    Popover,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+} from '@mui/material';
 
-import CloseIcon from '@mui/icons-material/Close';
+import {
+    FilterList as FilterListIcon,
+    Close as CloseIcon,
+} from '@mui/icons-material';
 
 import Content from './Filter/Content';
 

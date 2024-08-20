@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useMediaQuery } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 
 import { LayoutContextValue } from '../types/Contexts';

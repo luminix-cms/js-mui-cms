@@ -1,6 +1,7 @@
 import React from 'react';
 
-import TableCell, { TableCellProps } from '@mui/material/TableCell';
+import { TableCell } from '@mui/material';
+import { TableCellProps } from '@mui/material/TableCell';
 
 
 const ShrinkedCell: React.FunctionComponent<TableCellProps> = ({ children, ...props }) => {

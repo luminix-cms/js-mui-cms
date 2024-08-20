@@ -1,19 +1,25 @@
 import React from 'react';
-import NotificationContext from '../contexts/NotificationContext';
-import { Notification } from '../types/Notifications';
-import { NotificationProviderProps } from '../types/PropTypes';
 import { collect } from '@luminix/core';
 import { useCollection } from '@luminix/react';
 
-import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import {
+    Snackbar,
+    Alert,
+    AlertTitle,
+    Button,
+    IconButton,
+} from '@mui/material';
+
+import { SnackbarCloseReason } from '@mui/material/Snackbar';
+
 import Close from '@mui/icons-material/Close';
 
 import { useTheme } from '@mui/material/styles';
+
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
+import NotificationContext from '../contexts/NotificationContext';
+import { Notification } from '../types/Notifications';
+import { NotificationProviderProps } from '../types/PropTypes';
 
 
 const notifications = collect([] as Notification[]);

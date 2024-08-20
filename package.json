@@ -1,11 +1,14 @@
 {
   "name": "@luminix/mui-cms",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1-beta.0",
   "type": "module",
+  "main": "dist/mui-cms.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "vite --port=3333",
-    "build": "tsc && vite build --config vite.config.dist.js",
+    "dev": "vite --port=3333 --config=vite.config.dev.ts",
+    "build": "npm run build:bundle && npm run build:dist",
+    "build:bundle": "tsc && vite build --config vite.config.bundle.ts",
+    "build:dist": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

@@ -3,15 +3,18 @@ import { ModelPaginatedLink } from '@luminix/core/dist/types/Model';
 import { usePagination } from '@luminix/react';
 import { Form, useSearchParams } from 'react-router-dom';
 
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
+import {
+    Button,
+    Stack,
+    TextField
+} from '@mui/material';
 
-
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
+import {
+    ChevronLeft as ChevronLeftIcon,
+    ChevronRight as ChevronRightIcon,
+    LastPage as LastPageIcon,
+    FirstPage as FirstPageIcon,
+} from '@mui/icons-material';
 
 import Link from '../Link';
 import { PaginationProps } from '../../types/PropTypes';

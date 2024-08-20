@@ -1,18 +1,20 @@
 import React from 'react';
+import { Model, app, collect } from '@luminix/core';
+import { CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
+import { useTranslation } from 'react-i18next';
 
-import MuiTableBody from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import Typography from '@mui/material/Typography';
+import {
+    TableBody as MuiTableBody,
+    TableRow,
+    TableCell,
+    Typography,
+} from '@mui/material';
 
 import Skeleton from './TableBody/Skeleton';
 
 import useTable from '../../../hooks/useTable';
 import { TableBodyProps } from '../../../types/PropTypes';
-import { Model, app, collect } from '@luminix/core';
-import { CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
 import useCurrentModel from '../../../hooks/useCurrentModel';
-import { useTranslation } from 'react-i18next';
 
 const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props }) => {
 

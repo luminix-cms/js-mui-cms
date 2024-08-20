@@ -1,8 +1,10 @@
 import React from 'react';
 
-import MuiTable from '@mui/material/Table';
-import TableContainer from '@mui/material/TableContainer';
-import Paper from '@mui/material/Paper';
+import {
+    Table as MuiTable,
+    TableContainer,
+    Paper,
+} from '@mui/material';
 
 import TableProvider from '../../providers/TableProvider';
 import { TableProps } from '../../types/PropTypes';

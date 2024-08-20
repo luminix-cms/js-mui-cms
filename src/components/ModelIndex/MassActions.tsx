@@ -1,16 +1,21 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Stack, { StackProps } from '@mui/material/Stack';
+import {
+    Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+ } from '@mui/material';
+
+import { SelectChangeEvent } from '@mui/material/Select';
+import { StackProps } from '@mui/material/Stack';
 
 import useSelection from '../../hooks/useSelection';
 import useTable from '../../hooks/useTable';
-import { useTranslation } from 'react-i18next';
 import useActionEvent from '../../hooks/useActionEvent';
 
 function MassActions(props: StackProps): React.ReactNode {

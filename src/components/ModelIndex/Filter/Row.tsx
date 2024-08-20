@@ -12,16 +12,18 @@ import ModelFilterRowContext from '../../../contexts/ModelFilterRowContext';
 
 import useRow from './useRow';
 
-import { Breakpoint } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
+import {
+    Unstable_Grid2 as Grid,
+    Stack,
+    IconButton,
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    Breakpoint,
+ } from '@mui/material';
 
-import HighlightOffOutlined from '@mui/icons-material/HighlightOffOutlined';
+import { HighlightOffOutlined } from '@mui/icons-material';
 
 import ValueInput from './ValueInput';
 

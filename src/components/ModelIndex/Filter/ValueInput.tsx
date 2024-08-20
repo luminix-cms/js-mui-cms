@@ -8,7 +8,7 @@ import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
 
 import ModelFilterRowContext from '../../../contexts/ModelFilterRowContext';
 
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 
 import AsyncAutocomplete from './ValueInput/AsyncAutocomplete';
 // import Autocomplete from './ValueInput/Autocomplete';

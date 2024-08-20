@@ -6,11 +6,12 @@ import { useTranslation } from 'react-i18next';
 
 import { app } from '@luminix/core';
 
+import {
+    TextField as MuiTextField,
+} from '@mui/material';
+
 import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
-
 import ModelFilterRowContext from '../../../../contexts/ModelFilterRowContext';
-
-import MuiTextField from '@mui/material/TextField';
 
 import { FilterValueInput } from '../../../../types/Filter';
 

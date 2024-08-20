@@ -1,7 +1,7 @@
 import React from 'react';
 import { app } from '@luminix/core';
 
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 

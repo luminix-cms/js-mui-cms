@@ -137,7 +137,7 @@ export const instanceActionHandlers: InstanceActionHandlers = {
         const confirm = await dialog({
             title: ModelClass.getSchema().softDeletes
                 ? t('Confirm send to trash')
-                : t('Confirm delete permanently'),
+                : t('Confirm permanent deletion'),
             message: t(`Are you sure you want to ${action}?`, {
                 model: _.lowerFirst(ModelClass.singular()),
                 label: item.getLabel(),

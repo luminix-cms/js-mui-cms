@@ -3,12 +3,16 @@ import React from 'react';
 import { app } from '@luminix/core';
 import { useApplyReducers, usePagination } from '@luminix/react';
 import { useSearchParams } from 'react-router-dom';
-
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import { useTranslation } from 'react-i18next';
+
+import {
+    Select,
+    MenuItem,
+    Typography,
+    Stack,
+} from '@mui/material';
+
+import { SelectChangeEvent } from '@mui/material/Select';
 
 const PerPageSwitch: React.FunctionComponent = () => {
 

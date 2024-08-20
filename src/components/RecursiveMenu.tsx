@@ -1,11 +1,15 @@
 import React from 'react';
 
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import {
+    MenuItem,
+    Menu,
+    ListItemIcon,
+    ListItemText,
+} from '@mui/material';
 
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import {
+    ChevronRight as ChevronRightIcon
+} from '@mui/icons-material';
 
 import { RecursiveMenuProps } from '../types/PropTypes';
 

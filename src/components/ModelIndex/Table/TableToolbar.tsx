@@ -2,14 +2,17 @@ import React from 'react';
 
 import { app } from '@luminix/core';
 
+import {
+    Breakpoint,
+    TableRow,
+    TableCell,
+    Stack,
+} from '@mui/material';
+
 import useTable from '../../../hooks/useTable';
 import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
 import useLayoutConfig from '../../../hooks/useLayoutConfig';
 
-import { Breakpoint } from '@mui/material';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import Stack from '@mui/material/Stack';
 
 const TableToolbar: React.FunctionComponent = () => {
 

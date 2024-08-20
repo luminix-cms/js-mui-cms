@@ -1,11 +1,14 @@
 import React from 'react';
 import { app, config } from '@luminix/core';
 
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import {
+    Avatar,
+    Box,
+    AppBar as MuiAppBar,
+    Toolbar,
+    Typography,
+    useMediaQuery,
+} from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
@@ -19,7 +22,6 @@ import useHasSearch from '../../hooks/useHasSearch';
 
 import logo from '../../assets/luminix-40x40.png';
 import whiteLogo from '../../assets/luminix-white-40x40.png';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import useHasBackButton from '../../hooks/useHasBackButton';
 
 const DesktopAppBar = styled(

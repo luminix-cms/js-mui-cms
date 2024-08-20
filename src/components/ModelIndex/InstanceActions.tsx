@@ -2,11 +2,15 @@ import React from 'react';
 import { app, Model } from '@luminix/core';
 import { useSearchParams } from 'react-router-dom';
 
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import {
+    IconButton,
+    Menu,
+    MenuItem
+} from '@mui/material';
 
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {
+    MoreVert as MoreVertIcon
+} from '@mui/icons-material';
 
 import { InstanceAction } from '../../types/Table';
 import useActionEvent from '../../hooks/useActionEvent';

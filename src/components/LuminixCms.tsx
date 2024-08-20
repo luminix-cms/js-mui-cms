@@ -3,18 +3,10 @@ import React from 'react';
 import { LuminixProvider } from '@luminix/react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import CssBaseline from '@mui/material/CssBaseline';
+import { useMediaQuery, CssBaseline } from '@mui/material';
 
 import CmsPlugin from '../plugins/CmsPlugin';
 import { LuminixCmsProps } from '../types/PropTypes';
-
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
-import '@luminix/react/css/ReactForms.css';
 
 import i18NextPlugin from '../plugins/i18NextPlugin';
 

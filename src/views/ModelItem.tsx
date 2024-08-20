@@ -2,12 +2,17 @@ import _ from 'lodash';
 
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { app, Model } from '@luminix/core';
 import { ModelForm } from '@luminix/react';
 
+import {
+    Unstable_Grid2 as Grid,
+    Breakpoint,
+} from '@mui/material';
+
 import { ModelItemProps } from '../types/PropTypes';
-import { useTranslation } from 'react-i18next';
 
 import useCurrentModel from '../hooks/useCurrentModel';
 import useLayoutConfig from '../hooks/useLayoutConfig';
@@ -16,8 +21,6 @@ import useBackButton from '../hooks/useBackButton';
 import useHandleError from '../hooks/useHandleError';
 import useNotify from '../hooks/useNotify';
 
-import { Breakpoint } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
 
 const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) => {
 
@@ -54,7 +57,7 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
             navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`);
         }
 
-    }, [notify, navigate, Model, item]);
+    }, [notify, navigate, Model, item, t]);
 
     const handleError = useHandleError();
 

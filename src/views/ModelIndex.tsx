@@ -2,12 +2,12 @@ import React from 'react';
 import { Model, app } from '@luminix/core';
 import { usePagination } from '@luminix/react';
 
-import Grid from '@mui/material/Unstable_Grid2';
-// import { Breakpoint } from '@mui/material';
+import {
+    Unstable_Grid2 as Grid
+} from '@mui/material';
 
 import useSetPageTitle from '../hooks/useSetPageTitle';
 import useIsDesktopMode from '../hooks/useIsDesktopMode';
-// import useLayoutConfig from '../hooks/useLayoutConfig';
 import useSearch from '../hooks/useSearch';
 import useCurrentModel from '../hooks/useCurrentModel';
 

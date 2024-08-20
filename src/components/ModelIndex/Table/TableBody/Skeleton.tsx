@@ -1,16 +1,21 @@
 import React from 'react';
-
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import MuiSkeleton from '@mui/material/Skeleton';
-
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import useTable from '../../../../hooks/useTable';
 import { app } from '@luminix/core';
-import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 import { useSearchParams } from 'react-router-dom';
+
+import {
+    TableRow,
+    TableCell,
+    Checkbox,
+    IconButton,
+    Skeleton as MuiSkeleton,
+} from '@mui/material';
+
+import {
+    MoreVert as MoreVertIcon
+} from '@mui/icons-material';
+
+import useTable from '../../../../hooks/useTable';
+import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 
 const Skeleton: React.FunctionComponent = () => {
 

@@ -1,20 +1,23 @@
 import React from 'react';
+import _ from 'lodash';
 
-import Badge from '@mui/material/Badge';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import Collapse from '@mui/material/Collapse';
+import {
+    Badge,
+    TextField,
+    IconButton,
+    Collapse 
+} from '@mui/material';
 
-import SearchIcon from '@mui/icons-material/Search';
-
-import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
+import { Search as SearchIcon } from '@mui/icons-material';
 
 import { styled } from '@mui/material/styles';
+
+import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
-import _ from 'lodash';
 import { SearchBarProps } from '../../types/PropTypes';
 import useKeyChord from '../../hooks/useKeyChord';
-import { useTranslation } from 'react-i18next';
 
 
 const SearchField = styled(TextField)(({ theme }) => ({

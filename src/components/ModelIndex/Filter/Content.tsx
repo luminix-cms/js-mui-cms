@@ -1,29 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { app } from '@luminix/core';
 
-import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
-import useLayoutConfig from '../../../hooks/useLayoutConfig';
+import {
+    Box,
+    Divider,
+    Stack,
+    Button,
+    Breakpoint,
+    IconButton,
+} from '@mui/material';
 
-import ModelFilterContext from '../../../contexts/ModelFilterContext';
-
-import { Breakpoint } from '@mui/material';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Divider from '@mui/material/Divider';
-
-import AddCircleOutline from '@mui/icons-material/AddCircleOutline';
+import { AddCircleOutline } from '@mui/icons-material';
 
 import Row from './Row';
 
-import { FilterContent, FilteredColumn } from '../../../types/Filter';
+import ModelFilterContext from '../../../contexts/ModelFilterContext';
+import { FilteredColumn } from '../../../types/Filter';
+import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
+import useLayoutConfig from '../../../hooks/useLayoutConfig';
 
-const Content: React.FunctionComponent<FilterContent> = ({ dialog = false }) => {
+const Content: React.FunctionComponent<{ dialog: boolean }> = ({ dialog = false }) => {
 
     const { t } = useTranslation();
 

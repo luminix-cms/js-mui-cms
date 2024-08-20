@@ -1,10 +1,8 @@
-import Paper from '@mui/material/Paper';
-
-import Typography from '@mui/material/Typography';
+import { app } from '@luminix/core';
+import { Paper, Typography } from '@mui/material';
 
 import usePageTitle from '../hooks/usePageTitle';
 import useLayoutConfig from '../hooks/useLayoutConfig';
-import { app } from '@luminix/core';
 import useHasBackButton from '../hooks/useHasBackButton';
 
 const DesktopPageTitle: React.FunctionComponent = () => {

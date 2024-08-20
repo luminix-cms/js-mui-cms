@@ -1,31 +1,34 @@
-import _ from 'lodash';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 
 import { app } from '@luminix/core';
 
-import useCurrentModel from '../../hooks/useCurrentModel';
-
 import { styled } from '@mui/material/styles';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Button from '@mui/material/Button';
-import Popper from '@mui/material/Popper';
-import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import MenuList from '@mui/material/MenuList';
-import MenuItem from '@mui/material/MenuItem';
-import MuiFab from '@mui/material/Fab';
-import MuiSpeedDial from '@mui/material/SpeedDial';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import {
+    ButtonGroup,
+    Button,
+    Popper,
+    Grow,
+    Paper,
+    ClickAwayListener,
+    MenuList,
+    MenuItem,
+    Fab as MuiFab,
+    SpeedDial as MuiSpeedDial,
+    SpeedDialAction,
+    SpeedDialIcon,
+} from '@mui/material';
+
+import {
+    ArrowDropDown as ArrowDropDownIcon
+} from '@mui/icons-material';
 
 import { StaticAction } from '../../types/Table';
 import { ActionsProps } from '../../types/PropTypes';
+
+import useCurrentModel from '../../hooks/useCurrentModel';
 import useDisplaceNotifications from '../../hooks/useDisplaceNotifications';
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import useActionEvent from '../../hooks/useActionEvent';

@@ -9,14 +9,15 @@ import { useTranslation } from 'react-i18next';
 import { collect, Model } from '@luminix/core';
 import { Collection } from '@luminix/core/dist/types/Collection';
 
+import {
+    TextField,
+    Autocomplete as MuiAutocomplete,
+    CircularProgress,
+} from '@mui/material';
+
 import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 import useCurrentModel from '../../../../hooks/useCurrentModel';
-
 import ModelFilterRowContext from '../../../../contexts/ModelFilterRowContext';
-
-import TextField from '@mui/material/TextField';
-import MuiAutocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
 
 import { loadRelationOptions, aggregateRelationOptions } from '../../../../support/ModelIndex/relation';
 import { mountRelationModelOption } from '../../../../support/ModelIndex/Filter/inputs';

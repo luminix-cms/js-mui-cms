@@ -6,9 +6,11 @@ import { useSearchParams } from 'react-router-dom';
 import { useApplyReducers } from '@luminix/react';
 import { app } from '@luminix/core';
 
-import MuiTabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
+import {
+    Tabs as MuiTabs,
+    Tab,
+    Box
+} from '@mui/material';
 
 import useCurrentModel from '../../hooks/useCurrentModel';
 import { DisplayableTab } from '../../types/Tabs';
