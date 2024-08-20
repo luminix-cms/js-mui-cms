@@ -44,6 +44,10 @@ class FilterFacade {
     {
         return this.getOperators()
             .filter((operator) => {
+                if ([ 'like' ].includes(operator)) {
+                    return false;
+                }
+
                 if (!column.is_relation) {
                     if ([ 'relation' ].includes(operator)) {
                         return false;
