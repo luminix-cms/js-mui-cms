@@ -40,10 +40,12 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import RecursiveList from '../components/RecursiveList';
 import RecursiveMenu from '../components/RecursiveMenu';
 
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
-import AddIcon from '@mui/icons-material/Add';
+import {
+    CategoryOutlined as CategoryOutlinedIcon,
+    DashboardOutlined as DashboardOutlinedIcon,
+    PeopleOutlined as PeopleOutlinedIcon,
+    Add as AddIcon,
+} from '@mui/icons-material';
 
 import { CmsPluginOptions } from '../types/Plugin';
 import { StaticAction, MassAction, InstanceAction } from '../types/Table';

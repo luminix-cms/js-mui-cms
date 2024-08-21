@@ -12,7 +12,7 @@ import {
 
 import { SnackbarCloseReason } from '@mui/material/Snackbar';
 
-import Close from '@mui/icons-material/Close';
+import { Close } from '@mui/icons-material';
 
 import { useTheme } from '@mui/material/styles';
 

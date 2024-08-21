@@ -3,7 +3,7 @@
   "version": "0.0.1-beta.0",
   "type": "module",
   "main": "dist/mui-cms.js",
-  "types": "dist/index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
     "dev": "vite --port=3333 --config=vite.config.dev.ts",
     "build": "npm run build:bundle && npm run build:dist",

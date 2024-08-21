@@ -12,6 +12,7 @@ export default defineConfig({
     react(),
     dts({
       insertTypesEntry: true,
+      outDir: './types',
     }),
   ],
   build: {
@@ -23,11 +24,6 @@ export default defineConfig({
       external: [
         ...Object.keys(packageJson.peerDependencies),
         'react/jsx-runtime',
-        '@mui/core-downloads-tracker',
-        '@mui/private-theming',
-        '@mui/styled-engine',
-        '@mui/system',
-        '@mui/utils',
         '@mui/material/styles',
         'react-is',
         'object-assign',
