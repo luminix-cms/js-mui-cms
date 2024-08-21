@@ -22,7 +22,7 @@ import { FilteredColumn } from '../../../types/Filter';
 import useIsDesktopMode from '../../../hooks/useIsDesktopMode';
 import useLayoutConfig from '../../../hooks/useLayoutConfig';
 
-const Content: React.FunctionComponent<{ dialog: boolean }> = ({ dialog = false }) => {
+const Content: React.FunctionComponent<{ dialog?: boolean }> = ({ dialog = false }) => {
 
     const { t } = useTranslation();
 
