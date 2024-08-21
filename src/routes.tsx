@@ -32,7 +32,7 @@ const LayoutProviderStack: React.FC<React.PropsWithChildren> = ({ children }) =>
 };
 
 
-const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem, Error }, models) => [
+const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem, /* Error */ }, models) => [
     {
         element: (
             <LayoutProviderStack>
@@ -41,9 +41,9 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
                 </Layout>
             </LayoutProviderStack>
         ),
-        errorElement: (
-            <Error />
-        ),
+        // errorElement: (
+        //     <Error />
+        // ),
         children: [
             {
                 path: '/',

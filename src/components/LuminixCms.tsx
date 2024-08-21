@@ -48,12 +48,6 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
                     new i18NextPlugin(i18nOptions),
                     ...plugins || [],
                 ]}
-                config={{
-                    app: {
-                        debug: true,
-                        url: 'http://localhost',
-                    },
-                }}
             />
         </ThemeProvider>
     );
