@@ -10,11 +10,18 @@ export default defineConfig({
   build: {
     lib: {
         entry: resolve(__dirname, 'src/main.tsx'),
-        formats: ['es'],
+        formats: ['iife'],
+        name: 'LuminixMuiCms',
+        fileName: 'mui-cms.bundle',
     },
     outDir: './bundle',
     emptyOutDir: true,
   },
+  esbuild:{
+    legalComments: 'none',
+    pure: undefined,
+  },
+  
   define: {
     'process.env': process.env
   }
