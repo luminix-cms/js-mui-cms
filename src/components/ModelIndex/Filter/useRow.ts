@@ -54,9 +54,7 @@ export default function useRow( index: number, column: FilteredColumn ) {
         setNullable(is_nullable);
 
         if (newType !== type) {
-            if ([ 'boolean' ].includes(FilterFacade.getInputType(newType))) {
-                setOperator('equals');
-            }
+            setOperator('equals');
 
             setValue(() => {
                 if ([ 'between', 'notBetween' ].includes(operator)) {

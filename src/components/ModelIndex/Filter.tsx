@@ -66,6 +66,8 @@ const Filter: React.FunctionComponent = () => {
         const searchParams = translateColumnsToQuery(columnsFilter);
 
         setSearchParams(searchParams, { replace: true });
+
+        handleCloseFilter();
     };
 
     const clearSearchParams = () => {

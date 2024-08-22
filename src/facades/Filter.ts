@@ -64,7 +64,7 @@ class FilterFacade {
                     }
                 }
                 if ([ 'number', 'date', 'datetime-local', 'boolean' ].includes(this.getInputType(column.type))) {
-                    if ([ 'like' ].includes(operator)) {
+                    if ([ 'like', 'contains', 'startsWith', 'endsWith' ].includes(operator)) {
                         return false;
                     }
                 }
