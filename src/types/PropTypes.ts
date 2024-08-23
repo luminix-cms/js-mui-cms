@@ -1,4 +1,4 @@
-import { Model, Plugin } from '@luminix/core';
+import { Model } from '@luminix/core';
 
 import {
     DrawerProps as MuiDrawerProps, AppBarProps as MuiAppBarProps, BoxProps,
