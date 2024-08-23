@@ -19,11 +19,11 @@ import { ModelPaginatedResponse } from '@luminix/core/dist/types/Model';
 import { Collection, CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
 import { Scope } from '@luminix/core/dist/types/Builder';
 import { InitOptions } from 'i18next';
+import { LuminixProviderProps } from '@luminix/react/dist/components/LuminixProvider';
 // import { TableContextValue } from './Contexts';
 
-export type LuminixCmsProps = {
+export type LuminixCmsProps = Partial<LuminixProviderProps> & {
     theme?: ThemeOptions,
-    plugins?: Plugin[],
     i18nOptions?: InitOptions,
 };
 

@@ -26,6 +26,7 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
     theme = DEFAULT_THEME,
     plugins,
     i18nOptions = {},
+    ...props
 }) => {
 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -48,6 +49,7 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
                     new i18NextPlugin(i18nOptions),
                     ...plugins || [],
                 ]}
+                {...props}
             />
         </ThemeProvider>
     );
