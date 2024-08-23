@@ -1,6 +1,6 @@
 {
   "name": "@luminix/mui-cms",
-  "version": "0.0.1-beta.4",
+  "version": "0.0.1-beta.7",
   "type": "module",
   "main": "dist/mui-cms.js",
   "types": "types/index.d.ts",
@@ -10,14 +10,15 @@
     "build:bundle": "tsc && vite build --config vite.config.bundle.ts",
     "build:dist": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish:beta": "npm run build && npm publish --tag beta"
   },
   "peerDependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.0.12",
-    "@luminix/core": "^0.0.1-beta.15",
-    "@luminix/react": "^0.0.1-beta.20",
+    "@luminix/core": "^0.0.1-beta.20",
+    "@luminix/react": "^0.0.1-beta.21",
     "@mui/icons-material": "^5.16.5",
     "@mui/material": "^5.16.5",
     "axios": "^1.6.4",

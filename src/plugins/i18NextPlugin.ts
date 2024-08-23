@@ -166,12 +166,12 @@ class i18NextPlugin extends Plugin {
             'getDefaultInputProps',
             (props: InputProps<string> | InputProps<string>[]) => {
                 if (!Array.isArray(props)) {
-                    if (props.label) {
+                    if (props?.label) {
                         props.label = i18n.t(props.label);
                     }
                 } else {
                     props.map((prop) => {
-                        if (prop.label) {
+                        if (prop?.label) {
                             prop.label = i18n.t(prop.label);
                         }
                     });
