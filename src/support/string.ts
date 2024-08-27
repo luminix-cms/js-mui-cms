@@ -1,3 +1,4 @@
+import _ from "lodash";
 
 export const trim = (value: string, mask: string) => {
     while (~mask.indexOf(value[0])) {
@@ -18,3 +19,9 @@ export const removeSurrounding = (value: string, prefix: string, suffix: string)
     }
     return value;
 }
+
+export const pascalCase = (value: string) => {
+
+    return _.upperFirst(_.camelCase(value));
+}
+

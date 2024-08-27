@@ -18,6 +18,7 @@ import useSelection from '../../../../hooks/useSelection';
 import useCurrentModel from '../../../../hooks/useCurrentModel';
 
 import { TableRowProps } from '../../../../types/PropTypes';
+import { pascalCase } from '../../../../support/string';
 
 type MobileCellContentProps = {
     label: string;
@@ -104,7 +105,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
 
     const columnsWithContents = React.useMemo(() => columns.map((props) => ({
         ...props,
-        content: app('cms')[`model${item.constructor.name}Get${_.upperFirst(_.camelCase(props.key))}Content`](item.getAttribute(props.key), item),
+        content: app('cms')[`model${pascalCase(item.getType())}Get${pascalCase(props.key)}Content`](item.getAttribute(props.key), item),
     })), [columns, item]);
 
     const {
