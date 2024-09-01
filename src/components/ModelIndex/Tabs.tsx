@@ -1,6 +1,5 @@
 
 import React from 'react';
-import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { useApplyReducers } from '@luminix/react';
@@ -14,6 +13,7 @@ import {
 
 import useCurrentModel from '../../hooks/useCurrentModel';
 import { DisplayableTab } from '../../types/Tabs';
+import { pascalCase } from '../../support/string';
 
 function Tabs(): React.ReactNode {
 
@@ -37,11 +37,11 @@ function Tabs(): React.ReactNode {
         return Model.getSchema().softDeletes
             ? [{ label: t('Trashed'), value: 'trashed' }]
             : []
-    }, [Model]);
+    }, [Model, t]);
 
     const tabs: DisplayableTab[] = useApplyReducers(
         app('cms'),
-        `model${_.upperFirst(_.camelCase(Model.getSchemaName()))}Tabs`,
+        `model${pascalCase(Model.getSchemaName())}Tabs`,
         defaultTabs
     ) as DisplayableTab[];
 
