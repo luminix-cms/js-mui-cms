@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import _ from 'lodash';
-
+import { DateTime, Obj, Query, Str } from '@luminix/support';
 import { app } from '@luminix/core';
 
 import { FilterColumn, FilteredColumn } from '../../../types/Filter';
 
-import { searchParamsToObject } from '../../searchParams';
-import { fromIsoString } from '../../date';
+
+
 
 /**
  * Translates the received parameters object from url 'searchParams', 
@@ -21,7 +19,7 @@ export const translateColumnsFromQuery = (columns: FilterColumn[], searchParams:
 
     const FilterFacade = app('filter');
 
-    const params = searchParamsToObject(searchParams);
+    const params = Query.toObject(searchParams);
 
     const queryObject = Object.keys(params).reduce((acc: any, key) => {
         if ([ 'where' ].includes(key)) {
@@ -39,9 +37,9 @@ export const translateColumnsFromQuery = (columns: FilterColumn[], searchParams:
             columns.filter((column) => {
 
                 const operator = (() => {
-                    const op = _.camelCase(operation.split(_.camelCase(column.key))[1]);
+                    const op = Str.camel(operation.split(Str.camel(column.key))[1]);
 
-                    if (_.isEmpty(op)) {
+                    if (Obj.isEmpty(op)) {
                         return 'equals';
                     }
                     return op;
@@ -51,15 +49,15 @@ export const translateColumnsFromQuery = (columns: FilterColumn[], searchParams:
                     return false;
                 }
 
-                const attribute = _.snakeCase(operation.split(_.upperFirst(operator))[0]);
+                const attribute = Str.snake(operation.split(Str.ucfirst(operator))[0]);
 
                 return column.key === attribute;
             })
                 .forEach((column) => {
 
-                    let operator = _.camelCase(operation.split(_.camelCase(column.key))[1]);
+                    let operator = Str.camel(operation.split(Str.camel(column.key))[1]);
 
-                    if (_.isUndefined(operator) || _.isNull(operator) || _.isEmpty(operator)) {
+                    if (typeof operator === 'undefined' || operator === null || Obj.isEmpty(operator)) {
                         operator = 'equals';
                     }
 
@@ -74,15 +72,15 @@ export const translateColumnsFromQuery = (columns: FilterColumn[], searchParams:
                         }
                         case 'datetime-local': {
                             if (Array.isArray(value)) {
-                                _value = value.map((v) => fromIsoString(v));
+                                _value = value.map((v) => DateTime.toDateTimeLocal(v));
                             } else {
-                                _value = fromIsoString(value);
+                                _value = DateTime.toDateTimeLocal(value);
                             }
 
                             break;
                         }
                         case 'boolean': {
-                            _value = _.toNumber(value);
+                            _value = Number(value);
                             break;
                         }
                     }
@@ -119,9 +117,9 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
 
         const { key, operator, value, type } = column;
 
-        let operation = _.upperFirst(operator);
+        let operation = Str.ucfirst(operator);
 
-        if ([ 'equals' ].includes(_.camelCase(operator))) {
+        if ([ 'equals' ].includes(Str.camel(operator))) {
             operation = '';
         }
 
@@ -137,7 +135,7 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
                     }
                 }
 
-                searchParams.set(`where[${_.camelCase(key)}${operation}][${i}]`, _value);
+                searchParams.set(`where[${Str.camel(key)}${operation}][${i}]`, _value);
             });
         } else {
             
@@ -150,7 +148,7 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
                 }
             }
 
-            searchParams.set(`where[${_.camelCase(key)}${operation}]`, _value);
+            searchParams.set(`where[${Str.camel(key)}${operation}]`, _value);
         }
     });
 

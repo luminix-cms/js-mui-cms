@@ -3,8 +3,8 @@
 import { Dispatch, SetStateAction } from "react";
 import { SetURLSearchParams } from "react-router-dom";
 
-import { Model } from "@luminix/core";
-import { Collection } from "@luminix/core/dist/types/Collection";
+import { Collection } from "@luminix/support";
+import { ModelType as Model } from "@luminix/core";
 
 import { CmsConfig } from "./Config";
 import { Column, MassAction } from "./Table";

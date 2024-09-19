@@ -1,5 +1,5 @@
-import { Model } from "@luminix/core";
-import { RouteObject } from "react-router-dom";
+import { ModelType as Model } from '@luminix/core';
+import { RouteObject } from 'react-router-dom';
 
 export type ComponentMapReducer = (components: Record<string, React.FunctionComponent>) => Record<string, React.FunctionComponent>;
 

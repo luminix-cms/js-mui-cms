@@ -1,10 +1,8 @@
-import _ from 'lodash';
-
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { app, Model } from '@luminix/core';
+import { app, ModelType as Model } from '@luminix/core';
 import { ModelForm } from '@luminix/react';
 
 import {
@@ -20,6 +18,7 @@ import useSetPageTitle from '../hooks/useSetPageTitle';
 import useBackButton from '../hooks/useBackButton';
 import useHandleError from '../hooks/useHandleError';
 import useNotify from '../hooks/useNotify';
+import { Str } from '@luminix/support';
 
 
 const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) => {
@@ -54,7 +53,7 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
         notify(t(':model saved successfully', { model: Model.singular() }));
 
         if (item?.wasRecentlyCreated) {
-            navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`);
+            navigate(`/${Str.kebab(Model.plural())}/${item.getKey()}`);
         }
 
     }, [notify, navigate, Model, item, t]);
@@ -72,7 +71,7 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
             <Grid xs={12}>
                 <Breadcrumbs
                     parts={[
-                        { name: Model.plural(), href: '/' + _.kebabCase(Model.plural()) },
+                        { name: Model.plural(), href: '/' + Str.kebab(Model.plural()) },
                         { name: item.exists ? item.getLabel() : t('New') },
                     ]}
                 />

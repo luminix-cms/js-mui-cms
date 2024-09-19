@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import _ from 'lodash';
-
-import { model, Model } from '@luminix/core';
+import { Obj } from '@luminix/support';
+import { model, ModelType as Model } from '@luminix/core';
 
 export const changeValueFromArray = (input: any): any =>
 {
@@ -12,7 +10,7 @@ export const changeValueFromArray = (input: any): any =>
 
     let output: any;
     
-    if (_.isEmpty(input)) {
+    if (Obj.isEmpty(input)) {
         output = '';
     } else {
         output = input[0];
@@ -29,7 +27,7 @@ export const changeValueToArray = (input: any): any =>
 
     let output: any;
 
-    if (_.isEmpty(input)) {
+    if (Obj.isEmpty(input)) {
         output = [];
     } else {
         output = [input, ''];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Model, app } from '@luminix/core';
+import { ModelType as Model, app } from '@luminix/core';
 import { usePagination } from '@luminix/react';
 
 import {

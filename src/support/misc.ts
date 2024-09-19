@@ -1,5 +1,5 @@
 
-import _ from "lodash";
+import { Obj } from "@luminix/support";
 
 /**
  * @deprecated - For demo purposes
@@ -24,7 +24,7 @@ export const sleep = (duration: number): Promise<void> => {
  * @returns 
  */
 export const isSet = (value: unknown) => {
-    if (_.isUndefined(value) || _.isNull(value) || _.isEmpty(value)) {
+    if (typeof value === 'undefined' || value === null || Obj.isEmpty(value)) {
         return false;
     }
     return true;

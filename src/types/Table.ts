@@ -1,9 +1,11 @@
-import { Model } from '@luminix/core';
-import { Collection } from '@luminix/core/dist/types/Collection';
+import { Collection } from '@luminix/support';
+import { ModelType as Model } from '@luminix/core';
+
 import { TableCellProps } from '@mui/material';
+import { TFunction } from 'i18next';
+
 import { NotifyFunction } from './Notifications';
 import { DialogFunction } from './Dialog';
-import { TFunction } from 'i18next';
 
 export type StaticAction = {
     key?: string;

@@ -27,7 +27,7 @@ export default function useDisplaceNotifications(value: string | number | false)
             setDisplacement(defaultDisplacement);
         };
 
-    }, [desiredDisplacement, defaultDisplacement]);
+    }, [desiredDisplacement, defaultDisplacement, setDisplacement]);
 
 
 }

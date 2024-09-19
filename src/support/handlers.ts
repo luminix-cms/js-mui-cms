@@ -1,7 +1,7 @@
 import { Model } from "@luminix/core";
 import { ActionCallbackEvent, InstanceActionCallbackEvent, MassActionCallbackEvent } from "../types/Table";
 import { createErrorCallback } from "./error";
-import _ from "lodash";
+import { Str } from "@luminix/support";
 
 type MassActionHandlers = Record<string, (ModelClass: typeof Model) => (e: MassActionCallbackEvent) => void>;
 type InstanceActionHandlers = Record<string, (ModelClass: typeof Model) => (e: InstanceActionCallbackEvent) => void>;
@@ -25,7 +25,7 @@ export const massActionHandlers: MassActionHandlers = {
                 : t('Confirm delete permanently'),
             message: t(`Are you sure you want to ${action} :count :model?`, {
                 count: selected.count(),
-                model: _.lowerFirst(selected.count() === 1
+                model: Str.lcfirst(selected.count() === 1
                     ? ModelClass.singular()
                     : ModelClass.plural())
             }),
@@ -41,7 +41,7 @@ export const massActionHandlers: MassActionHandlers = {
 
             notify(t(`Successfully ${afterMath} :count :model`, {
                 count: selected.count(),
-                model: _.lowerFirst(selected.count() === 1
+                model: Str.lcfirst(selected.count() === 1
                     ? ModelClass.singular()
                     : ModelClass.plural())
             }));
@@ -58,7 +58,7 @@ export const massActionHandlers: MassActionHandlers = {
             title: t('Confirm restore'),
             message: t('Are you sure you want to restore :count :model?', {
                 count: selected.count(),
-                model: _.lowerFirst(selected.count() === 1
+                model: Str.lcfirst(selected.count() === 1
                     ? ModelClass.singular()
                     : ModelClass.plural())
             }),
@@ -74,7 +74,7 @@ export const massActionHandlers: MassActionHandlers = {
 
             notify(t('Successfully restored :count :model', {
                 count: selected.count(),
-                model: _.lowerFirst(selected.count() === 1
+                model: Str.lcfirst(selected.count() === 1
                     ? ModelClass.singular()
                     : ModelClass.plural())
             }));
@@ -92,7 +92,7 @@ export const massActionHandlers: MassActionHandlers = {
             title: t('Confirm permanent deletion'),
             message: t('Are you sure you want to delete permanently :count :model?', {
                 count: selected.count(),
-                model: _.lowerFirst(selected.count() === 1
+                model: Str.lcfirst(selected.count() === 1
                     ? ModelClass.singular()
                     : ModelClass.plural())
             }),
@@ -108,7 +108,7 @@ export const massActionHandlers: MassActionHandlers = {
 
             notify(t('Successfully deleted :count :model', {
                 count: selected.count(),
-                model: _.lowerFirst(selected.count() === 1
+                model: Str.lcfirst(selected.count() === 1
                     ? ModelClass.singular()
                     : ModelClass.plural())
             }));
@@ -139,7 +139,7 @@ export const instanceActionHandlers: InstanceActionHandlers = {
                 ? t('Confirm send to trash')
                 : t('Confirm permanent deletion'),
             message: t(`Are you sure you want to ${action}?`, {
-                model: _.lowerFirst(ModelClass.singular()),
+                model: Str.lcfirst(ModelClass.singular()),
                 label: item.getLabel(),
             }),
             type: 'confirm'
@@ -168,7 +168,7 @@ export const instanceActionHandlers: InstanceActionHandlers = {
         const confirm = await dialog({
             title: t('Confirm restore'),
             message: t('Are you sure you want to restore :model “:label”?', {
-                model: _.lowerFirst(ModelClass.singular()),
+                model: Str.lcfirst(ModelClass.singular()),
                 label: item.getLabel(),
             }),
             type: 'confirm'
@@ -197,7 +197,7 @@ export const instanceActionHandlers: InstanceActionHandlers = {
         const confirm = await dialog({
             title: t('Confirm permanent deletion'),
             message: t('Are you sure you want to delete :model “:label” permanently?', {
-                model: _.lowerFirst(ModelClass.singular()),
+                model: Str.lcfirst(ModelClass.singular()),
                 label: item.getLabel(),
             }),
             type: 'confirm'
@@ -226,7 +226,7 @@ export const staticActionHandlers: StaticActionHandlers = {
 
 
     create: (ModelClass) => ({ navigate }) => {
-        navigate(`/${_.kebabCase(ModelClass.plural())}/create`);
+        navigate(`/${Str.kebab(ModelClass.plural())}/create`);
     },
 
 };

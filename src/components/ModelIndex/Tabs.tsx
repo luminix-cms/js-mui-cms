@@ -13,7 +13,7 @@ import {
 
 import useCurrentModel from '../../hooks/useCurrentModel';
 import { DisplayableTab } from '../../types/Tabs';
-import { pascalCase } from '../../support/string';
+import { Str } from '@luminix/support';
 
 function Tabs(): React.ReactNode {
 
@@ -41,7 +41,7 @@ function Tabs(): React.ReactNode {
 
     const tabs: DisplayableTab[] = useApplyReducers(
         app('cms'),
-        `model${pascalCase(Model.getSchemaName())}Tabs`,
+        `model${Str.studly(Model.getSchemaName())}Tabs`,
         defaultTabs
     ) as DisplayableTab[];
 

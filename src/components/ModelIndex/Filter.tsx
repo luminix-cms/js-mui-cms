@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
+import { Query } from '@luminix/support';
 import { app } from '@luminix/core';
 
 import ModelFilterContext from '../../contexts/ModelFilterContext';
@@ -29,7 +30,6 @@ import Content from './Filter/Content';
 
 import { FilterColumn, FilteredColumn } from '../../types/Filter';
 
-import { searchParamsToObject } from '../../support/searchParams';
 import { translateColumnsFromQuery, translateColumnsToQuery } from '../../support/ModelIndex/Filter/searchParams';
 
 const Filter: React.FunctionComponent = () => {
@@ -42,7 +42,7 @@ const Filter: React.FunctionComponent = () => {
     const Model = useCurrentModel();
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const hasFilters = React.useMemo(() => ('where' in searchParamsToObject(searchParams)), [searchParams]);
+    const hasFilters = React.useMemo(() => ('where' in Query.toObject(searchParams)), [searchParams]);
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement|null>(null);
     const [columnsFilter, setColumnsFilter] = React.useState<FilteredColumn[]>([]);
@@ -89,6 +89,8 @@ const Filter: React.FunctionComponent = () => {
 
     const clearFilters = () => {
         clearSearchParams();
+
+        handleCloseFilter();
 
         setTimeout(() => {
             setColumnsFilter([]);

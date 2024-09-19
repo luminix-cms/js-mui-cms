@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Model, model, collect } from "@luminix/core";
-import { Collection } from "@luminix/core/dist/types/Collection";
+import { ModelType as Model, model, collect } from "@luminix/core";
+import { Collection } from "@luminix/support";
 
 export const loadRelationOptions = async (
     ModelClass: typeof Model, 

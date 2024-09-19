@@ -1,5 +1,5 @@
 import React from 'react';
-import { Model } from '@luminix/core';
+import { ModelType as Model } from '@luminix/core';
 import { useCollection } from '@luminix/react';
 
 import TableContext from '../contexts/TableContext';

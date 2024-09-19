@@ -1,7 +1,8 @@
 import { useContext, useMemo } from "react";
+import { Obj } from '@luminix/support';
+
 import LayoutContext from "../contexts/LayoutContext";
 
-import _ from "lodash";
 
 /**
  * 
@@ -14,6 +15,6 @@ export default function useLayoutConfig(path: string, defaultValue?: unknown)
 {
     const { layout } = useContext(LayoutContext);
 
-    return useMemo(() => _.get(layout, path, defaultValue), [layout, path, defaultValue]);
+    return useMemo(() => Obj.get(layout, path, defaultValue), [layout, path, defaultValue]);
 }
 

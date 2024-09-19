@@ -1,4 +1,6 @@
-import { Model } from '@luminix/core';
+import { Collection, CollectionIteratorCallback } from '@luminix/support';
+import { ModelType as Model, ModelPaginatedResponse, Scope } from '@luminix/core';
+import { LuminixProviderProps } from '@luminix/react';
 
 import {
     DrawerProps as MuiDrawerProps, AppBarProps as MuiAppBarProps, BoxProps,
@@ -15,11 +17,7 @@ import { ListTypeMap } from '@mui/material/List';
 
 import { DefaultComponentProps } from '@mui/material/OverridableComponent';
 import { MenuItem } from './Menu';
-import { ModelPaginatedResponse } from '@luminix/core/dist/types/Model';
-import { Collection, CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
-import { Scope } from '@luminix/core/dist/types/Builder';
 import { InitOptions } from 'i18next';
-import { LuminixProviderProps } from '@luminix/react/dist/components/LuminixProvider';
 // import { TableContextValue } from './Contexts';
 
 export type LuminixCmsProps = Partial<LuminixProviderProps> & {
@@ -65,12 +63,14 @@ export type ErrorProps = {
 export type RecursiveListProps = DefaultComponentProps<ListTypeMap> & {
     collapsed?: boolean;
     items: MenuItem[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onClick?: (e: any) => void;
 };
 
 export type RecursiveMenuProps = MenuProps & {
     collapsed?: boolean;
     items: MenuItem[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onClick?: (e: any) => void;
     // RecursiveList: FunctionComponent<RecursiveListProps>;
 }
