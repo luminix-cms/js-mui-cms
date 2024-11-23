@@ -28,7 +28,7 @@ import useTable from './hooks/useTable';
 
 
 export {
-    CmsServiceProvider as CmsPlugin,
+    CmsServiceProvider,
     
     LuminixCms,
     Link,

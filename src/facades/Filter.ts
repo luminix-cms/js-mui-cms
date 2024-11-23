@@ -1,4 +1,6 @@
 import { HasFacadeAccessor, MakeFacade } from "@luminix/support";
+import { App } from "@luminix/core";
+
 import { FilterService } from "../services/FilterService";
 
 class FilterFacade implements HasFacadeAccessor {
@@ -9,6 +11,6 @@ class FilterFacade implements HasFacadeAccessor {
 
 }
 
-const Filter = MakeFacade<FilterService, FilterFacade>(FilterFacade);
+const Filter = MakeFacade<FilterService, FilterFacade>(FilterFacade, App);
 
 export default Filter;
