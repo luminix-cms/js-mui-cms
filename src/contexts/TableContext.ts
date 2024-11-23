@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { TableContextValue } from '../types/Contexts';
-import { Model, collect } from '@luminix/core';
+import { ModelType as Model, collect } from '@luminix/core';
 
 
 const TableContext = React.createContext<TableContextValue>({

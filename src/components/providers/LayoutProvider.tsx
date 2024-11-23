@@ -3,11 +3,11 @@ import React from 'react';
 import { useMediaQuery } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 
-import { LayoutContextValue } from '../types/Contexts';
-import { CmsConfig } from '../types/Config';
+import { LayoutContextValue } from '../../types/Contexts';
+import { CmsConfig } from '../../types/Config';
 import { config } from '@luminix/core';
 
-import LayoutContext from '../contexts/LayoutContext';
+import LayoutContext from '../../contexts/LayoutContext';
 
 const originalTitle = document.title;
 

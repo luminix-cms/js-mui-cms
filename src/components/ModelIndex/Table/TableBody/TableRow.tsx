@@ -1,7 +1,9 @@
 import React from 'react';
-import _ from 'lodash';
+
+import { Str } from '@luminix/support';
+import { config } from '@luminix/core';
+
 import { useNavigate } from 'react-router-dom';
-import { app, config } from '@luminix/core';
 
 import { styled } from '@mui/material/styles';
 
@@ -18,7 +20,7 @@ import useSelection from '../../../../hooks/useSelection';
 import useCurrentModel from '../../../../hooks/useCurrentModel';
 
 import { TableRowProps } from '../../../../types/PropTypes';
-import { Str } from '@luminix/support';
+import Cms from '../../../../facades/Cms';
 
 type MobileCellContentProps = {
     label: string;
@@ -105,13 +107,13 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
 
     const columnsWithContents = React.useMemo(() => columns.map((props) => ({
         ...props,
-        content: app('cms')[`model${Str.studly(item.getType())}Get${Str.studly(props.key)}Content`](item.getAttribute(props.key), item),
+        content: Cms[`model${Str.studly(item.getType())}Get${Str.studly(props.key)}Content`](item.getAttribute(props.key), item),
     })), [columns, item]);
 
     const {
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
         ['ModelIndex.InstanceActions']: InstanceActions,
-    } = app('cms').getComponents();
+    } = Cms.getComponents();
 
     const {
         isSelected, handleSelectToggle,
@@ -139,7 +141,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                     {...props}
                     onClick={() => {
                         if (!item.deletedAt) {
-                            navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`);
+                            navigate(`/${Str.kebab(Model.plural())}/${item.getKey()}`);
                         }
                     }}
                 >
@@ -154,7 +156,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                     sx={{ maxWidth: 0, px: 0 }}
                     onClick={() => {
                         if (!item.deletedAt) {
-                            navigate(`/${_.kebabCase(Model.plural())}/${item.getKey()}`);
+                            navigate(`/${Str.kebab(Model.plural())}/${item.getKey()}`);
                         }
                     }}
                 >

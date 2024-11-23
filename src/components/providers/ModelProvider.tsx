@@ -1,5 +1,5 @@
-import ModelContext from "../contexts/ModelContext";
-import { ModelProviderProps } from "../types/PropTypes";
+import ModelContext from "../../contexts/ModelContext";
+import { ModelProviderProps } from "../../types/PropTypes";
 
 const ModelProvider: React.FunctionComponent<ModelProviderProps> = ({ Model, children }) => {
 

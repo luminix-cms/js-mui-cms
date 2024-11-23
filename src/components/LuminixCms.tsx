@@ -5,10 +5,10 @@ import { LuminixProvider } from '@luminix/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useMediaQuery, CssBaseline } from '@mui/material';
 
-import CmsPlugin from '../plugins/CmsPlugin';
+import CmsServiceProvider from '../providers/CmsServiceProvider';
 import { LuminixCmsProps } from '../types/PropTypes';
 
-import i18NextPlugin from '../plugins/i18NextPlugin';
+import i18NextServiceProvider from '../providers/i18NextServiceProvider';
 
 const DEFAULT_THEME = {
     palette: {
@@ -24,8 +24,7 @@ const DEFAULT_THEME = {
 
 const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
     theme = DEFAULT_THEME,
-    plugins,
-    i18nOptions = {},
+    providers = [],
     ...props
 }) => {
 
@@ -44,10 +43,10 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
             <CssBaseline />
             <LuminixProvider
                 routes={(app) => app.make('cms').getRoutes()}
-                plugins={[
-                    new CmsPlugin(),
-                    new i18NextPlugin(i18nOptions),
-                    ...plugins || [],
+                providers={[
+                    CmsServiceProvider,
+                    i18NextServiceProvider,
+                    ...providers,
                 ]}
                 {...props}
             />

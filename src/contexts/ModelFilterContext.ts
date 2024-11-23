@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import { Model } from '@luminix/core';
+import { ModelType as Model } from '@luminix/core';
 
 import { ModelFilterContextValue } from '../types/Contexts';
 

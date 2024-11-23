@@ -1,18 +1,18 @@
 
 import React from 'react';
 
-import { Model, app, collect } from '@luminix/core';
+import { Collection, Str } from '@luminix/support';
+import { ModelType as Model, app, collect } from '@luminix/core';
 import { useApplyReducers } from '@luminix/react';
 
-import { Column, MassAction } from '../types/Table';
-import TableContext from '../contexts/TableContext';
-
-import _ from 'lodash';
-import { TableProps } from '../types/PropTypes';
-import useIsDesktopMode from '../hooks/useIsDesktopMode';
-import useCurrentModel from '../hooks/useCurrentModel';
-import { Collection } from '@luminix/core/dist/types/Collection';
 import { useSearchParams } from 'react-router-dom';
+
+import TableContext from '../../contexts/TableContext';
+import { Column, MassAction } from '../../types/Table';
+import { TableProps } from '../../types/PropTypes';
+
+import useIsDesktopMode from '../../hooks/useIsDesktopMode';
+import useCurrentModel from '../../hooks/useCurrentModel';
 
 // const DEFAULT_MASS_ACTIONS = [
 //     {
@@ -34,7 +34,7 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ items, loading, ch
     const DEFAULT_COLUMNS = React.useMemo(() => [
         {
             key: Model.getSchema().labeledBy,
-            label: _.upperFirst(_.camelCase(Model.getSchema().labeledBy)),
+            label: Str.human(Model.getSchema().labeledBy),
         }
     ], [Model]);
 
@@ -46,7 +46,7 @@ const TableProvider: React.FunctionComponent<TableProps> = ({ items, loading, ch
     
     const columns = useApplyReducers(
         app('cms'),
-        `model${_.upperFirst(_.camelCase(Model.getSchemaName()))}Columns`,
+        `model${Str.studly(Model.getSchemaName())}Columns`,
         DEFAULT_COLUMNS
     ) as Column[];
 

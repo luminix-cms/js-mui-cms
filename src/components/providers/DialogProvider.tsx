@@ -12,9 +12,9 @@ import {
 
 import { DialogProps } from '@mui/material/Dialog';
 
-import { DialogMessage } from '../types/Dialog';
-import DialogContext from '../contexts/DialogContext';
-import useOptimistic from '../hooks/useOptimistic';
+import { DialogMessage } from '../../types/Dialog';
+import DialogContext from '../../contexts/DialogContext';
+import useOptimistic from '../../hooks/useOptimistic';
 
 type DialogProviderState = {
     current?: DialogMessage;

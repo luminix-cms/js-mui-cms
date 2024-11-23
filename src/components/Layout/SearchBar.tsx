@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import { Func } from '@luminix/support';
 
 import {
     Badge,
@@ -27,7 +27,7 @@ const SearchField = styled(TextField)(({ theme }) => ({
     // transition: 'width 250ms ease-in-out',
 }));
 
-const throttledSearch = _.throttle((search: string, setSearchParams: SetURLSearchParams) => {
+const throttledSearch = Func.throttle((search: string, setSearchParams: SetURLSearchParams) => {
     setSearchParams((params) => {
         const newParams = new URLSearchParams(params);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModelPaginatedLink } from '@luminix/core/dist/types/Model';
+import { ModelPaginatedLink } from '@luminix/core';
 import { usePagination } from '@luminix/react';
 import { Form, useSearchParams } from 'react-router-dom';
 
@@ -50,7 +50,7 @@ const Label: React.FunctionComponent<{ label: string }> = ({ label }) => {
 
 const Pagination: React.FunctionComponent<PaginationProps> = ({ variant = 'default', ...props }) => {
     
-    const isDefault = variant === 'default';//useIsDesktopMode();
+    const isDefault = variant === 'default';
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [pageText, setPageText] = React.useState(searchParams.get('page') || '1');

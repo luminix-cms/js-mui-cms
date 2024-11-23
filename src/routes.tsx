@@ -1,14 +1,15 @@
 import { Outlet } from "react-router-dom";
-import _ from "lodash";
+
 import { PaginationProvider } from "@luminix/react";
 
 import { useMediaQuery } from '@mui/material';
 
 import { CmsRoutesReducer } from "./types/Reducers";
-import LayoutProvider from "./providers/LayoutProvider";
-import ModelProvider from "./providers/ModelProvider";
-import DialogProvider from "./providers/DialogProvider";
-import NotificationProvider from "./providers/NotificationProvider";
+import LayoutProvider from "./components/providers/LayoutProvider";
+import ModelProvider from "./components/providers/ModelProvider";
+import DialogProvider from "./components/providers/DialogProvider";
+import NotificationProvider from "./components/providers/NotificationProvider";
+import { Str } from "@luminix/support";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const LayoutProviderStack: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -54,7 +55,7 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
             },
             ...Object.entries(models).flatMap(([key, Model]) => ([
                 {
-                    path: '/' + _.kebabCase(Model.plural()),
+                    path: '/' + Str.kebab(Model.plural()),
                     name: `luminix.cms.${key}.index`,
                     element: (
                         <ModelProvider Model={Model}>
@@ -65,7 +66,7 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
                     )
                 },
                 {
-                    path: '/' + _.kebabCase(Model.plural()) + '/create',
+                    path: '/' + Str.kebab(Model.plural()) + '/create',
                     name: `luminix.cms.${key}.item`,
                     element: (
                         <ModelProvider Model={Model}>
@@ -74,7 +75,7 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
                     )
                 },
                 {
-                    path: '/' + _.kebabCase(Model.plural()) + '/:id',
+                    path: '/' + Str.kebab(Model.plural()) + '/:id',
                     name: `luminix.cms.${key}.item`,
                     element: (
                         <ModelProvider Model={Model}>

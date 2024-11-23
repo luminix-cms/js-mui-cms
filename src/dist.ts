@@ -1,13 +1,13 @@
 
-import CmsPlugin from './plugins/CmsPlugin';
+import CmsServiceProvider from './providers/CmsServiceProvider';
 
 import LuminixCms from './components/LuminixCms';
 import Link from './components/Link';
 
-import DialogProvider from './providers/DialogProvider';
-import LayoutProvider from './providers/LayoutProvider';
-import ModelProvider from './providers/ModelProvider';
-import NotificationProvider from './providers/NotificationProvider';
+import DialogProvider from './components/providers/DialogProvider';
+import LayoutProvider from './components/providers/LayoutProvider';
+import ModelProvider from './components/providers/ModelProvider';
+import NotificationProvider from './components/providers/NotificationProvider';
 
 import useActionEvent from './hooks/useActionEvent';
 import useBackButton from './hooks/useBackButton';
@@ -28,7 +28,7 @@ import useTable from './hooks/useTable';
 
 
 export {
-    CmsPlugin,
+    CmsServiceProvider as CmsPlugin,
     
     LuminixCms,
     Link,

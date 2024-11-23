@@ -6,7 +6,7 @@ import {
     Paper,
 } from '@mui/material';
 
-import TableProvider from '../../providers/TableProvider';
+import TableProvider from '../providers/TableProvider';
 import { TableProps } from '../../types/PropTypes';
 
 const Table: React.FunctionComponent<TableProps> = ({

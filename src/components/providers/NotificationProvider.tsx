@@ -16,10 +16,10 @@ import { Close } from '@mui/icons-material';
 
 import { useTheme } from '@mui/material/styles';
 
-import useIsDesktopMode from '../hooks/useIsDesktopMode';
-import NotificationContext from '../contexts/NotificationContext';
-import { Notification } from '../types/Notifications';
-import { NotificationProviderProps } from '../types/PropTypes';
+import useIsDesktopMode from '../../hooks/useIsDesktopMode';
+import NotificationContext from '../../contexts/NotificationContext';
+import { Notification } from '../../types/Notifications';
+import { NotificationProviderProps } from '../../types/PropTypes';
 
 
 const notifications = collect([] as Notification[]);

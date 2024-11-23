@@ -1,5 +1,5 @@
 import React from 'react';
-import { app, Model } from '@luminix/core';
+import { app, ModelType as Model } from '@luminix/core';
 import { useSearchParams } from 'react-router-dom';
 
 import {
@@ -27,11 +27,11 @@ const InstanceActions = ({ item }: { item: Model }) => {
         return app('cms').getInstanceActions(item.constructor, currentTab);
     }, [item, currentTab]);
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement|null>(null);
 
     const open = Boolean(anchorEl);
 
-    const handleOpen = (event: any) => {
+    const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {

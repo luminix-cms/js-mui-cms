@@ -1,6 +1,8 @@
 import React from 'react';
-import { Model, app, collect } from '@luminix/core';
-import { CollectionIteratorCallback } from '@luminix/core/dist/types/Collection';
+
+import { CollectionIteratorCallback } from '@luminix/support';
+import { ModelType as Model, app, collect } from '@luminix/core';
+
 import { useTranslation } from 'react-i18next';
 
 import {

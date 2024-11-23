@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import _ from 'lodash';
 
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { Collection, Obj } from '@luminix/support';
+import { collect, ModelType as Model } from '@luminix/core';
 
-import { collect, Model } from '@luminix/core';
-import { Collection } from '@luminix/core/dist/types/Collection';
+import { useTranslation } from 'react-i18next';
 
 import {
     TextField,
@@ -47,7 +46,7 @@ const AsyncAutocomplete: React.FunctionComponent = () => {
     const handleSearch = async (_event: any, newInputValue: string) => {
         setSearchValue(newInputValue);
 
-        if (!_.isEmpty(newInputValue)) {
+        if (!Obj.isEmpty(newInputValue)) {
             setLoadedOptions(await aggregateRelationOptions(Model, key, newInputValue, collect(inputValue)));
         }
     }
@@ -80,7 +79,7 @@ const AsyncAutocomplete: React.FunctionComponent = () => {
     React.useEffect(() => {
         setValue(inputValue.map((v) => v.getKey()));
 
-        if (!_.isEmpty(searchValue)) {
+        if (!Obj.isEmpty(searchValue)) {
             setLoadedOptions(collect([]));
         } else {
             (async () => {

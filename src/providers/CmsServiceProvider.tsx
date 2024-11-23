@@ -1,10 +1,5 @@
-import _ from 'lodash';
-
-import { AppFacade, Model, Plugin } from '@luminix/core';
-import { ModelFormProps } from '@luminix/react/dist/types/Form';
-
-import CmsFacade from '../facades/Cms';
-import FilterFacade from '../facades/Filter';
+import { Config, Model, ModelType, Route } from '@luminix/core';
+import { ModelFormProps } from '@luminix/react';
 
 import routes from '../routes';
 
@@ -47,38 +42,29 @@ import {
     Add as AddIcon,
 } from '@mui/icons-material';
 
-import { CmsPluginOptions } from '../types/Plugin';
 import { StaticAction, MassAction, InstanceAction } from '../types/Table';
 import { MenuItem } from '../types/Menu';
 //import { DisplayableTab } from './types/Tabs';
 
 import { instanceActionHandlers, massActionHandlers, staticActionHandlers } from '../support/handlers';
 import InstanceActions from '../components/ModelIndex/InstanceActions';
-
-let app: AppFacade;
+import { ServiceProvider, Str } from '@luminix/support';
+import Cms from '../facades/Cms';
+import CmsService from '../services/CmsService';
+import FilterService from '../services/FilterService';
 
 // 
 
-class CmsPlugin extends Plugin {
+class CmsServiceProvider extends ServiceProvider {
 
-    name = 'Luminix CMS Plugin';
+    static applyUserDefaults: boolean = true;
 
-    constructor(
-        public options: CmsPluginOptions = {}
-    ) {
-        super();
-    }
+    register(): void {
 
-    
+        this.app.singleton('cms', () => new CmsService());
+        this.app.singleton('filter', () => new FilterService());
 
-    register(appFacade: AppFacade): void {
-
-        app = appFacade;
-
-        app.bind('cms', new CmsFacade());
-        app.bind('filter', new FilterFacade());
-
-        app.once('booting', () => {
+        this.app.once('booting', () => {
             this.bootModels();
         });
     }
@@ -91,16 +77,16 @@ class CmsPlugin extends Plugin {
         this.bootMassActions();
         this.bootInstanceActions();
         this.bootStaticActions();
-        if (this.options.applyUserDefaults ?? true) {
+        if (CmsServiceProvider.applyUserDefaults) {
             this.bootDefaultUserModifiers();
         }
     }
 
     private bootModels() {
 
-        app.make('model').reducer(
+        Model.reducer(
             'model',
-            (Base: typeof Model, abstract: string) => {
+            (Base, abstract) => {
                 return class extends Base {
                     static icon() {
                         if (abstract === 'user') {
@@ -119,16 +105,16 @@ class CmsPlugin extends Plugin {
 
     }
 
-    private  bootRoutes() {
-        app.make('cms').reducer('cmsRoutes', routes, 0);
-        app.make('route').reducer('routerOptions', (opts) => ({
+    private bootRoutes() {
+        Cms.reducer('cmsRoutes', routes, 0);
+        Route.reducer('domRouterOptions', (opts) => ({
             ...opts,
-            basename: app.make('config').get('luminix.admin.url', '/admin')
+            basename: Config.get('luminix.admin.url', '/admin')
         }));
     }
 
     private bootComponents() {
-        app.make('cms').reducer('componentMap', () => ({
+        Cms.reducer('componentMap', () => ({
             
             Layout,
             Dashboard,
@@ -169,7 +155,7 @@ class CmsPlugin extends Plugin {
     }
 
     private bootMenu() {
-        app.make('cms').reducer('menuItems', (items: MenuItem[], models: Record<string, typeof Model>) => {
+        Cms.reducer('menuItems', (items: MenuItem[], models: Record<string, typeof Model>) => {
             return [
                 ...items,
                 {
@@ -183,8 +169,7 @@ class CmsPlugin extends Plugin {
                     .map(([key, Model]) => ({
                         key,
                         text: Model.plural(),
-                        // TODO: use route(`luminix.cms.${model}.index`) instead
-                        to: '/' + _.kebabCase(Model.plural()),
+                        to: '/' + Str.kebab(Model.plural()),
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         icon: (Model as unknown as any).icon(),
                         
@@ -196,7 +181,7 @@ class CmsPlugin extends Plugin {
 
     private bootDefaultUserModifiers() {
 
-        app.make('cms').reducer('modelUserColumns', () => [
+        Cms.reducer('modelUserColumns', () => [
             {
                 key: 'name',
                 label: 'Name',
@@ -217,7 +202,7 @@ class CmsPlugin extends Plugin {
             },
         ], 1);
 
-        app.make('cms').reducer('wireModelFormProps', (props: ModelFormProps, item?: Model) => {
+        Cms.reducer('wireModelFormProps', (props: ModelFormProps, item?: ModelType) => {
             if (item?.getType() === 'user') {
                 return {
                     ...props,
@@ -228,7 +213,7 @@ class CmsPlugin extends Plugin {
             return props;
         });
         
-        // app.make('cms').reducer('modelPostTabs', (tabs: DisplayableTab[]) => [
+        // this.app.make('cms').reducer('modelPostTabs', (tabs: DisplayableTab[]) => [
         //     {
         //         label: 'Published',
         //         value: 'published',
@@ -240,7 +225,7 @@ class CmsPlugin extends Plugin {
 
     private bootMassActions() {
 
-        app.make('cms').reducer('massActions', (actions: MassAction[], ModelClass: typeof Model, currentTab: string) => {
+        Cms.reducer('massActions', (actions: MassAction[], ModelClass: typeof Model, currentTab: string) => {
             const defaultActions: MassAction[] = [];
 
             const { softDeletes } = ModelClass.getSchema();
@@ -276,7 +261,7 @@ class CmsPlugin extends Plugin {
 
     private bootInstanceActions() {
 
-        app.make('cms').reducer('instanceActions', (actions: InstanceAction[], ModelClass: typeof Model, currentTab: string) => {
+        Cms.reducer('instanceActions', (actions: InstanceAction[], ModelClass: typeof Model, currentTab: string) => {
             const defaultActions: InstanceAction[] = [];
 
             const { softDeletes } = ModelClass.getSchema();
@@ -307,7 +292,7 @@ class CmsPlugin extends Plugin {
     }
 
     private bootStaticActions() {
-        app.make('cms').reducer('staticActions', (actions: StaticAction[], ModelClass: typeof Model, currentTab: string) => {
+        Cms.reducer('staticActions', (actions: StaticAction[], ModelClass: typeof Model, currentTab: string) => {
             if (currentTab === 'trashed') {
                 return actions;
             }
@@ -325,5 +310,5 @@ class CmsPlugin extends Plugin {
 
 }
 
-export default CmsPlugin;
+export default CmsServiceProvider;
 

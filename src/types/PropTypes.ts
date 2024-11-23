@@ -17,12 +17,10 @@ import { ListTypeMap } from '@mui/material/List';
 
 import { DefaultComponentProps } from '@mui/material/OverridableComponent';
 import { MenuItem } from './Menu';
-import { InitOptions } from 'i18next';
 // import { TableContextValue } from './Contexts';
 
 export type LuminixCmsProps = Partial<LuminixProviderProps> & {
     theme?: ThemeOptions,
-    i18nOptions?: InitOptions,
 };
 
 export type LayoutProps = BoxProps & {
