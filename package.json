@@ -2,7 +2,8 @@
   "name": "@luminix/mui-cms",
   "version": "",
   "type": "module",
-  "main": "dist/mui-cms.js",
+  "main": "bundle/mui-cms.js",
+  "module": "dist/mui-cms.js",
   "types": "types/index.d.ts",
   "scripts": {
     "dev": "vite --port=3333 --config=vite.config.dev.ts",
