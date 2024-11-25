@@ -109,7 +109,7 @@ export class FilterService {
         
                     let type = attribute.phpType ?? 'string';
         
-                    if (!Obj.isNull(attribute.cast) && !Obj.isEmpty(attribute.cast)) {
+                    if (attribute.cast !== null && !Obj.isEmpty(attribute.cast)) {
                         type = attribute.cast!;
                     }
         
