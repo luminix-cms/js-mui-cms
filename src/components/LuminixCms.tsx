@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { AppFacade } from '@luminix/core';
 import { LuminixProvider } from '@luminix/react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -22,9 +23,11 @@ const DEFAULT_THEME = {
     
 };
 
+const routes = (app: AppFacade) => app.make('cms').getRoutes();
+
 const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
     theme = DEFAULT_THEME,
-    providers = [],
+    providers: provided,
     ...props
 }) => {
 
@@ -38,16 +41,18 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
         },
     }), [theme, prefersDarkMode]);
 
+    const providers = React.useMemo(() => [
+        CmsServiceProvider,
+        i18NextServiceProvider,
+        ...provided || [],
+    ], [provided]);
+
     return (
         <ThemeProvider theme={muiTheme}>
             <CssBaseline />
             <LuminixProvider
-                routes={(app) => app.make('cms').getRoutes()}
-                providers={[
-                    CmsServiceProvider,
-                    i18NextServiceProvider,
-                    ...providers,
-                ]}
+                routes={routes}
+                providers={providers}
                 {...props}
             />
         </ThemeProvider>
