@@ -21,6 +21,7 @@ import { MenuItem } from './Menu';
 
 export type LuminixCmsProps = Partial<LuminixProviderProps> & {
     theme?: ThemeOptions,
+    themeArgs?: object[],
 };
 
 export type LayoutProps = BoxProps & {

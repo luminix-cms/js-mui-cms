@@ -27,6 +27,7 @@ const routes = (app: AppFacade) => app.make('cms').getRoutes();
 
 const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
     theme = DEFAULT_THEME,
+    themeArgs,
     providers: provided,
     ...props
 }) => {
@@ -39,7 +40,7 @@ const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
             ...theme.palette,
             mode: prefersDarkMode ? 'dark' : 'light',
         },
-    }), [theme, prefersDarkMode]);
+    }, ...(themeArgs ?? [])), [theme, prefersDarkMode, themeArgs]);
 
     const providers = React.useMemo(() => [
         CmsServiceProvider,
