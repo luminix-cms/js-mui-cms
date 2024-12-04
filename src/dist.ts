@@ -1,5 +1,6 @@
 
 import CmsServiceProvider from './providers/CmsServiceProvider';
+import i18NextServiceProvider from './providers/i18NextServiceProvider';
 
 import LuminixCms from './components/LuminixCms';
 import Link from './components/Link';
@@ -29,6 +30,7 @@ import useTable from './hooks/useTable';
 
 export {
     CmsServiceProvider,
+    i18NextServiceProvider,
     
     LuminixCms,
     Link,
