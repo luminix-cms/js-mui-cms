@@ -27,6 +27,9 @@ import useSelection from './hooks/useSelection';
 import useSetPageTitle from './hooks/useSetPageTitle';
 import useTable from './hooks/useTable';
 
+import Cms from './facades/Cms';
+import Filter from './facades/Filter';
+
 
 export {
     CmsServiceProvider,
@@ -34,6 +37,9 @@ export {
     
     LuminixCms,
     Link,
+
+    Cms,
+    Filter,
 
     useActionEvent,
     useBackButton,
@@ -57,7 +63,6 @@ export {
     ModelProvider,
     NotificationProvider,
 }
-
 
 
 
