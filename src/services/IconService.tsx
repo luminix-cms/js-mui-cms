@@ -72,6 +72,10 @@ class IconService
         return <Icon {...props} />;
     }
 
+    all(): string[] {
+        return this.icons.map((icon) => icon.name);
+    }
+
 }
 
 export default IconService;

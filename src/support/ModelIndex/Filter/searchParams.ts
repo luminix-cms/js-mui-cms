@@ -117,9 +117,9 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
 
         const { key, operator, value, type } = column;
 
-        let operation = operator;//Str.ucfirst(operator);
+        let operation = `:${operator}`;//Str.ucfirst(operator);
 
-        if ([ 'equals' ].includes(Str.camel(operator))) {
+        if ([ 'equals' ].includes(operator)) {
             operation = '';
         }
 
@@ -135,7 +135,7 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
                     }
                 }
 
-                searchParams.set(`where[${Str.camel(key)}:${operation}][${i}]`, _value);
+                searchParams.set(`where[${key}${operation}][${i}]`, _value);
             });
         } else {
             
@@ -148,7 +148,7 @@ export const translateColumnsToQuery = (columns: FilteredColumn[]) => {
                 }
             }
 
-            searchParams.set(`where[${Str.camel(key)}:${operation}]`, _value);
+            searchParams.set(`where[${key}${operation}]`, _value);
         }
     });
 
