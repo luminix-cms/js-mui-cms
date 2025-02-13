@@ -36,10 +36,27 @@ import RecursiveList from '../components/RecursiveList';
 import RecursiveMenu from '../components/RecursiveMenu';
 
 import {
-    CategoryOutlined as CategoryOutlinedIcon,
-    DashboardOutlined as DashboardOutlinedIcon,
-    PeopleOutlined as PeopleOutlinedIcon,
     Add as AddIcon,
+    AddCircleOutline as AddCircleOutlineIcon,
+    ArrowDownward as ArrowDownwardIcon,
+    ArrowDropDown as ArrowDropDownIcon,
+    ArrowUpward as ArrowUpwardIcon,
+    CategoryOutlined as CategoryOutlinedIcon,
+    ChevronLeft as ChevronLeftIcon,
+    ChevronRight as ChevronRightIcon,
+    Close as CloseIcon,
+    DashboardOutlined as DashboardOutlinedIcon,
+    ExpandLess as ExpandLessIcon,
+    ExpandMore as ExpandMoreIcon,
+    FilterList as FilterListIcon,
+    FirstPage as FirstPageIcon,
+    HighlightOffOutlined as HighlightOffOutlinedIcon,
+    LastPage as LastPageIcon,
+    Menu as MenuIcon,
+    MoreVert as MoreVertIcon,
+    PeopleOutlined as PeopleOutlinedIcon,
+    Search as SearchIcon,
+    SwapVert as SwapVertIcon,
 } from '@mui/icons-material';
 
 import { StaticAction, MassAction, InstanceAction } from '../types/Table';
@@ -52,6 +69,8 @@ import { ServiceProvider, Str } from '@luminix/support';
 import Cms from '../facades/Cms';
 import CmsService from '../services/CmsService';
 import FilterService from '../services/FilterService';
+import IconService from '../services/IconService';
+import Icon from '../facades/Icon';
 
 // 
 
@@ -63,10 +82,13 @@ class CmsServiceProvider extends ServiceProvider {
 
         this.app.singleton('cms', () => new CmsService());
         this.app.singleton('filter', () => new FilterService());
+        this.app.singleton('icon', () => new IconService());
 
-        this.app.once('booting', () => {
-            this.bootModels();
-        });
+        this.registerIcons();
+
+        // this.app.once('booting', () => {
+        //     this.addIconsToModels();
+        // });
     }
 
 
@@ -77,31 +99,58 @@ class CmsServiceProvider extends ServiceProvider {
         this.bootMassActions();
         this.bootInstanceActions();
         this.bootStaticActions();
+
         if (CmsServiceProvider.applyUserDefaults) {
             this.bootDefaultUserModifiers();
         }
     }
 
-    private bootModels() {
+    // private addIconsToModels() {
 
-        Model.reducer(
-            'model',
-            (Base, abstract) => {
-                return class extends Base {
-                    static icon() {
-                        if (abstract === 'user') {
-                            return (
-                                <PeopleOutlinedIcon />
-                            );
-                        }
-                        return (
-                            <CategoryOutlinedIcon />
-                        );
-                    }
-                }
-            },
-            0
-        );
+    //     Model.reducer(
+    //         'model',
+    //         (Base, abstract) => {
+    //             return class extends Base {
+    //                 static icon() {
+    //                     if (abstract === 'user') {
+    //                         return Icon.render('PeopleOutlined');
+    //                     }
+    //                     return Icon.render('CategoryOutlined');
+    //                 }
+    //             }
+    //         },
+    //         0
+    //     );
+
+    // }
+
+    private registerIcons() {
+
+        Icon.registerIcon({
+            'Add': AddIcon,
+            'AddCircleOutline': AddCircleOutlineIcon,
+            'ArrowDownward': ArrowDownwardIcon,
+            'ArrowDropDown': ArrowDropDownIcon,
+            'ArrowUpward': ArrowUpwardIcon,
+            'CategoryOutlined': CategoryOutlinedIcon,
+            'ChevronLeft': ChevronLeftIcon,
+            'ChevronRight': ChevronRightIcon,
+            'Close': CloseIcon,
+            'DashboardOutlined': DashboardOutlinedIcon,
+            'ExpandLess': ExpandLessIcon,
+            'ExpandMore': ExpandMoreIcon,
+            'FilterList': FilterListIcon,
+            'FirstPage': FirstPageIcon,
+            'HighlightOffOutlined': HighlightOffOutlinedIcon,
+            'LastPage': LastPageIcon,
+            'Menu': MenuIcon,
+            'MoreVert': MoreVertIcon,
+            'PeopleOutlined': PeopleOutlinedIcon,
+            'Search': SearchIcon,
+            'SwapVert': SwapVertIcon,
+        });
+
+        Icon.forModel('user', 'PeopleOutlined');
 
     }
 
@@ -162,7 +211,7 @@ class CmsServiceProvider extends ServiceProvider {
                     key: 'dashboard',
                     text: 'Dashboard',
                     to: '/',
-                    icon: <DashboardOutlinedIcon />,
+                    icon: Icon.render('DashboardOutlined'),
                 },
                 ...Object.entries(models)
                     .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
@@ -302,11 +351,13 @@ class CmsServiceProvider extends ServiceProvider {
                     key: 'create',
                     label: `Create ${ModelClass.singular()}`,
                     callback: staticActionHandlers.create(ModelClass),
-                    icon: <AddIcon />,
+                    icon: Icon.render('Add'),
                 },
             ];
         }, 0);
     }
+
+    
 
 }
 
