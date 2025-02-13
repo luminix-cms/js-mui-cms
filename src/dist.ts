@@ -28,6 +28,7 @@ import useSetPageTitle from './hooks/useSetPageTitle';
 import useTable from './hooks/useTable';
 
 import Cms from './facades/Cms';
+import Icon from './facades/Icon';
 import Filter from './facades/Filter';
 
 
@@ -40,6 +41,7 @@ export {
 
     Cms,
     Filter,
+    Icon,
 
     useActionEvent,
     useBackButton,
