@@ -13,6 +13,7 @@ import ModelFilterRowContext from '../../../../contexts/ModelFilterRowContext';
 import { TextField } from '@mui/material';
 
 import { FilterValueInput } from '../../../../types/Filter';
+import { DateTime } from '@luminix/support';
 
 const DatePicker: React.FunctionComponent<FilterValueInput> = ({ index = null }) => {
 
@@ -58,7 +59,7 @@ const DatePicker: React.FunctionComponent<FilterValueInput> = ({ index = null })
         <TextField 
             type={FilterFacade.getInputType(type)}
             label={inputLabel}
-            value={inputValue || new Date}
+            value={DateTime.toDateTimeLocal(DateTime.parse(inputValue))}
             onChange={handleValue}
             size="small"
             sx={{ width: isDesktop ? width : '100%' }}
