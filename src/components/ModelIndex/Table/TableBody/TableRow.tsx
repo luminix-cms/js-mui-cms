@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Str } from '@luminix/support';
+import { Obj, Str } from '@luminix/support';
 import { config } from '@luminix/core';
 
 import { useNavigate } from 'react-router-dom';
@@ -107,7 +107,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
 
     const columnsWithContents = React.useMemo(() => columns.map((props) => ({
         ...props,
-        content: Cms[`model${Str.studly(item.getType())}Get${Str.studly(props.key)}Content`](item.getAttribute(props.key), item),
+        content: Cms[`model${Str.studly(item.getType())}Get${Str.studly(props.key)}Content`](Obj.get(item.toJson(), props.key), item), //
     })), [columns, item]);
 
     const {
