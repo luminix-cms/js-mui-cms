@@ -2,12 +2,10 @@ import React from 'react';
 import { app, config } from '@luminix/core';
 
 import {
-    Avatar,
     Box,
     AppBar as MuiAppBar,
     Toolbar,
     Typography,
-    useMediaQuery,
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
@@ -20,8 +18,6 @@ import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import usePageTitle from '../../hooks/usePageTitle';
 import useHasSearch from '../../hooks/useHasSearch';
 
-import logo from '../../assets/luminix-40x40.png';
-import whiteLogo from '../../assets/luminix-white-40x40.png';
 import useHasBackButton from '../../hooks/useHasBackButton';
 
 const DesktopAppBar = styled(
@@ -54,8 +50,6 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
 
     const isDesktop = useIsDesktopMode();
 
-    const prefersDarkTheme = useMediaQuery('(prefers-color-scheme: dark)');
-
     const AppBarComponent = isDesktop
         ? DesktopAppBar
         : MobileAppBar;
@@ -64,6 +58,7 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
         ['Layout.AppBar.MenuButton']: MenuButton,
         ['Layout.SearchBar']: SearchBar,
         ['Layout.BackButton']: BackButton,
+        ['Layout.AppLogo']: AppLogo,
     } = app('cms').getComponents();
 
     const { open } = useMenu();
@@ -108,18 +103,7 @@ const AppBar: React.FunctionComponent<AppBarProps> = ({ slots = {}, ...props }) 
                 >
                     {searching && <SearchBar />}
                     {end || (
-                        <Avatar
-                            src={prefersDarkTheme ? logo : whiteLogo}
-                            alt="Luminix"
-                            variant="square"
-                            sx={{
-                                width: 40,
-                                height: 40,
-                                marginLeft: searching 
-                                    ? 2
-                                    : 0,
-                            }}
-                        />
+                        <AppLogo />
                     )}
                 </Box>
             </Toolbar>

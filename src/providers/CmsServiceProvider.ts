@@ -71,6 +71,7 @@ import CmsService from '../services/CmsService';
 import FilterService from '../services/FilterService';
 import IconService from '../services/IconService';
 import Icon from '../facades/Icon';
+import AppLogo from '../components/Layout/AppLogo';
 
 // 
 
@@ -178,6 +179,7 @@ class CmsServiceProvider extends ServiceProvider {
             Breadcrumbs,
             
             'Layout.AppBar': AppBar,
+            'Layout.AppLogo': AppLogo,
             'Layout.Drawer': Drawer,
             'Layout.AppBar.MenuButton': MenuButton,
             'Layout.SearchBar': SearchBar,
