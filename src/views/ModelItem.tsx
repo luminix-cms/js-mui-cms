@@ -7,7 +7,7 @@ import { ModelForm } from '@luminix/react';
 
 import {
     Unstable_Grid2 as Grid,
-    Breakpoint,
+    Breakpoint, Box,
 } from '@mui/material';
 
 import { ModelItemProps } from '../types/PropTypes';
@@ -67,28 +67,30 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
     }
 
     return (
-        <Grid container>
-            <Grid xs={12}>
-                <Breadcrumbs
-                    parts={[
-                        { name: Model.plural(), href: '/' + Str.kebab(Model.plural()) },
-                        { name: item.exists ? item.getLabel() : t('New') },
-                    ]}
-                />
+        <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
+            <Grid container>
+                <Grid xs={12}>
+                    <Breadcrumbs
+                        parts={[
+                            { name: Model.plural(), href: '/' + Str.kebab(Model.plural()) },
+                            { name: item.exists ? item.getLabel() : t('New') },
+                        ]}
+                    />
+                </Grid>
+                <Grid
+                    xs={12}
+                    {...({ [breakpoint]: 6 })}
+                >
+                    <ModelForm
+                        submitText="Save"
+                        {...additionalProps}
+                        item={item}
+                        onSuccess={handleSuccess}
+                        onError={handleError}
+                    />
+                </Grid>
             </Grid>
-            <Grid
-                xs={12}
-                {...({ [breakpoint]: 6 })}
-            >
-                <ModelForm
-                    submitText="Save"
-                    {...additionalProps}
-                    item={item}
-                    onSuccess={handleSuccess}
-                    onError={handleError}
-                />
-            </Grid>
-        </Grid>
+        </Box>
     );
 }
 

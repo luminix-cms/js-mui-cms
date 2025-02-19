@@ -3,7 +3,7 @@ import { ModelType as Model, app } from '@luminix/core';
 import { usePagination } from '@luminix/react';
 
 import {
-    Unstable_Grid2 as Grid
+    Unstable_Grid2 as Grid, Box,
 } from '@mui/material';
 
 import useSetPageTitle from '../hooks/useSetPageTitle';
@@ -42,44 +42,46 @@ const ModelIndex: React.FunctionComponent = () => {
     } = app('cms').getComponents();
 
     return (
-        <Grid container spacing={2}>
-            <Grid
-                xs={12}
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-            >
-                <Breadcrumbs
-                    parts={[
-                        { name: Model.plural() },
-                    ]}
-                />
-                <StaticActions variant={isDesktop ? 'default' : 'fab'} />
-            </Grid>
-            {!isDesktop && (
-                <Grid display="flex" justifyContent="center" xs={12}>
-                    <Pagination variant="compact" />
-                </Grid>
-            )}
-            <Grid xs={12} sx={{ pb: 0 }}>
-                <Tabs />
-            </Grid>
-            <Grid xs={12} sx={{ pt: 0 }}>
-                <ModelTable
-                    items={data}
-                    loading={loading}
-                    error={error}
+        <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
+            <Grid container spacing={2}>
+                <Grid
+                    xs={12}
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="space-between"
                 >
-                    <ModelTableHead>
-                        <ModelTableToolbar />
-                    </ModelTableHead>
-                    <ModelTableBody>
-                        {(item: Model) => <ModelTableRow key={item.getKey()} item={item} />}
-                    </ModelTableBody>
-                    <ModelTableFooter />
-                </ModelTable>
+                    <Breadcrumbs
+                        parts={[
+                            { name: Model.plural() },
+                        ]}
+                    />
+                    <StaticActions variant={isDesktop ? 'default' : 'fab'} />
+                </Grid>
+                {!isDesktop && (
+                    <Grid display="flex" justifyContent="center" xs={12}>
+                        <Pagination variant="compact" />
+                    </Grid>
+                )}
+                <Grid xs={12} sx={{ pb: 0 }}>
+                    <Tabs />
+                </Grid>
+                <Grid xs={12} sx={{ pt: 0 }}>
+                    <ModelTable
+                        items={data}
+                        loading={loading}
+                        error={error}
+                    >
+                        <ModelTableHead>
+                            <ModelTableToolbar />
+                        </ModelTableHead>
+                        <ModelTableBody>
+                            {(item: Model) => <ModelTableRow key={item.getKey()} item={item} />}
+                        </ModelTableBody>
+                        <ModelTableFooter />
+                    </ModelTable>
+                </Grid>
             </Grid>
-        </Grid>
+        </Box>
     );
 }
 

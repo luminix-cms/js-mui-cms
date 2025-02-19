@@ -48,9 +48,7 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, slotProps, ...
             >
                 <AppBarDisplacement style={{ height }} />
                 <DesktopPageTitle />
-                <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
-                    {children}
-                </Box>
+                {children}
             </Box>
         </Box>
     )
