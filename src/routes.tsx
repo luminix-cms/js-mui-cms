@@ -67,7 +67,7 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
                 },
                 {
                     path: '/' + Str.kebab(Model.plural()) + '/create',
-                    name: `luminix.cms.${key}.item`,
+                    name: `luminix.cms.${key}.create`,
                     element: (
                         <ModelProvider Model={Model}>
                             <ModelItem create />
@@ -76,7 +76,7 @@ const routes: CmsRoutesReducer = (__, { Layout, Dashboard, ModelIndex, ModelItem
                 },
                 {
                     path: '/' + Str.kebab(Model.plural()) + '/:id',
-                    name: `luminix.cms.${key}.item`,
+                    name: `luminix.cms.${key}.show`,
                     element: (
                         <ModelProvider Model={Model}>
                             <ModelItem />
