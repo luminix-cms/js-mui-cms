@@ -107,7 +107,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
 
     const columnsWithContents = React.useMemo(() => columns.map((props) => ({
         ...props,
-        content: Cms[`model${Str.studly(item.getType())}Get${Str.studly(props.key)}Content`](Obj.get(item.toJson(), props.key), item), //
+        content: Cms[`model${Str.studly(item.getType())}Get${Str.studly(props.key)}Content`](Obj.get(item, props.key), item), //
     })), [columns, item]);
 
     const {
