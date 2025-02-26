@@ -9,6 +9,7 @@ import DialogProvider from './components/providers/DialogProvider';
 import LayoutProvider from './components/providers/LayoutProvider';
 import ModelProvider from './components/providers/ModelProvider';
 import NotificationProvider from './components/providers/NotificationProvider';
+import TableProvider from './components/providers/TableProvider';
 
 import useActionEvent from './hooks/useActionEvent';
 import useBackButton from './hooks/useBackButton';
@@ -64,6 +65,7 @@ export {
     LayoutProvider,
     ModelProvider,
     NotificationProvider,
+    TableProvider,
 }
 
 
