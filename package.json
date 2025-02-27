@@ -19,7 +19,7 @@
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.0.12",
     "@luminix/core": "^0.3.8",
-    "@luminix/react": "^0.3.21",
+    "@luminix/react": "^0.3.23",
     "@luminix/support": "^0.4.9",
     "@mui/icons-material": "^5.16.5",
     "@mui/material": "^5.16.5",

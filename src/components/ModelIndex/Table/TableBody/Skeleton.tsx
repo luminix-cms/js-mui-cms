@@ -1,6 +1,5 @@
 import React from 'react';
 import { app } from '@luminix/core';
-import { useSearchParams } from 'react-router-dom';
 
 import {
     TableRow,
@@ -20,7 +19,7 @@ import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 const Skeleton: React.FunctionComponent = () => {
 
     const {
-        massActions, columns,
+        massActions, columns, items,
     } = useTable();
 
     const isDesktop = useIsDesktopMode();
@@ -29,10 +28,8 @@ const Skeleton: React.FunctionComponent = () => {
         ['ModelIndex.Table.ShrinkedCell']: ShrinkedCell,
     } = app('cms').getComponents();
 
-    const [searchParams] = useSearchParams();
-
-    const listLength = parseInt(searchParams.get('per_page') || '15');
-
+    const listLength = items?.count() || 15;
+    
     return (
         <>
             {Array.from({ length: listLength }).map((_, index) => (

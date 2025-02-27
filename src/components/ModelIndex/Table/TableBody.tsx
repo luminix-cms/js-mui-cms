@@ -28,7 +28,6 @@ const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props
     } = useTable();
 
     const {
-
         ['ModelIndex.StaticActions']: StaticActions,
     } = app('cms').getComponents();
 
@@ -38,21 +37,22 @@ const TableBody: React.FunctionComponent<TableBodyProps> = ({ children, ...props
 
     return (
         <MuiTableBody {...props}>
-            {loading && <Skeleton />}
-            {renderedChildren}
-            {items && !items.count() && (
-                <TableRow>
-                    <TableCell colSpan={columnCount} sx={{ textAlign: 'center', py: 10 }}>
-                        <Typography>
-                            {t('No :model found', {
-                                model: Model.plural().toLocaleLowerCase()
-                            })}
-                        </Typography>
-                        <br />
-                        <StaticActions />
-                    </TableCell>
-                </TableRow>
-            )}
+            {loading || !items?.every((item) => item.getType() === Model.getSchemaName())
+                ? <Skeleton />
+                : (items && items.count() ? renderedChildren : (
+                    <TableRow>
+                        <TableCell colSpan={columnCount} sx={{ textAlign: 'center', py: 10 }}>
+                            <Typography>
+                                {t('No :model found', {
+                                    model: Model.plural().toLocaleLowerCase()
+                                })}
+                            </Typography>
+                            <br />
+                            <StaticActions />
+                        </TableCell>
+                    </TableRow>
+                ))
+            }
         </MuiTableBody>
     );
 
