@@ -156,17 +156,16 @@ class i18NextServiceProvider extends ServiceProvider {
             'getDefaultInputProps',
             (props) => {
                 if (!Array.isArray(props)) {
-                    if (props?.label) {
-                        props.label = i18n.t(props.label);
-                    }
-                } else {
-                    props.map((prop) => {
-                        if (prop?.label) {
-                            prop.label = i18n.t(prop.label);
-                        }
-                    });
+                    return {
+                        ...props,
+                        label: props?.label ? i18n.t(props.label) : props?.label,
+                    };
                 }
-                return props;
+                return props.map((prop) => ({
+                    ...prop,
+                    label: prop?.label ? i18n.t(prop.label) : prop?.label,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                })) as any;
             },
             99,
         );
