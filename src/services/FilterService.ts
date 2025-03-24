@@ -101,7 +101,7 @@ export class FilterService {
     {
         const { attributes = [], relations = {} } = ModelClass.getSchema();
 
-        return [
+        const columns = [
             ...attributes.filter((attribute) => {
                 return !attribute.hidden && !attribute.appended;
             })
@@ -135,6 +135,8 @@ export class FilterService {
                 ]
             }, [] as FilterColumn[]),
         ];
+
+        return this.filterableColumns(columns, ModelClass);
     }
 
     checkIfCanApplyFilters(columnsFilter: FilteredColumn[]): boolean

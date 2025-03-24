@@ -2,8 +2,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
-import { useApplyReducers } from '@luminix/react';
+
+import { Str } from '@luminix/support';
 import { app } from '@luminix/core';
+import { useApplyReducers } from '@luminix/react';
 
 import {
     Tabs as MuiTabs,
@@ -13,7 +15,6 @@ import {
 
 import useCurrentModel from '../../hooks/useCurrentModel';
 import { DisplayableTab } from '../../types/Tabs';
-import { Str } from '@luminix/support';
 
 function Tabs(): React.ReactNode {
 
