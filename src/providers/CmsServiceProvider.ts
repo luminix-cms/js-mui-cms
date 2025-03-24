@@ -1,3 +1,4 @@
+import { ServiceProvider, Str } from '@luminix/support';
 import { Config, Model, ModelType, Route } from '@luminix/core';
 import { ModelFormProps } from '@luminix/react';
 
@@ -64,13 +65,15 @@ import { MenuItem } from '../types/Menu';
 //import { DisplayableTab } from './types/Tabs';
 
 import { instanceActionHandlers, massActionHandlers, staticActionHandlers } from '../support/handlers';
-import InstanceActions from '../components/ModelIndex/InstanceActions';
-import { ServiceProvider, Str } from '@luminix/support';
+
 import Cms from '../facades/Cms';
+import Icon from '../facades/Icon';
+
 import CmsService from '../services/CmsService';
 import FilterService from '../services/FilterService';
 import IconService from '../services/IconService';
-import Icon from '../facades/Icon';
+
+import InstanceActions from '../components/ModelIndex/InstanceActions';
 import AppLogo from '../components/Layout/AppLogo';
 
 // 
@@ -157,6 +160,7 @@ class CmsServiceProvider extends ServiceProvider {
 
     private bootRoutes() {
         Cms.reducer('cmsRoutes', routes, 0);
+
         Route.reducer('domRouterOptions', (opts) => ({
             ...opts,
             basename: Config.get('luminix.admin.url', '/admin')
@@ -364,4 +368,3 @@ class CmsServiceProvider extends ServiceProvider {
 }
 
 export default CmsServiceProvider;
-
