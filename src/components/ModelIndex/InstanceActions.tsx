@@ -38,6 +38,10 @@ const InstanceActions = ({ item }: { item: Model }) => {
         setAnchorEl(null);
     };
 
+    if (actions.length === 0) {
+        return null;
+    }
+
     return (
         <>
             <IconButton
