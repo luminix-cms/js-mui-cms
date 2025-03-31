@@ -113,7 +113,7 @@ function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onCl
                         </>
                     )}
                     {['alert', 'prompt'].includes(type) && (
-                        <Button onClick={handleClose} autoFocus>
+                        <Button onClick={type === 'alert' ? handleClose : handleConfirm} autoFocus>
                             {optimisticCurrent?.confirmText ?? t('Ok')}
                         </Button>
                     )}
