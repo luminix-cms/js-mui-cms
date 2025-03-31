@@ -29,7 +29,10 @@ function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onCl
     const [value, setValue] = React.useState('');
     const optimisticCurrent = useOptimistic(current);
 
-    const { type = 'alert' } = optimisticCurrent ?? {};
+    const {
+        type = 'alert', dialogProps = {}, textFieldProps = {},
+
+    } = optimisticCurrent ?? {};
 
     const dialog = React.useCallback((message: string | DialogMessage) => {
         return new Promise<boolean|string>((resolve) => {
@@ -82,6 +85,7 @@ function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onCl
                     ? { onClose: handleClose } 
                     : {})}
                 {...props}
+                {...dialogProps}
             >
                 {optimisticCurrent?.title && <DialogTitle id="alert-dialog-title">{optimisticCurrent.title}</DialogTitle>}
                 <DialogContent>
@@ -93,27 +97,27 @@ function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onCl
                             autoFocus
                             margin="dense"
                             id="name"
-                            label={optimisticCurrent?.message}
                             type="text"
                             fullWidth
+                            {...textFieldProps}
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
                         />
                     )}
                 </DialogContent>
                 <DialogActions>
-                    {'confirm' === type && (
+                    {'alert' !== type && (
                         <>
                             <Button onClick={handleClose}>
-                                {optimisticCurrent?.cancelText ?? t('No')}
+                                {optimisticCurrent?.cancelText ?? t(type === 'confirm' ? 'No' : 'Cancel')}
                             </Button>
-                            <Button onClick={handleConfirm} autoFocus>
-                                {optimisticCurrent?.confirmText ?? t('Yes')}
+                            <Button onClick={handleConfirm} autoFocus={type !== 'prompt'}>
+                                {optimisticCurrent?.confirmText ?? t(type === 'confirm' ? 'Yes' : 'Ok')}
                             </Button>
                         </>
                     )}
-                    {['alert', 'prompt'].includes(type) && (
-                        <Button onClick={type === 'alert' ? handleClose : handleConfirm} autoFocus>
+                    {'alert' === type && (
+                        <Button onClick={handleClose} autoFocus>
                             {optimisticCurrent?.confirmText ?? t('Ok')}
                         </Button>
                     )}

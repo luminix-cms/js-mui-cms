@@ -1,3 +1,4 @@
+import { DialogProps, TextFieldProps } from "@mui/material";
 
 export type DialogMessage = {
 
@@ -8,7 +9,8 @@ export type DialogMessage = {
     confirmText?: string,
     cancelText?: string,
     defaultValue?: string,
-
+    dialogProps?: DialogProps,
+    textFieldProps?: TextFieldProps,
 
 };
 
