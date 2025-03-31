@@ -7,11 +7,11 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
+    DialogProps,
     DialogTitle,
     TextField,
 } from '@mui/material';
 
-import { DialogProps } from '@mui/material/Dialog';
 
 import { DialogMessage } from '../../types/Dialog';
 import DialogContext from '../../contexts/DialogContext';

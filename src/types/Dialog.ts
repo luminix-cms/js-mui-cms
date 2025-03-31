@@ -1,4 +1,4 @@
-import { DialogProps, TextFieldProps } from "@mui/material";
+import { DialogProps, TextFieldProps } from '@mui/material';
 
 export type DialogMessage = {
 
