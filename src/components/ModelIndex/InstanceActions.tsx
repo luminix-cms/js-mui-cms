@@ -24,7 +24,7 @@ const InstanceActions = ({ item }: { item: Model }) => {
     const currentTab = searchParams.get('tab') ?? 'all';
 
     const actions: InstanceAction[] = React.useMemo(() => {
-        return app('cms').getInstanceActions(item.constructor, currentTab);
+        return app('cms').getInstanceActions(app('model').make(item.getType()), currentTab);
     }, [item, currentTab]);
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement|null>(null);

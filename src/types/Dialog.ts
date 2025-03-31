@@ -9,8 +9,8 @@ export type DialogMessage = {
     confirmText?: string,
     cancelText?: string,
     defaultValue?: string,
-    dialogProps?: DialogProps,
-    textFieldProps?: TextFieldProps,
+    dialogProps?: Partial<DialogProps>,
+    textFieldProps?: Partial<TextFieldProps>,
 
 };
 
