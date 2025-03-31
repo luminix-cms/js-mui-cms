@@ -8,6 +8,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    TextField,
 } from '@mui/material';
 
 import { DialogProps } from '@mui/material/Dialog';
@@ -18,17 +19,23 @@ import useOptimistic from '../../hooks/useOptimistic';
 
 type DialogProviderState = {
     current?: DialogMessage;
-    resolve?: (value: boolean) => void;
+    resolve?: (value: boolean|string) => void;
 };
 
 
 function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onClose'>): React.ReactNode {
 
     const [{ current, resolve }, setState] = React.useState<DialogProviderState>({});
+    const [value, setValue] = React.useState('');
     const optimisticCurrent = useOptimistic(current);
 
+    const { type = 'alert' } = optimisticCurrent ?? {};
+
     const dialog = React.useCallback((message: string | DialogMessage) => {
-        return new Promise<boolean>((resolve) => {
+        return new Promise<boolean|string>((resolve) => {
+            if (typeof message !== 'string' && message.type === 'prompt') {
+                setValue(message.defaultValue ?? '');
+            }
             setState({
                 current: typeof message === 'string' 
                     ? { message }
@@ -49,10 +56,15 @@ function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onCl
 
     const handleConfirm = () => {
         if (resolve) {
-            resolve(true);
+            resolve(
+                type === 'prompt'
+                    ? value
+                    : true
+            );
         }
         setState({});
     };
+
 
     return (
         <DialogContext.Provider value={{
@@ -76,9 +88,21 @@ function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onCl
                     <DialogContentText id="alert-dialog-description">
                         {optimisticCurrent?.message}
                     </DialogContentText>
+                    {type === 'prompt' && (
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label={optimisticCurrent?.message}
+                            type="text"
+                            fullWidth
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                        />
+                    )}
                 </DialogContent>
                 <DialogActions>
-                    {'confirm' === optimisticCurrent?.type && (
+                    {'confirm' === type && (
                         <>
                             <Button onClick={handleClose}>
                                 {optimisticCurrent?.cancelText ?? t('No')}
@@ -88,7 +112,7 @@ function DialogProvider({ children, ...props }: Omit<DialogProps, 'open' | 'onCl
                             </Button>
                         </>
                     )}
-                    {'alert' === (optimisticCurrent?.type ?? 'alert') && (
+                    {['alert', 'prompt'].includes(type) && (
                         <Button onClick={handleClose} autoFocus>
                             {optimisticCurrent?.confirmText ?? t('Ok')}
                         </Button>
