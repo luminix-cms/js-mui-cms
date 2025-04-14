@@ -3,7 +3,7 @@ import { RouteObject as BaseRouteObject } from 'react-router-dom';
 
 export type ComponentMapReducer = (components: Record<string, React.FunctionComponent>) => Record<string, React.FunctionComponent>;
 
-export type RouteObject = BaseRouteObject & {
+export type RouteObject = Omit<BaseRouteObject, 'children'> & {
     name?: string;
     children?: RouteObject[];
 };
