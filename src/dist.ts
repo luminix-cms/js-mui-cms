@@ -72,6 +72,14 @@ export type {
     RouteObject,
 } from './types/Reducers';
 
-
+export type {
+    InstanceAction,
+    StaticAction,
+    MassAction,
+    ActionCallbackEvent,
+    InstanceActionCallbackEvent,
+    MassActionCallbackEvent,
+    Column,
+} from './types/Table';
 
 
