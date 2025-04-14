@@ -5,6 +5,7 @@ export type ComponentMapReducer = (components: Record<string, React.FunctionComp
 
 export type RouteObject = BaseRouteObject & {
     name?: string;
+    children?: RouteObject[];
 };
 
 export type CmsRoutesReducer = (
