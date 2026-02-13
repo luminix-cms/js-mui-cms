@@ -4,9 +4,17 @@ on:
   push:
     branches:
       - v0.x
+
+
+permissions:
+  id-token: write
+  contents: write
+  
 jobs:
     publish:
         runs-on: [ubuntu-latest]
+        environment:
+          name: luminix-publisher-environment
         steps:
         - name: Checkout
           uses: actions/checkout@v4
@@ -14,10 +22,10 @@ jobs:
             fetch-depth: 0
 
         - name: Setup Node
-          uses: actions/setup-node@v4
+          uses: actions/setup-node@v6
           with:
-            node-version: 20
-            registry-url: https://registry.npmjs.org/
+            node-version: 24
+            registry-url: 'https://registry.npmjs.org'
 
         - uses: paulhatch/semantic-version@v5.4.0
           id: semver
@@ -26,19 +34,13 @@ jobs:
             version_format: "${major}.${minor}.${patch}"
             enable_prerelease_mode: true
 
-        - name: Build & Tag
+        - name: Build, Tag & Publish
           run: |
             npm install
             npm run build
             npm version ${{ steps.semver.outputs.version }} --no-git-tag-version
-            echo "Version is: ${{ steps.semver.outputs.version }}"
-            echo "Version tag is: ${{ steps.semver.outputs.version_tag }}"
-
-        - name: Publish to NPM
-          uses: JS-DevTools/npm-publish@v2
-          with:
-            tag: beta
-            token: ${{ secrets.NPM_TOKEN }}
+            echo "Publishing version ${{ steps.semver.outputs.version }}..."
+            npm publish --tag beta
 
         - name: Publish Github Release
           uses: softprops/action-gh-release@v2

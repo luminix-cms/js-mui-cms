@@ -54,7 +54,11 @@ export default function useRow( index: number, column: FilteredColumn ) {
         setNullable(is_nullable);
 
         if (newType !== type) {
-            setOperator('equals');
+            setOperator(
+                newType === 'text'
+                    ? 'contains'
+                    : 'equals'
+            );
 
             setValue(() => {
                 if ([ 'between', 'notBetween' ].includes(operator)) {

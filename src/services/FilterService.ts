@@ -102,9 +102,10 @@ export class FilterService {
         const { attributes = [], relations = {} } = ModelClass.getSchema();
 
         const columns = [
-            ...attributes.filter((attribute) => {
-                return !attribute.hidden && !attribute.appended;
-            })
+            ...attributes
+                .filter((attribute) => {
+                    return !attribute.hidden && !attribute.appended && !attribute.virtual;
+                })
                 .map((attribute) => {
         
                     let type = attribute.phpType ?? 'string';

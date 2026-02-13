@@ -42,7 +42,7 @@ const Content: React.FunctionComponent<{ dialog?: boolean }> = ({ dialog = false
             ...prev, 
             { 
                 key: '', 
-                operator: 'equals', 
+                operator: 'contains', 
                 type: 'text', 
                 value: '', 
                 appended: false,
