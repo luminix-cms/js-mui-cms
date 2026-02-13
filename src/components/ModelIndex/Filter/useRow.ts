@@ -42,23 +42,18 @@ export default function useRow( index: number, column: FilteredColumn ) {
         const is_nullable = befittingColumn?.nullable ?? false;
         const is_relation = befittingColumn?.is_relation ?? false;
 
+        setOperator(
+            FilterFacade.getMatchingOperators(befittingColumn)[0]?.key ?? 'equals'
+        );
+
         if (is_relation) {
-            setOperator('relation');
             setValue([]);
-        } else if (isRelation) {
-            setOperator('equals');
         }
 
         setIsRelation(is_relation);
-
         setNullable(is_nullable);
 
         if (newType !== type) {
-            setOperator(
-                newType === 'text'
-                    ? 'contains'
-                    : 'equals'
-            );
 
             setValue(() => {
                 if ([ 'between', 'notBetween' ].includes(operator)) {
