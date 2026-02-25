@@ -107,6 +107,10 @@ class CmsServiceProvider extends ServiceProvider {
         if (CmsServiceProvider.applyUserDefaults) {
             this.bootDefaultUserModifiers();
         }
+
+        this.app.on('booted', () => {
+            this.app.make('cms').booted();
+        });
     }
 
     // private addIconsToModels() {
