@@ -1,30 +1,40 @@
-# React + TypeScript + Vite
+# @luminix/mui-cms
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Biblioteca de componentes React + Material-UI para construção de painéis administrativos (CMS) integrada ao ecossistema Luminix.
 
-Currently, two official plugins are available:
+Oferece layout responsivo, tabelas com filtros avançados, ações em massa, formulários de modelo e sistema de notificações — tudo extensível via redutores.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Pré-requisitos
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Esta biblioteca faz parte do ecossistema Luminix e requer os projetos complementares para funcionar:
 
-- Configure the top-level `parserOptions` property like this:
+| Projeto | Papel |
+|---|---|
+| `luminix/backend` | API REST automática via Laravel |
+| `luminix/frontend` | Injeção de dados de boot via Blade |
+| `luminix/admin` | Pacote Laravel que publica e serve o painel |
+| `@luminix/core` | Contêiner de aplicação, modelos e roteamento |
+| `@luminix/react` | Hooks e componentes React base |
+| `@luminix/support` | Utilitários e padrões de infraestrutura |
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+> O projeto `luminix/admin` é o ponto de entrada recomendado: ele instala e configura todas as dependências automaticamente.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Documentação completa
+
+Consulte a documentação detalhada em [`docs/`](docs/index.md):
+
+- [Introdução e ecossistema](docs/introducao.md)
+- [Instalação](docs/instalacao.md)
+- [Configuração](docs/configuracao.md)
+- [Componentes](docs/componentes.md)
+- [Facades](docs/facades.md)
+- [Hooks](docs/hooks.md)
+- [Ações](docs/acoes.md)
+- [Extensibilidade](docs/extensibilidade.md)
+- [Referência de tipos](docs/tipos.md)
+
+## Licença
+
+MIT
