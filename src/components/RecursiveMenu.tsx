@@ -37,11 +37,7 @@ const RecursiveMenu: React.FunctionComponent<RecursiveMenuProps> = ({
                     } = item;
 
                     if (element) {
-                        return (
-                            <React.Fragment key={key}>
-                                {element}
-                            </React.Fragment>
-                        );
+                        return React.cloneElement(element as React.ReactElement, { key });
                     }
 
                     // const { onClick: onClickItem, ...buttonProps } = ListItemButtonProps;

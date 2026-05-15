@@ -74,9 +74,7 @@ function renderTableBody(tableOverrides = {}, layoutOverrides = {}, children: Re
                 <ModelContext.Provider value={{ Model: FakeModel as never }}>
                     <TableContext.Provider value={makeTableValue(tableOverrides)}>
                         <table>
-                            <tbody>
-                                <TableBody>{children}</TableBody>
-                            </tbody>
+                            <TableBody>{children}</TableBody>
                         </table>
                     </TableContext.Provider>
                 </ModelContext.Provider>

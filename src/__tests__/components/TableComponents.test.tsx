@@ -61,7 +61,7 @@ function makeLayoutValue(overrides = {}) {
     };
 }
 
-function renderWithContexts(component: React.ReactElement, tableOverrides = {}, layoutOverrides = {}) {
+function renderToolbar(component: React.ReactElement, tableOverrides = {}, layoutOverrides = {}) {
     return render(
         <MemoryRouter>
             <LayoutContext.Provider value={makeLayoutValue(layoutOverrides)}>
@@ -77,70 +77,76 @@ function renderWithContexts(component: React.ReactElement, tableOverrides = {}, 
     );
 }
 
+function renderFooter(component: React.ReactElement, tableOverrides = {}, layoutOverrides = {}) {
+    return render(
+        <MemoryRouter>
+            <LayoutContext.Provider value={makeLayoutValue(layoutOverrides)}>
+                <TableContext.Provider value={makeTableValue(tableOverrides)}>
+                    <table>
+                        {component}
+                    </table>
+                </TableContext.Provider>
+            </LayoutContext.Provider>
+        </MemoryRouter>
+    );
+}
+
 describe('TableToolbar', () => {
     it('renders the Filter component', () => {
-        renderWithContexts(<TableToolbar />);
+        renderToolbar(<TableToolbar />);
         expect(screen.getByTestId('filter')).toBeInTheDocument();
     });
 
     it('renders MassActions component', () => {
-        renderWithContexts(<TableToolbar />);
+        renderToolbar(<TableToolbar />);
         expect(screen.getByTestId('mass-actions')).toBeInTheDocument();
     });
 
     it('renders Sort in mobile mode (not desktop)', () => {
-        renderWithContexts(<TableToolbar />, {}, { isBreakpointUp: false });
+        renderToolbar(<TableToolbar />, {}, { isBreakpointUp: false });
         expect(screen.getByTestId('sort')).toBeInTheDocument();
     });
 
     it('does not render Sort in desktop mode', () => {
-        renderWithContexts(<TableToolbar />, {}, { isBreakpointUp: true });
+        renderToolbar(<TableToolbar />, {}, { isBreakpointUp: true });
         expect(screen.queryByTestId('sort')).not.toBeInTheDocument();
     });
 
     it('renders compact Pagination in desktop mode', () => {
-        renderWithContexts(<TableToolbar />, {}, { isBreakpointUp: true });
+        renderToolbar(<TableToolbar />, {}, { isBreakpointUp: true });
         expect(screen.getByTestId('pagination')).toBeInTheDocument();
     });
 });
 
 describe('TableFooter', () => {
     it('renders Pagination component', () => {
-        renderWithContexts(<TableFooter />);
+        renderFooter(<TableFooter />);
         expect(screen.getByTestId('pagination')).toBeInTheDocument();
     });
 
     it('renders PaginationDetails component', () => {
-        renderWithContexts(<TableFooter />);
+        renderFooter(<TableFooter />);
         expect(screen.getByTestId('pagination-details')).toBeInTheDocument();
     });
 
     it('renders PerPageSwitch component', () => {
-        renderWithContexts(<TableFooter />);
+        renderFooter(<TableFooter />);
         expect(screen.getByTestId('per-page-switch')).toBeInTheDocument();
     });
 
     it('renders children when provided', () => {
-        render(
-            <MemoryRouter>
-                <LayoutContext.Provider value={makeLayoutValue()}>
-                    <TableContext.Provider value={makeTableValue()}>
-                        <table>
-                            <TableFooter>
-                                <tr>
-                                    <td data-testid="custom-child">Custom</td>
-                                </tr>
-                            </TableFooter>
-                        </table>
-                    </TableContext.Provider>
-                </LayoutContext.Provider>
-            </MemoryRouter>
+        renderFooter(
+            <TableFooter>
+                <tr>
+                    <td data-testid="custom-child">Custom</td>
+                </tr>
+            </TableFooter>
         );
         expect(screen.getByTestId('custom-child')).toBeInTheDocument();
     });
 
     it('renders in desktop mode with horizontal layout', () => {
-        renderWithContexts(<TableFooter />, {}, { isBreakpointUp: true });
+        renderFooter(<TableFooter />, {}, { isBreakpointUp: true });
         expect(screen.getByTestId('pagination')).toBeInTheDocument();
     });
 });
