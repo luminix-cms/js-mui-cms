@@ -42,7 +42,11 @@ const RecursiveList: React.FunctionComponent<RecursiveListProps> = ({
                 } = item;
 
                 if (element) {
-                    return element;
+                    return (
+                        <React.Fragment key={key}>
+                            {element}
+                        </React.Fragment>
+                    )
                 }
 
                 return (
