@@ -91,19 +91,30 @@ Cms.reducer('menuItems', (items, models) => {
 
 ### cmsRoutes
 
-Adiciona rotas customizadas ao painel:
+Adiciona rotas customizadas ao painel. A estrutura de rotas é um array com **um único elemento raiz** que envolve o `Layout` e os providers. Todas as páginas são filhas desse elemento raiz via `children`. Para que o layout (AppBar, Drawer, Notification, Dialog) seja aplicado na nova página, a rota deve ser adicionada em `routes[0].children`:
 
 ```ts
 import Relatorios from './views/Relatorios';
 
-Cms.reducer('cmsRoutes', (routes, components) => [
-    ...routes,
-    {
-        path: '/relatorios',
-        element: <Relatorios />,
-    },
-]);
+Cms.reducer('cmsRoutes', (routes, components) => {
+    const [root, ...rest] = routes;
+    return [
+        {
+            ...root,
+            children: [
+                ...(root.children ?? []),
+                {
+                    path: '/relatorios',
+                    element: <Relatorios />,
+                },
+            ],
+        },
+        ...rest,
+    ];
+});
 ```
+
+> Adicionar a rota fora de `routes[0].children` (ex.: `[...routes, { path: '...' }]`) faz a página renderizar sem o Layout do painel.
 
 ### wireModelFormProps
 

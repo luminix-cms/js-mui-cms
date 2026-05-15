@@ -1,6 +1,6 @@
 # Hooks
 
-Todos os hooks abaixo são exportados diretamente de `@luminix/mui-cms` e devem ser usados dentro da árvore de componentes do `LuminixCms`.
+Todos os hooks abaixo são exportados de `@luminix/mui-cms` e devem ser usados dentro da árvore de componentes do `LuminixCms`.
 
 ```ts
 import { useNotify, useDialog, useTable, /* ... */ } from '@luminix/mui-cms';
@@ -20,27 +20,27 @@ const title = usePageTitle(); // string
 
 ### useSetPageTitle
 
-Retorna uma função para definir o título da página.
+Recebe um `title` como argumento e define o título da página enquanto o componente está montado. Remove o título automaticamente no unmount.
 
 ```ts
-const setTitle = useSetPageTitle();
-
-useEffect(() => {
-    setTitle('Minha página');
-}, []);
+useSetPageTitle('Meus Posts');
 ```
+
+Não retorna valor.
 
 ### useSearch
 
-Retorna o valor atual da busca global e uma função para atualizá-la.
+Torna a barra de busca visível enquanto o componente está montado. Esconde-a automaticamente no unmount.
 
 ```ts
-const [search, setSearch] = useSearch();
+useSearch();
 ```
+
+Não recebe parâmetros nem retorna valor. Para ler o valor atual da busca (query string), use diretamente `useSearchParams` do `react-router-dom`.
 
 ### useHasSearch
 
-Retorna `true` se a tela atual suporta busca.
+Retorna `true` se a barra de busca está visível no momento.
 
 ```ts
 const hasSearch = useHasSearch(); // boolean
@@ -48,15 +48,17 @@ const hasSearch = useHasSearch(); // boolean
 
 ### useBackButton
 
-Retorna `true` se o botão voltar está visível e uma função para navegar.
+Torna o botão voltar visível enquanto o componente está montado. Esconde-o automaticamente no unmount.
 
 ```ts
-const [hasBack, goBack] = useBackButton();
+useBackButton();
 ```
+
+Não recebe parâmetros nem retorna valor.
 
 ### useHasBackButton
 
-Retorna apenas o booleano indicando se o botão voltar está ativo.
+Retorna `true` se o botão voltar está visível no momento.
 
 ```ts
 const hasBack = useHasBackButton(); // boolean
@@ -68,39 +70,40 @@ const hasBack = useHasBackButton(); // boolean
 
 ### useTable
 
-Acessa o estado completo da tabela (itens, loading, erro, paginação, ordenação, seleção).
+Retorna o valor completo do `TableContext`. Disponível dentro de componentes filhos do `TableProvider`.
 
 ```ts
 const {
-    items,
-    loading,
-    error,
-    page,
-    perPage,
-    sort,
-    tab,
-    refresh,
+    columns,      // Column[]
+    columnCount,  // number
+    massActions,  // MassAction[]
+    items,        // Collection<Model> | undefined
+    loading,      // boolean | undefined
+    error,        // Error | null
+    Model,        // typeof ModelType
+    selected,     // Collection<Model>
 } = useTable();
 ```
 
 ### useSelection
 
-Gerencia a seleção de linhas da tabela.
+Retorna utilitários para gerenciar a seleção de linhas da tabela.
 
 ```ts
 const {
-    selected,          // Collection<Model>
-    isSelected,        // (item: Model) => boolean
-    toggle,            // (item: Model) => void
-    toggleAll,         // () => void
-    clearSelection,    // () => void
-    isAllSelected,     // boolean
+    selected,                // Collection<Model> — itens selecionados (reativo)
+    indeterminate,           // boolean — true se parte dos itens está selecionada
+    allSelected,             // boolean — true se todos os itens da página estão selecionados
+    isSelected,              // (item: Model) => boolean
+    handleClearSelected,     // () => void
+    handleSelectToggle,      // (item: Model) => void
+    handleSelectToggleAll,   // () => void
 } = useSelection();
 ```
 
 ### useCurrentModel
 
-Retorna a classe do modelo ativo na tela atual (disponível dentro de um `ModelProvider`).
+Retorna a classe do modelo ativo na tela atual. Disponível dentro de um `ModelProvider`.
 
 ```ts
 const ModelClass = useCurrentModel(); // typeof ModelType
@@ -108,66 +111,143 @@ const ModelClass = useCurrentModel(); // typeof ModelType
 
 ---
 
-## Interface e notificações
+## Notificações
 
 ### useNotify
 
-Retorna uma função para exibir notificações toast.
+Retorna a função `notify` para exibir notificações toast.
 
 ```ts
 const notify = useNotify();
 
-notify('Salvo com sucesso!', 'success');
-notify('Algo deu errado.', 'error');
-notify('Atenção!', 'warning');
-notify('Informação.', 'info');
+// forma simplificada
+notify('Salvo com sucesso!');
+
+// com objeto completo
+notify({
+    message:  'Post publicado.',
+    severity: 'success',      // 'success' | 'error' | 'warning' | 'info'
+    title:    'Sucesso',      // opcional
+    actions: [                // opcional — botões de ação no toast
+        { label: 'Desfazer', callback: () => { /* ... */ } },
+    ],
+});
 ```
 
-A assinatura completa da `NotifyFunction`:
+A assinatura completa:
 
 ```ts
-type NotifyFunction = (message: string, severity?: 'success' | 'error' | 'warning' | 'info') => void;
+type NotifyFunction = (notification: string | Notification) => void;
+
+type Notification = {
+    message:   React.ReactNode;
+    severity?: 'success' | 'error' | 'warning' | 'info';
+    title?:    React.ReactNode;
+    actions?:  { label: React.ReactNode; callback: () => void }[];
+};
 ```
 
 ### useNotifications
 
-Acessa o estado interno das notificações (lista atual e função de exibição). Útil para criar providers de notificação customizados.
+Acessa o estado interno do `NotificationContext`. Útil para criar providers de notificação customizados.
 
 ```ts
-const { notifications, notify } = useNotifications();
+const {
+    isOpen,
+    notify,
+    dismissNotification,
+    notifications,   // Notification[]
+    current,         // Notification | undefined — notificação sendo exibida
+    displacement,    // string — deslocamento CSS atual do Snackbar
+} = useNotifications();
 ```
 
 ### useDisplaceNotifications
 
-Retorna a função interna de remoção de notificações da fila.
+Define o deslocamento (offset) do Snackbar de notificações. Útil para evitar sobreposição com elementos fixos como FABs ou rodapés.
+
+```ts
+useDisplaceNotifications(value);
+```
+
+- `value: string | number | false` — número de unidades de espaçamento MUI, string CSS ou `false` para restaurar o valor padrão.
+- O deslocamento é restaurado automaticamente no unmount.
+
+```ts
+// desloca 8 unidades de espaçamento MUI acima do padrão
+useDisplaceNotifications(8);
+
+// restaura o deslocamento padrão
+useDisplaceNotifications(false);
+```
+
+---
+
+## Diálogos
 
 ### useDialog
 
-Retorna uma função para abrir diálogos modais.
+Retorna a função `dialog` para abrir diálogos modais. Retorna uma `Promise` que resolve com o resultado da interação do usuário.
 
 ```ts
 const dialog = useDialog();
 
-dialog({
-    title: 'Confirmar exclusão',
-    message: 'Esta ação não pode ser desfeita.',
-    type: 'confirm',           // 'alert' | 'confirm'
-    onConfirm: () => { /* ... */ },
-    onCancel:  () => { /* ... */ },
+// forma simplificada — abre um alerta
+const confirmed = await dialog('Tem certeza?');
+
+// com objeto completo
+const result = await dialog({
+    title:        'Confirmar exclusão',
+    message:      'Esta ação não pode ser desfeita.',
+    type:         'confirm',   // 'alert' | 'confirm' | 'prompt'
+    dismissable:  true,        // permite fechar clicando fora
+    confirmText:  'Excluir',
+    cancelText:   'Cancelar',
+    // para type: 'prompt':
+    defaultValue: '',
+    textFieldProps: { label: 'Nome do arquivo' },
 });
+// result: true (confirmou) | false (cancelou) | string (prompt)
 ```
+
+A assinatura completa:
+
+```ts
+type DialogFunction = (message: string | DialogMessage) => Promise<boolean | string>;
+
+type DialogMessage = {
+    title?:          React.ReactNode;
+    message:         React.ReactNode;
+    type?:           'alert' | 'confirm' | 'prompt';
+    dismissable?:    boolean;
+    confirmText?:    string;
+    cancelText?:     string;
+    defaultValue?:   string;           // valor inicial para type 'prompt'
+    dialogProps?:    Partial<DialogProps>;
+    textFieldProps?: Partial<TextFieldProps>;
+};
+```
+
+---
+
+## Layout
 
 ### useLayoutConfig
 
-Acessa e modifica a configuração de layout (estado do drawer, breakpoint, etc.).
+Lê um valor da configuração de layout (`CmsConfig['layout']`) pelo caminho (dot notation).
 
 ```ts
-const { drawerOpen, setDrawerOpen, breakpoint } = useLayoutConfig();
+const drawerWidth = useLayoutConfig('drawer.width', 240);
+const appBarColor = useLayoutConfig('appBar.color');
 ```
+
+Parâmetros:
+- `path: string` — caminho no objeto de layout (ex.: `'drawer.width'`, `'appBar.height'`)
+- `defaultValue?: unknown` — valor retornado se o caminho não estiver definido
 
 ### useIsDesktopMode
 
-Retorna `true` quando a tela está acima do breakpoint configurado.
+Retorna `true` quando a largura da tela está acima do breakpoint configurado em `layout.breakpoint`.
 
 ```ts
 const isDesktop = useIsDesktopMode(); // boolean
@@ -175,10 +255,15 @@ const isDesktop = useIsDesktopMode(); // boolean
 
 ### useMenu
 
-Retorna os itens do menu lateral gerados pelo `CmsService`.
+Retorna o estado de abertura do Drawer lateral e funções para controlá-lo.
 
 ```ts
-const menuItems = useMenu(); // MenuItem[]
+const {
+    open,                // boolean — true se o Drawer está aberto
+    handleDrawerOpen,    // () => void
+    handleDrawerClose,   // () => void
+    toggle,              // () => void
+} = useMenu();
 ```
 
 ---
@@ -187,14 +272,16 @@ const menuItems = useMenu(); // MenuItem[]
 
 ### useActionEvent
 
-Monta o objeto `ActionCallbackEvent` com as funções `navigate`, `refresh`, `notify`, `dialog` e `t` — usado como argumento nos callbacks de ações.
+Monta o objeto `ActionCallbackEvent` — útil para chamar manualmente callbacks de ações em componentes customizados.
 
 ```ts
 const event = useActionEvent();
-// event.navigate('/posts')
-// event.refresh()
-// event.notify('Salvo!', 'success')
-// event.dialog({ title: '...' })
+
+event.navigate('/posts');
+event.refresh();
+event.notify('Salvo!');
+await event.dialog({ message: 'Confirmar?' });
+event.t('chave.de.traducao');
 ```
 
 ### useHandleError
@@ -209,28 +296,6 @@ try {
 } catch (err) {
     handleError(err);
 }
-```
-
----
-
-## Teclado
-
-### useKeyPress
-
-Detecta se uma tecla específica está pressionada.
-
-```ts
-const isShiftPressed = useKeyPress('Shift');
-```
-
-### useKeyChord
-
-Detecta combinações de teclas (atalhos). Chama o callback quando a sequência é detectada.
-
-```ts
-useKeyChord(['Control', 'k'], () => {
-    // abre busca
-});
 ```
 
 ---

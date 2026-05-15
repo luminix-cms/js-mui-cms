@@ -168,20 +168,22 @@ type FilteredColumn = {
 ### NotifyFunction
 
 ```ts
-type NotifyFunction = (
-    message:   string,
-    severity?: 'success' | 'error' | 'warning' | 'info'
-) => void;
+type NotifyFunction = (notification: string | Notification) => void;
 ```
 
 ### Notification
 
 ```ts
 type Notification = {
-    id:        string;
-    message:   string;
-    severity:  'success' | 'error' | 'warning' | 'info';
-    open:      boolean;
+    message:   React.ReactNode;
+    severity?: 'success' | 'error' | 'warning' | 'info';
+    title?:    React.ReactNode;
+    actions?:  NotificationAction[];
+};
+
+type NotificationAction = {
+    label:    React.ReactNode;
+    callback: () => void;
 };
 ```
 
@@ -192,18 +194,22 @@ type Notification = {
 ### DialogFunction
 
 ```ts
-type DialogFunction = (message: DialogMessage) => void;
+type DialogFunction = (message: string | DialogMessage) => Promise<boolean | string>;
 ```
 
 ### DialogMessage
 
 ```ts
 type DialogMessage = {
-    title:      string;
-    message:    string;
-    type?:      'alert' | 'confirm';
-    onConfirm?: () => void;
-    onCancel?:  () => void;
+    title?:          React.ReactNode;
+    message:         React.ReactNode;
+    type?:           'alert' | 'confirm' | 'prompt';
+    dismissable?:    boolean;
+    confirmText?:    string;
+    cancelText?:     string;
+    defaultValue?:   string;
+    dialogProps?:    Partial<DialogProps>;
+    textFieldProps?: Partial<TextFieldProps>;
 };
 ```
 

@@ -18,8 +18,8 @@ Todo callback de ação recebe um objeto `ActionCallbackEvent` com utilitários 
 type ActionCallbackEvent = {
     navigate: (path: string) => void;  // navega para uma rota interna
     refresh:  () => void;              // recarrega a listagem atual
-    notify:   NotifyFunction;          // exibe uma notificação toast
-    dialog:   DialogFunction;          // abre um diálogo modal
+    notify:   NotifyFunction;          // (notification: string | Notification) => void
+    dialog:   DialogFunction;          // (message: string | DialogMessage) => Promise<boolean | string>
     t:        TFunction;               // função de tradução (i18next)
 };
 ```
@@ -157,17 +157,17 @@ Cms.reducer('massActions', (actions, ModelClass, tab) => [
         key: 'archive',
         label: 'Arquivar selecionados',
         callback: async ({ selected, refresh, notify, dialog }) => {
-            dialog({
-                title: 'Arquivar itens',
+            const confirmed = await dialog({
+                title:   'Arquivar itens',
                 message: `Deseja arquivar ${selected.count()} itens?`,
-                type: 'confirm',
-                onConfirm: async () => {
-                    const ids = selected.map(item => item.getKey()).toArray();
-                    await Http.post('/api/posts/archive', { ids });
-                    refresh();
-                    notify('Itens arquivados!', 'success');
-                },
+                type:    'confirm',
             });
+            if (confirmed) {
+                const ids = selected.map(item => item.getKey()).toArray();
+                await Http.post('/api/posts/archive', { ids });
+                refresh();
+                notify('Itens arquivados!');
+            }
         },
     },
 ]);
