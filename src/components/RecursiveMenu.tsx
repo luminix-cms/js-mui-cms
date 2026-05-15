@@ -37,7 +37,11 @@ const RecursiveMenu: React.FunctionComponent<RecursiveMenuProps> = ({
                     } = item;
 
                     if (element) {
-                        return element;
+                        return (
+                            <React.Fragment key={key}>
+                                {element}
+                            </React.Fragment>
+                        );
                     }
 
                     // const { onClick: onClickItem, ...buttonProps } = ListItemButtonProps;
