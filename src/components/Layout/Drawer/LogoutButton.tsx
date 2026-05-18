@@ -12,11 +12,14 @@ import {
 } from '@mui/material';
 
 import { LogoutButtonProps } from '../../../types/PropTypes';
+import { useTranslation } from 'react-i18next';
 
 
 const LogoutButton: React.FunctionComponent<LogoutButtonProps> = ({ collapsed = false }) => {
 
     const handleClick = app('cms').getLogoutCallback();
+
+    const { t } = useTranslation();
 
     const button = (
         <ListItem disablePadding sx={{ display: 'block' }}>
@@ -37,7 +40,7 @@ const LogoutButton: React.FunctionComponent<LogoutButtonProps> = ({ collapsed = 
                 >
                     <LogoutIcon />
                 </ListItemIcon>
-                {!collapsed && <ListItemText primary="Logout" />}
+                {!collapsed && <ListItemText primary={t('Logout')} />}
             </ListItemButton>
         </ListItem>
     );
@@ -47,7 +50,7 @@ const LogoutButton: React.FunctionComponent<LogoutButtonProps> = ({ collapsed = 
             <Divider />
             <List disablePadding>
                 {collapsed
-                    ? <Tooltip title="Logout" placement="right">{button}</Tooltip>
+                    ? <Tooltip title={t('Logout')} placement="right">{button}</Tooltip>
                     : button
                 }
             </List>
