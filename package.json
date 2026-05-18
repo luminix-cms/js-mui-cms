@@ -5,6 +5,9 @@
   "main": "bundle/mui-cms.js",
   "module": "dist/mui-cms.js",
   "types": "types/index.d.ts",
+  "repository": {
+    "url": "git+https://github.com/luminix-cms/js-mui-cms"
+  },
   "scripts": {
     "dev": "vite --port=3333 --config=vite.config.dev.ts",
     "build": "npm run build:bundle && npm run build:dist",
@@ -14,8 +17,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest",
-    "publish:beta": "npm run build && npm publish --tag beta"
+    "test:watch": "vitest"
   },
   "peerDependencies": {
     "@emotion/react": "^11.13.0",

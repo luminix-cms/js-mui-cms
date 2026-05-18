@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CmsService } from '../../services/CmsService';
 
+const mockAuthLogout = vi.fn();
+
 vi.mock('@luminix/core', () => ({
+    auth: vi.fn(() => ({ logout: mockAuthLogout })),
     model: vi.fn(() => ({ make: vi.fn(() => ({})) })),
     ModelType: class {},
     Str: { studly: (s: string) => s },
@@ -125,5 +128,31 @@ describe('CmsService.getStaticActions', () => {
         service.getStaticActions(ModelClass, 'all');
         expect(service.staticActions).toHaveBeenCalled();
         expect(service.staticItemActions).toHaveBeenCalled();
+    });
+});
+
+describe('CmsService.logoutUsing / getLogoutCallback', () => {
+    it('getLogoutCallback returns a function that calls auth().logout() by default', () => {
+        mockAuthLogout.mockClear();
+        const callback = service.getLogoutCallback();
+        expect(typeof callback).toBe('function');
+        callback();
+        expect(mockAuthLogout).toHaveBeenCalledTimes(1);
+    });
+
+    it('logoutUsing registers a custom callback returned by getLogoutCallback', () => {
+        const custom = vi.fn();
+        service.logoutUsing(custom);
+        const callback = service.getLogoutCallback();
+        expect(callback).toBe(custom);
+    });
+
+    it('custom callback overrides the default auth().logout()', () => {
+        mockAuthLogout.mockClear();
+        const custom = vi.fn();
+        service.logoutUsing(custom);
+        service.getLogoutCallback()();
+        expect(custom).toHaveBeenCalledTimes(1);
+        expect(mockAuthLogout).not.toHaveBeenCalled();
     });
 });

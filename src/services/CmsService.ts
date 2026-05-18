@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { Str, Reducible } from '@luminix/support';
-import { model, ModelType } from '@luminix/core';
+import { auth, model, ModelType } from '@luminix/core';
 import { ModelFormProps } from '@luminix/react';
 
 import { RouteObject } from 'react-router-dom';
@@ -14,6 +14,7 @@ export class CmsService {
     [key: string]: any;
 
     private components: Record<string, React.ComponentType<any>> = {};
+    private logoutCallback: (() => void) | null = null;
 
     booted() {
         this.components = this.componentMap({});
@@ -36,6 +37,14 @@ export class CmsService {
 
     getMenuItems(): MenuItem[] {
         return this.menuItems([], model().make());
+    }
+
+    logoutUsing(callback: () => void): void {
+        this.logoutCallback = callback;
+    }
+
+    getLogoutCallback(): () => void {
+        return this.logoutCallback ?? (() => auth().logout());
     }
 
     getModelFormProps(item: ModelType): ModelFormProps {

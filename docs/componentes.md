@@ -33,6 +33,24 @@ import { Link } from '@luminix/mui-cms';
 
 ---
 
+## LogoutButton
+
+Botão de logout exibido no rodapé do menu lateral. Pode ser importado diretamente quando precisar ser usado fora do contexto do Drawer padrão.
+
+```tsx
+import { LogoutButton } from '@luminix/mui-cms';
+
+<LogoutButton collapsed={false} />
+```
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `collapsed` | `boolean` | `false` | Quando `true`, exibe apenas o ícone (modo recolhido do drawer) com um Tooltip |
+
+O comportamento padrão ao clicar é chamar `auth().logout()` do `@luminix/core`. Veja [Extensibilidade](extensibilidade.md#logoutbutton) para formas de customização.
+
+---
+
 ## Providers de contexto
 
 Os providers a seguir são usados internamente pelas views e componentes da biblioteca. Em cenários avançados, você pode usá-los para acessar os contextos em componentes customizados.
@@ -116,6 +134,7 @@ O `CmsServiceProvider` registra um mapa de componentes acessível via `Cms.getCo
 | `Layout.AppBar` | Barra superior |
 | `Layout.AppLogo` | Logo no drawer |
 | `Layout.Drawer` | Menu lateral |
+| `Layout.Drawer.LogoutButton` | Botão de logout no rodapé do drawer |
 | `Layout.SearchBar` | Campo de busca |
 | `Layout.BackButton` | Botão voltar |
 | `ModelIndex.Filter` | Painel de filtros avançados |

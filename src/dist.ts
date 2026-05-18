@@ -4,6 +4,7 @@ import i18NextServiceProvider from './providers/i18NextServiceProvider';
 
 import LuminixCms from './components/LuminixCms';
 import Link from './components/Link';
+import LogoutButton from './components/Layout/Drawer/LogoutButton';
 
 import DialogProvider from './components/providers/DialogProvider';
 import LayoutProvider from './components/providers/LayoutProvider';
@@ -36,9 +37,10 @@ import Filter from './facades/Filter';
 export {
     CmsServiceProvider,
     i18NextServiceProvider,
-    
+
     LuminixCms,
     Link,
+    LogoutButton,
 
     Cms,
     Filter,
@@ -71,6 +73,10 @@ export {
 export type {
     RouteObject,
 } from './types/Reducers';
+
+export type {
+    LogoutButtonProps,
+} from './types/PropTypes';
 
 export type {
     InstanceAction,

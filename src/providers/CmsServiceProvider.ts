@@ -75,6 +75,7 @@ import IconService from '../services/IconService';
 
 import InstanceActions from '../components/ModelIndex/InstanceActions';
 import AppLogo from '../components/Layout/AppLogo';
+import LogoutButton from '../components/Layout/Drawer/LogoutButton';
 
 // 
 
@@ -189,6 +190,7 @@ class CmsServiceProvider extends ServiceProvider {
             'Layout.AppBar': AppBar,
             'Layout.AppLogo': AppLogo,
             'Layout.Drawer': Drawer,
+            'Layout.Drawer.LogoutButton': LogoutButton,
             'Layout.AppBar.MenuButton': MenuButton,
             'Layout.SearchBar': SearchBar,
             'Layout.BackButton': BackButton,
