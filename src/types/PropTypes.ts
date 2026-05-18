@@ -132,7 +132,11 @@ export type BreadcrumbsProps = BreadcrumbsOwnProps & {
     }[],
 };
 
-export type InputOption = { 
-    key: string, 
-    label: string, 
+export type LogoutButtonProps = {
+    collapsed?: boolean;
+};
+
+export type InputOption = {
+    key: string,
+    label: string,
 }

@@ -108,6 +108,12 @@ describe('CmsServiceProvider — bootComponents', () => {
         expect(map).toHaveProperty('ModelIndex.Pagination');
         expect(map).toHaveProperty('ModelIndex.Table');
     });
+
+    it('registers "Layout.Drawer.LogoutButton" in the componentMap', () => {
+        const fn = reducers.get('componentMap')!;
+        const map = fn();
+        expect(map).toHaveProperty('Layout.Drawer.LogoutButton');
+    });
 });
 
 describe('CmsServiceProvider — bootMassActions', () => {

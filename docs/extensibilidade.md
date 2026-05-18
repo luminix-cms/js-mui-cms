@@ -116,6 +116,51 @@ Cms.reducer('cmsRoutes', (routes, components) => {
 
 > Adicionar a rota fora de `routes[0].children` (ex.: `[...routes, { path: '...' }]`) faz a página renderizar sem o Layout do painel.
 
+### LogoutButton
+
+O botão de logout no rodapé do drawer pode ser personalizado de duas formas:
+
+**1. Apenas o comportamento ao clicar** — via `Cms.logoutUsing()` no `boot()` do seu `ServiceProvider`:
+
+```ts
+class AppServiceProvider extends ServiceProvider {
+    boot() {
+        Cms.logoutUsing(() => {
+            // lógica de logout customizada
+            window.location.href = '/login';
+        });
+    }
+}
+```
+
+**2. Aparência e comportamento completos** — substituindo o componente `'Layout.Drawer.LogoutButton'`:
+
+```tsx
+import React from 'react';
+import { ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { ExitToApp } from '@mui/icons-material';
+import type { LogoutButtonProps } from '@luminix/mui-cms';
+
+const MeuLogout: React.FC<LogoutButtonProps> = ({ collapsed }) => (
+    <ListItem disablePadding>
+        <ListItemButton onClick={() => { /* minha lógica */ }}>
+            <ListItemIcon><ExitToApp /></ListItemIcon>
+            {!collapsed && <ListItemText primary="Sair do sistema" />}
+        </ListItemButton>
+    </ListItem>
+);
+
+// No boot() do seu ServiceProvider:
+Cms.reducer('componentMap', (map) => ({
+    ...map,
+    'Layout.Drawer.LogoutButton': MeuLogout,
+}));
+```
+
+O componente recebe a prop `collapsed: boolean` — `true` quando o drawer está recolhido no modo desktop.
+
+---
+
 ### wireModelFormProps
 
 Personaliza o formulário de modelo:

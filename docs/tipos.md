@@ -115,6 +115,16 @@ type CmsConfig = {
 };
 ```
 
+### LogoutButtonProps
+
+Props recebidas pelo componente `Layout.Drawer.LogoutButton`. Relevante ao substituir o componente via redutor `componentMap`.
+
+```ts
+type LogoutButtonProps = {
+    collapsed?: boolean; // true quando o drawer está recolhido no desktop
+};
+```
+
 ---
 
 ## Componente LuminixCms

@@ -44,6 +44,18 @@ Retorna as ações de instância (por linha) disponíveis.
 
 Retorna as ações estáticas (nível de listagem, ex.: "Criar novo").
 
+#### `Cms.logoutUsing(callback: () => void): void`
+
+Registra um callback customizado para o botão de logout do menu lateral. Substitui o comportamento padrão de `auth().logout()`.
+
+```ts
+Cms.logoutUsing(() => {
+    window.location.href = '/login';
+});
+```
+
+Deve ser chamado no `boot()` de um `ServiceProvider`. Veja mais em [Extensibilidade — LogoutButton](extensibilidade.md#logoutbutton).
+
 ### Redutores disponíveis
 
 | Redutor | Assinatura | Uso |

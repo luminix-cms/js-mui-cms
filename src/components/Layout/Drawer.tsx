@@ -91,6 +91,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
     const appBarHeight = useLayoutConfig('appBar.height') as number;
 
     const RecursiveList = app('cms').getComponent('RecursiveList');
+    const LogoutButton = app('cms').getComponent('Layout.Drawer.LogoutButton');
 
     const menuItems = app('cms').getMenuItems();
 
@@ -100,7 +101,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
             open={open}
             width={width}
             onClose={handleDrawerClose}
-            PaperProps={{ sx: { width } }}
+            PaperProps={{ sx: { width, display: 'flex', flexDirection: 'column' } }}
             sx={{
                 display: 'flex',
                 direction: 'flex-column',
@@ -117,12 +118,14 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
             <Divider />
 
             <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden' }}>
-                <RecursiveList 
+                <RecursiveList
                     collapsed={!open && isDesktop}
                     items={menuItems}
                     onClick={() => !isDesktop && handleDrawerClose()}
                 />
             </Box>
+
+            <LogoutButton collapsed={!open && isDesktop} />
 
         </DrawerComponent>
     )
