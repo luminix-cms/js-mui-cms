@@ -82,7 +82,7 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
                     {...({ [breakpoint]: 6 })}
                 >
                     <ModelForm
-                        submitText="Save"
+                        submitText={t('Save')}
                         {...additionalProps}
                         item={item}
                         onSuccess={handleSuccess}
