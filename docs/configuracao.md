@@ -29,7 +29,50 @@ Para sobrescrever, passe seu próprio objeto:
 />
 ```
 
-O modo escuro (`dark`) é ativado automaticamente quando o sistema operacional do usuário preferir `prefers-color-scheme: dark`.
+O modo de cor padrão é `auto`: segue automaticamente a preferência do sistema operacional (`prefers-color-scheme: dark`).
+
+### colorScheme
+
+Use a prop `colorScheme` para controlar o modo de cor:
+
+| Valor | Comportamento |
+|-------|--------------|
+| `'auto'` (padrão) | Segue a preferência do sistema operacional |
+| `'light'` | Sempre usa o tema claro |
+| `'dark'` | Sempre usa o tema escuro |
+
+```tsx
+// sempre claro
+<LuminixCms colorScheme="light" />
+
+// sempre escuro
+<LuminixCms colorScheme="dark" />
+
+// automático (padrão — mantém o comportamento anterior)
+<LuminixCms colorScheme="auto" />
+```
+
+### darkTheme
+
+Quando `colorScheme="auto"`, use `darkTheme` para fornecer um objeto de tema distinto para o modo escuro. O `theme` continuará sendo o tema claro.
+
+```tsx
+<LuminixCms
+    colorScheme="auto"
+    theme={{
+        palette: {
+            primary: { main: '#1d9798' },
+        },
+    }}
+    darkTheme={{
+        palette: {
+            primary: { main: '#90caf9' },
+        },
+    }}
+/>
+```
+
+> **Nota:** `darkTheme` só tem efeito quando `colorScheme="auto"`. Para `colorScheme="dark"`, passe diretamente o tema desejado via `theme`.
 
 ### themeArgs
 

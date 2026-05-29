@@ -92,4 +92,70 @@ describe('LuminixCms', () => {
         render(<LuminixCms themeArgs={[{ typography: { fontSize: 14 } }]} />);
         expect(screen.getByTestId('luminix-provider')).toBeInTheDocument();
     });
+
+    it('uses light mode when colorScheme is "light", regardless of OS preference', async () => {
+        const muiMaterial = await import('@mui/material');
+        vi.mocked(muiMaterial.useMediaQuery).mockReturnValue(true); // OS prefers dark
+        const { createTheme } = await import('@mui/material/styles');
+        render(<LuminixCms colorScheme="light" />);
+        expect(vi.mocked(createTheme)).toHaveBeenCalledWith(
+            expect.objectContaining({ palette: expect.objectContaining({ mode: 'light' }) }),
+        );
+    });
+
+    it('uses dark mode when colorScheme is "dark", regardless of OS preference', async () => {
+        const muiMaterial = await import('@mui/material');
+        vi.mocked(muiMaterial.useMediaQuery).mockReturnValue(false); // OS prefers light
+        const { createTheme } = await import('@mui/material/styles');
+        render(<LuminixCms colorScheme="dark" />);
+        expect(vi.mocked(createTheme)).toHaveBeenCalledWith(
+            expect.objectContaining({ palette: expect.objectContaining({ mode: 'dark' }) }),
+        );
+    });
+
+    it('follows OS preference when colorScheme is "auto" (default)', async () => {
+        const muiMaterial = await import('@mui/material');
+        const { createTheme } = await import('@mui/material/styles');
+
+        vi.mocked(muiMaterial.useMediaQuery).mockReturnValue(true);
+        render(<LuminixCms colorScheme="auto" />);
+        expect(vi.mocked(createTheme)).toHaveBeenCalledWith(
+            expect.objectContaining({ palette: expect.objectContaining({ mode: 'dark' }) }),
+        );
+    });
+
+    it('uses darkTheme when colorScheme is "auto" and OS prefers dark', async () => {
+        const muiMaterial = await import('@mui/material');
+        vi.mocked(muiMaterial.useMediaQuery).mockReturnValue(true);
+        const { createTheme } = await import('@mui/material/styles');
+        const darkTheme = { palette: { primary: { main: '#000000' } } };
+        render(<LuminixCms colorScheme="auto" darkTheme={darkTheme} />);
+        expect(vi.mocked(createTheme)).toHaveBeenCalledWith(
+            expect.objectContaining({ palette: expect.objectContaining({ primary: { main: '#000000' }, mode: 'dark' }) }),
+        );
+    });
+
+    it('ignores darkTheme when colorScheme is "auto" and OS prefers light', async () => {
+        const muiMaterial = await import('@mui/material');
+        vi.mocked(muiMaterial.useMediaQuery).mockReturnValue(false);
+        const { createTheme } = await import('@mui/material/styles');
+        const lightTheme = { palette: { primary: { main: '#ffffff' } } };
+        const darkTheme = { palette: { primary: { main: '#000000' } } };
+        render(<LuminixCms colorScheme="auto" theme={lightTheme} darkTheme={darkTheme} />);
+        expect(vi.mocked(createTheme)).toHaveBeenCalledWith(
+            expect.objectContaining({ palette: expect.objectContaining({ primary: { main: '#ffffff' }, mode: 'light' }) }),
+        );
+    });
+
+    it('ignores darkTheme when colorScheme is "dark" (use theme prop instead)', async () => {
+        const muiMaterial = await import('@mui/material');
+        vi.mocked(muiMaterial.useMediaQuery).mockReturnValue(false);
+        const { createTheme } = await import('@mui/material/styles');
+        const forcedDarkTheme = { palette: { primary: { main: '#aaaaaa' } } };
+        const ignoredDarkTheme = { palette: { primary: { main: '#000000' } } };
+        render(<LuminixCms colorScheme="dark" theme={forcedDarkTheme} darkTheme={ignoredDarkTheme} />);
+        expect(vi.mocked(createTheme)).toHaveBeenCalledWith(
+            expect.objectContaining({ palette: expect.objectContaining({ primary: { main: '#aaaaaa' }, mode: 'dark' }) }),
+        );
+    });
 });

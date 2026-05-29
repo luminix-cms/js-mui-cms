@@ -19,9 +19,14 @@ import { DefaultComponentProps } from '@mui/material/OverridableComponent';
 import { MenuItem } from './Menu';
 // import { TableContextValue } from './Contexts';
 
+export type ColorScheme = 'auto' | 'light' | 'dark';
+
 export type LuminixCmsProps = Partial<LuminixProviderProps> & {
     theme?: ThemeOptions,
+    /** Only applied when `colorScheme="auto"` and the OS prefers dark mode. */
+    darkTheme?: ThemeOptions,
     themeArgs?: object[],
+    colorScheme?: ColorScheme,
 };
 
 export type LayoutProps = BoxProps & {

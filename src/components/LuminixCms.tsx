@@ -27,20 +27,28 @@ const routes = (app: AppFacade) => app.make('cms').getRoutes();
 
 const LuminixCms: React.FunctionComponent<LuminixCmsProps> = ({
     theme = DEFAULT_THEME,
+    darkTheme,
     themeArgs,
+    colorScheme = 'auto',
     providers: provided,
     ...props
 }) => {
 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
+    const resolvedMode = colorScheme === 'auto'
+        ? (prefersDarkMode ? 'dark' : 'light')
+        : colorScheme;
+
+    const resolvedTheme = (colorScheme === 'auto' && prefersDarkMode && darkTheme) ? darkTheme : theme;
+
     const muiTheme = React.useMemo(() => createTheme({
-        ...theme,
+        ...resolvedTheme,
         palette: {
-            ...theme.palette,
-            mode: prefersDarkMode ? 'dark' : 'light',
+            ...resolvedTheme.palette,
+            mode: resolvedMode,
         },
-    }, ...(themeArgs ?? [])), [theme, prefersDarkMode, themeArgs]);
+    }, ...(themeArgs ?? [])), [resolvedTheme, resolvedMode, themeArgs]);
 
     const providers = React.useMemo(() => [
         CmsServiceProvider,
