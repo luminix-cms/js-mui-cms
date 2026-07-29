@@ -157,6 +157,10 @@ Cms.reducer('componentMap', (map) => ({
 }));
 ```
 
+> Para mudar apenas o que acontece ao clicar em uma linha da tabela, não é necessário substituir o
+> componente `ModelIndex.Table.TableBody.TableRow`: ele executa a cadeia de manipuladores descrita em
+> [Extensibilidade — rowClickHandlers](extensibilidade.md#rowclickhandlers-e-rownameclickhandlers).
+
 ---
 
 ## Próximos passos

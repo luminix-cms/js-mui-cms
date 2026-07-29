@@ -82,6 +82,26 @@ type Column = TableCellProps & {
 };
 ```
 
+### RowClickEvent
+
+Recebido pelos manipuladores de clique de linha. É o mesmo evento das ações de instância mais o evento de
+mouse do React:
+
+```ts
+type RowClickEvent = InstanceActionCallbackEvent & {
+    mouseEvent: React.MouseEvent;  // útil para ler teclas modificadoras
+};
+```
+
+### RowClickHandler
+
+```ts
+type RowClickHandler = (e: RowClickEvent) => void;
+```
+
+Registrado via `Cms.onRowClick()` ou pelos redutores `rowClickHandlers` / `row{Name}ClickHandlers`. Veja
+[Extensibilidade](extensibilidade.md#rowclickhandlers-e-rownameclickhandlers).
+
 ---
 
 ## Rotas

@@ -1,9 +1,11 @@
 import { describe, it, expect, vi, beforeAll } from 'vitest';
-import type { MassAction, InstanceAction, StaticAction } from '../../types/Table';
+import type { MassAction, InstanceAction, StaticAction, RowClickHandler } from '../../types/Table';
 import type { MenuItem } from '../../types/Menu';
 
 // All reducer callbacks captured by name during boot()
 const reducers = vi.hoisted(() => new Map<string, Function>());
+// ...and the priority each one was registered with
+const priorities = vi.hoisted(() => new Map<string, number | undefined>());
 
 vi.mock('@luminix/support', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@luminix/support')>();
@@ -31,7 +33,10 @@ vi.mock('@luminix/react', () => ({}));
 
 vi.mock('../../facades/Cms', () => ({
     default: {
-        reducer: vi.fn((name: string, fn: Function) => { reducers.set(name, fn); }),
+        reducer: vi.fn((name: string, fn: Function, priority?: number) => {
+            reducers.set(name, fn);
+            priorities.set(name, priority);
+        }),
     },
 }));
 
@@ -63,6 +68,9 @@ vi.mock('../../support/handlers', () => ({
     },
     staticActionHandlers: {
         create: vi.fn(() => vi.fn()),
+    },
+    rowClickHandlers: {
+        navigateToShow: vi.fn(() => vi.fn()),
     },
 }));
 
@@ -180,6 +188,44 @@ describe('CmsServiceProvider — bootStaticActions', () => {
         const MockClass = { singular: () => 'Item', getSchema: () => ({}) } as any;
         const result: StaticAction[] = fn([], MockClass, 'trashed');
         expect(result).toHaveLength(0);
+    });
+});
+
+describe('CmsServiceProvider — bootRowClickHandlers', () => {
+    const regularItem = { deletedAt: null } as any;
+    const trashedItem = { deletedAt: '2026-07-29 12:00:00' } as any;
+    const MockClass = { plural: () => 'Items', getSchema: () => ({}) } as any;
+
+    it('registers the reducer with priority 0', () => {
+        expect(priorities.get('rowClickHandlers')).toBe(0);
+    });
+
+    it('adds the navigate-to-show handler for a regular item', () => {
+        const fn = reducers.get('rowClickHandlers')!;
+        const result: RowClickHandler[] = fn([], MockClass, regularItem);
+        expect(result).toHaveLength(1);
+        expect(typeof result[0]).toBe('function');
+    });
+
+    it('adds no handler for a soft-deleted item', () => {
+        const fn = reducers.get('rowClickHandlers')!;
+        const result: RowClickHandler[] = fn([], MockClass, trashedItem);
+        expect(result).toHaveLength(0);
+    });
+
+    it('appends to existing handlers', () => {
+        const fn = reducers.get('rowClickHandlers')!;
+        const existing: RowClickHandler[] = [vi.fn()];
+        const result: RowClickHandler[] = fn(existing, MockClass, regularItem);
+        expect(result).toHaveLength(2);
+        expect(result[0]).toBe(existing[0]);
+    });
+
+    it('leaves existing handlers untouched for a soft-deleted item', () => {
+        const fn = reducers.get('rowClickHandlers')!;
+        const existing: RowClickHandler[] = [vi.fn()];
+        const result: RowClickHandler[] = fn(existing, MockClass, trashedItem);
+        expect(result).toEqual(existing);
     });
 });
 

@@ -60,11 +60,11 @@ import {
     SwapVert as SwapVertIcon,
 } from '@mui/icons-material';
 
-import { StaticAction, MassAction, InstanceAction } from '../types/Table';
+import { StaticAction, MassAction, InstanceAction, RowClickHandler } from '../types/Table';
 import { MenuItem } from '../types/Menu';
 //import { DisplayableTab } from './types/Tabs';
 
-import { instanceActionHandlers, massActionHandlers, staticActionHandlers } from '../support/handlers';
+import { instanceActionHandlers, massActionHandlers, rowClickHandlers, staticActionHandlers } from '../support/handlers';
 
 import Cms from '../facades/Cms';
 import Icon from '../facades/Icon';
@@ -104,6 +104,7 @@ class CmsServiceProvider extends ServiceProvider {
         this.bootMassActions();
         this.bootInstanceActions();
         this.bootStaticActions();
+        this.bootRowClickHandlers();
 
         if (CmsServiceProvider.applyUserDefaults) {
             this.bootDefaultUserModifiers();
@@ -365,6 +366,19 @@ class CmsServiceProvider extends ServiceProvider {
                     callback: staticActionHandlers.create(ModelClass),
                     icon: Icon.render('Add'),
                 },
+            ];
+        }, 0);
+    }
+
+    private bootRowClickHandlers() {
+        Cms.reducer('rowClickHandlers', (handlers: RowClickHandler[], ModelClass: typeof Model, item: ModelType) => {
+            if (item.deletedAt) {
+                return handlers;
+            }
+
+            return [
+                ...handlers,
+                rowClickHandlers.navigateToShow(ModelClass),
             ];
         }, 0);
     }

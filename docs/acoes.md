@@ -8,6 +8,10 @@ O sistema de ações permite adicionar comportamentos às telas de listagem dos 
 | **De instância** | Por linha da tabela | "Editar", "Excluir" |
 | **Em massa** | Múltiplos itens selecionados | "Excluir selecionados", "Restaurar" |
 
+> Ações de instância são itens do menu "⋮" de cada linha. O que acontece ao **clicar na linha** é um
+> mecanismo separado — os manipuladores de clique de linha, documentados em
+> [Extensibilidade — rowClickHandlers](extensibilidade.md#rowclickhandlers-e-rownameclickhandlers).
+
 ---
 
 ## ActionCallbackEvent
@@ -192,5 +196,6 @@ Cms.reducer('staticActions', (actions) =>
 ## Próximos passos
 
 - [Extensibilidade](extensibilidade.md) — redutores em profundidade e como encadear transformações
+- [Extensibilidade — rowClickHandlers](extensibilidade.md#rowclickhandlers-e-rownameclickhandlers) — controlar o clique na linha da tabela
 - [Hooks](hooks.md) — `useActionEvent` para montar o evento manualmente em componentes customizados
 - [Volta ao índice](index.md)
