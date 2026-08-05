@@ -92,6 +92,8 @@ export type {
     ActionCallbackEvent,
     InstanceActionCallbackEvent,
     MassActionCallbackEvent,
+    RowClickEvent,
+    RowClickHandler,
     Column,
 } from './types/Table';
 

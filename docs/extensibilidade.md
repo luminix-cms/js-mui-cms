@@ -194,6 +194,70 @@ Cms.reducer('modelPostColumns', () => [
 > A convenção de nome é `model` + nome do modelo em StudlyCase + `Columns`.  
 > Ex.: `modelBlogPostColumns` para o modelo `blog_post`.
 
+### rowClickHandlers e row{Name}ClickHandlers
+
+Controlam o que acontece ao clicar em uma linha da tabela de listagem. O redutor acumula uma lista de
+**manipuladores** (`RowClickHandler`), e todos são executados, em ordem, no clique.
+
+O `CmsServiceProvider` registra um manipulador padrão em `rowClickHandlers` (prioridade `0`) que navega para
+a página de exibição/edição do item — exatamente o comportamento histórico. Itens na lixeira (`deletedAt`)
+recebem uma lista vazia, e por isso a linha fica inerte e sem o cursor de ponteiro.
+
+```ts
+// adiciona um manipulador para todos os modelos
+Cms.reducer('rowClickHandlers', (handlers) => [
+    ...handlers,
+    ({ item, notify }) => notify(`Você clicou em ${item.getLabel()}`),
+]);
+
+// adiciona um manipulador só para o modelo `post`
+Cms.reducer('rowPostClickHandlers', (handlers) => [...handlers, meuManipulador]);
+```
+
+> A convenção de nome é `row` + nome do modelo em StudlyCase + `ClickHandlers`.  
+> Ex.: `rowBlogPostClickHandlers` para o modelo `blog_post`.
+
+O redutor genérico roda primeiro, e o seu resultado é a entrada do redutor por modelo. Retornar uma lista
+nova (em vez de espalhar `handlers`) na cadeia por modelo, portanto, descarta o manipulador padrão:
+
+```ts
+// substitui completamente o comportamento do clique para `post`
+Cms.reducer('rowPostClickHandlers', () => [meuManipulador]);
+```
+
+Como esse é o caso de uso mais comum, o `CmsService` oferece dois atalhos — veja
+[`Cms.onRowClick` e `Cms.clearRowClickHandlers`](facades.md#cms) — que dispensam conhecer a convenção de
+nomes:
+
+```ts
+class AppServiceProvider extends ServiceProvider {
+    boot() {
+        // usa o CRUD automático sem a página de criação/edição:
+        // remove a navegação padrão e abre um preview somente-leitura
+        Cms.clearRowClickHandlers('post');
+
+        Cms.onRowClick(({ item, dialog }) => dialog({
+            title: item.getLabel(),
+            message: item.excerpt,
+            type: 'alert',
+        }), 'post');
+    }
+}
+```
+
+Para deixar a linha totalmente inerte, basta limpar a cadeia e não registrar nada:
+
+```ts
+Cms.clearRowClickHandlers('post');
+```
+
+> O provider da aplicação inicializa **depois** do `CmsServiceProvider`, então o manipulador padrão já
+> existe quando o seu `boot()` roda — limpar e registrar no `boot()` sempre funciona.
+
+O manipulador recebe um [`RowClickEvent`](tipos.md#rowclickevent): os mesmos utilitários das ações de
+instância (`item`, `navigate`, `notify`, `dialog`, `refresh`, `t`) mais o `mouseEvent` do React, útil para
+ler teclas modificadoras.
+
 ---
 
 ## Redutores do FilterService

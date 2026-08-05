@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { massActionHandlers, instanceActionHandlers, staticActionHandlers } from '../../support/handlers';
+import { massActionHandlers, instanceActionHandlers, staticActionHandlers, rowClickHandlers } from '../../support/handlers';
 
 vi.mock('@luminix/core', () => ({
     Model: class {},
@@ -252,5 +252,21 @@ describe('staticActionHandlers.create', () => {
         const navigate = vi.fn();
         staticActionHandlers.create(ModelClass)({ navigate } as any);
         expect(navigate).toHaveBeenCalledWith(expect.stringContaining('items'));
+    });
+});
+
+describe('rowClickHandlers.navigateToShow', () => {
+    it('navigates to the show route of the clicked item', () => {
+        const ModelClass = { plural: () => 'Items', getSchema: () => ({}) } as any;
+        const navigate = vi.fn();
+        rowClickHandlers.navigateToShow(ModelClass)({ navigate, item: { getKey: () => 7 } } as any);
+        expect(navigate).toHaveBeenCalledWith('/items/7');
+    });
+
+    it('kebab-cases multi-word model names', () => {
+        const ModelClass = { plural: () => 'BlogPosts', getSchema: () => ({}) } as any;
+        const navigate = vi.fn();
+        rowClickHandlers.navigateToShow(ModelClass)({ navigate, item: { getKey: () => 3 } } as any);
+        expect(navigate).toHaveBeenCalledWith('/blog-posts/3');
     });
 });

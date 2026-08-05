@@ -7,7 +7,7 @@ import { ModelFormProps } from '@luminix/react';
 
 import { RouteObject } from 'react-router-dom';
 import { MenuItem } from '../types/Menu';
-import { StaticAction, MassAction } from '../types/Table';
+import { StaticAction, MassAction, RowClickHandler } from '../types/Table';
 
 export class CmsService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,6 +73,37 @@ export class CmsService {
             ModelClass,
             currentTab,
         );
+    }
+
+    getRowClickHandlers(ModelClass: typeof ModelType, item: ModelType): RowClickHandler[] {
+        return this[`row${Str.studly(ModelClass.getSchemaName())}ClickHandlers`](
+            this.rowClickHandlers([], ModelClass, item),
+            ModelClass,
+            item,
+        );
+    }
+
+    onRowClick(callback: RowClickHandler, model?: string, priority?: number): () => void {
+        return this.reducer(
+            model ? `row${Str.studly(model)}ClickHandlers` : 'rowClickHandlers',
+            (handlers: RowClickHandler[]) => [...handlers, callback],
+            priority,
+        );
+    }
+
+    clearRowClickHandlers(model?: string): void {
+        if (!model) {
+            this.clearReducer('rowClickHandlers');
+            return;
+        }
+
+        // The default handler lives on the generic `rowClickHandlers` chain, whose result is the input of
+        // the per-model chain. A priority 0 reducer returning an empty list therefore discards the generic
+        // contribution for this model only, while later `onRowClick` registrations still append.
+        const name = `row${Str.studly(model)}ClickHandlers`;
+
+        this.clearReducer(name);
+        this.reducer(name, () => [], 0);
     }
 
 }

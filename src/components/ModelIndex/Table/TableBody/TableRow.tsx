@@ -3,8 +3,6 @@ import React from 'react';
 import { Obj, Str } from '@luminix/support';
 import { config } from '@luminix/core';
 
-import { useNavigate } from 'react-router-dom';
-
 import { styled } from '@mui/material/styles';
 
 import {
@@ -18,6 +16,7 @@ import useTable from '../../../../hooks/useTable';
 import useIsDesktopMode from '../../../../hooks/useIsDesktopMode';
 import useSelection from '../../../../hooks/useSelection';
 import useCurrentModel from '../../../../hooks/useCurrentModel';
+import useActionEvent from '../../../../hooks/useActionEvent';
 
 import { TableRowProps } from '../../../../types/PropTypes';
 import Cms from '../../../../facades/Cms';
@@ -99,11 +98,19 @@ const MobileCellContent: React.FunctionComponent<MobileCellContentProps> = ({ la
 const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) => {
 
     const isDesktop = useIsDesktopMode();
-    const navigate = useNavigate();
+    const actionEvent = useActionEvent();
 
     const Model = useCurrentModel();
 
     const { massActions, columns } = useTable();
+
+    const handlers = React.useMemo(() => Cms.getRowClickHandlers(Model, item), [Model, item]);
+
+    const clickable = handlers.length > 0;
+
+    const handleRowClick = (mouseEvent: React.MouseEvent) => {
+        handlers.forEach((handler) => handler({ ...actionEvent, item, mouseEvent }));
+    };
 
     const columnsWithContents = React.useMemo(() => columns.map((props) => ({
         ...props,
@@ -122,9 +129,9 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
     return (
         <MuiTableRow
             {...props}
-            sx={{ cursor: !item.deletedAt ? 'pointer' : 'default' }}
+            sx={{ cursor: clickable ? 'pointer' : 'default' }}
             selected={isSelected(item)}
-            hover={!item.deletedAt}
+            hover={clickable}
         >
             {massActions.length > 0 && (
                 <ShrinkedCell>
@@ -139,11 +146,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
                 <TableCell
                     key={key}
                     {...props}
-                    onClick={() => {
-                        if (!item.deletedAt) {
-                            navigate(`/${Str.kebab(Model.plural())}/${item.getKey()}`);
-                        }
-                    }}
+                    onClick={clickable ? handleRowClick : undefined}
                 >
                     <CellContent
                         label={label}
@@ -154,11 +157,7 @@ const TableRow: React.FunctionComponent<TableRowProps> = ({ item, ...props }) =>
             {!isDesktop && (
                 <TableCell
                     sx={{ maxWidth: 0, px: 0 }}
-                    onClick={() => {
-                        if (!item.deletedAt) {
-                            navigate(`/${Str.kebab(Model.plural())}/${item.getKey()}`);
-                        }
-                    }}
+                    onClick={clickable ? handleRowClick : undefined}
                 >
                     {columnsWithContents.map(({ key, ...props }) => <MobileCellContent key={key} {...props} />)}
                 </TableCell>

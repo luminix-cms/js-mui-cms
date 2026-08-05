@@ -43,6 +43,12 @@ export type MassActionCallbackEvent = ActionCallbackEvent & {
     selected: Collection<Model>;
 };
 
+export type RowClickEvent = InstanceActionCallbackEvent & {
+    mouseEvent: React.MouseEvent;
+};
+
+export type RowClickHandler = (e: RowClickEvent) => void;
+
 export type Column = TableCellProps & {
     key: string;
     label: string;

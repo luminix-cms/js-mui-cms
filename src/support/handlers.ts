@@ -1,11 +1,12 @@
 import { Model } from "@luminix/core";
-import { ActionCallbackEvent, InstanceActionCallbackEvent, MassActionCallbackEvent } from "../types/Table";
+import { ActionCallbackEvent, InstanceActionCallbackEvent, MassActionCallbackEvent, RowClickHandler } from "../types/Table";
 import { createErrorCallback } from "./error";
 import { Str } from "@luminix/support";
 
 type MassActionHandlers = Record<string, (ModelClass: typeof Model) => (e: MassActionCallbackEvent) => void>;
 type InstanceActionHandlers = Record<string, (ModelClass: typeof Model) => (e: InstanceActionCallbackEvent) => void>;
 type StaticActionHandlers = Record<string, (ModelClass: typeof Model) => (e: ActionCallbackEvent) => void>;
+type RowClickHandlers = Record<string, (ModelClass: typeof Model) => RowClickHandler>;
 
 export const massActionHandlers: MassActionHandlers = {
 
@@ -227,6 +228,14 @@ export const staticActionHandlers: StaticActionHandlers = {
 
     create: (ModelClass) => ({ navigate }) => {
         navigate(`/${Str.kebab(ModelClass.plural())}/create`);
+    },
+
+};
+
+export const rowClickHandlers: RowClickHandlers = {
+
+    navigateToShow: (ModelClass) => ({ navigate, item }) => {
+        navigate(`/${Str.kebab(ModelClass.plural())}/${item.getKey()}`);
     },
 
 };

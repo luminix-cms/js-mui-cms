@@ -44,6 +44,36 @@ Retorna as ações de instância (por linha) disponíveis.
 
 Retorna as ações estáticas (nível de listagem, ex.: "Criar novo").
 
+#### `Cms.getRowClickHandlers(ModelClass, item): RowClickHandler[]`
+
+Retorna os manipuladores de clique de linha aplicáveis ao modelo e ao item. Uma lista vazia significa que a
+linha não é clicável.
+
+#### `Cms.onRowClick(callback: RowClickHandler, model?: string, priority?: number): () => void`
+
+Registra um manipulador de clique de linha e retorna a função que o remove. Sem `model`, vale para todos os
+modelos; com `model` (o `schemaName`, em snake_case), vale só para aquele modelo.
+
+```ts
+const remover = Cms.onRowClick(({ item, notify }) => {
+    notify(`Você clicou em ${item.getLabel()}`);
+}, 'post');
+```
+
+#### `Cms.clearRowClickHandlers(model?: string): void`
+
+Remove os manipuladores de clique de linha — inclusive o padrão, que navega para a página de
+exibição/edição. Sem `model`, limpa a cadeia genérica; com `model`, limpa apenas aquele modelo.
+
+```ts
+// usa o CRUD automático sem a página de criação/edição para `post`
+Cms.clearRowClickHandlers('post');
+Cms.onRowClick(meuManipulador, 'post');
+```
+
+Deve ser chamado no `boot()` de um `ServiceProvider`. Veja mais em
+[Extensibilidade — rowClickHandlers](extensibilidade.md#rowclickhandlers-e-rownameclickhandlers).
+
 #### `Cms.logoutUsing(callback: () => void): void`
 
 Registra um callback customizado para o botão de logout do menu lateral. Substitui o comportamento padrão de `auth().logout()`.
@@ -67,12 +97,14 @@ Deve ser chamado no `boot()` de um `ServiceProvider`. Veja mais em [Extensibilid
 | `massActions` | `(actions, ModelClass, tab) => actions` | Adicionar/remover ações em massa |
 | `instanceActions` | `(actions, ModelClass, tab) => actions` | Adicionar/remover ações de instância |
 | `staticActions` | `(actions, ModelClass, tab) => actions` | Adicionar/remover ações estáticas |
+| `rowClickHandlers` | `(handlers, ModelClass, item) => handlers` | Adicionar/remover manipuladores de clique de linha |
 | `model{Name}Columns` | `() => Column[]` | Definir colunas da tabela por modelo |
 | `mass{Name}Actions` | idem massActions | Ações em massa específicas por modelo |
 | `instance{Name}Actions` | idem instanceActions | Ações de instância específicas por modelo |
 | `static{Name}Actions` | idem staticActions | Ações estáticas específicas por modelo |
+| `row{Name}ClickHandlers` | idem rowClickHandlers | Manipuladores de clique de linha por modelo |
 
-> `{Name}` é o nome do modelo em StudlyCase. Ex.: `modelPostColumns`, `massPostActions`.
+> `{Name}` é o nome do modelo em StudlyCase. Ex.: `modelPostColumns`, `massPostActions`, `rowPostClickHandlers`.
 
 ---
 
