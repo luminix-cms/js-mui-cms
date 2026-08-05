@@ -75,6 +75,16 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
         notifications.splice(0, notifications.count());
     };
 
+    /**
+     * Fecha uma notificação específica. Nada acontece se ela já foi
+     * substituída por uma mais recente.
+     */
+    const closeNotification = (id: number) => {
+        if (notifications.first()?.id === id) {
+            handleClose();
+        }
+    };
+
     return (
         <NotificationContext.Provider value={{
             isOpen: !!current,
@@ -111,7 +121,7 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
                                     key={index}
                                     color="inherit"
                                     size="small"
-                                    onClick={callback}
+                                    onClick={() => callback({ close: () => closeNotification(current.id) })}
                                 >
                                     {label}
                                 </Button>

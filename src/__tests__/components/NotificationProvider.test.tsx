@@ -1,9 +1,9 @@
-import { render, act } from '@testing-library/react';
+import { render, act, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React, { useContext } from 'react';
 import NotificationProvider from '../../components/providers/NotificationProvider';
 import NotificationContext from '../../contexts/NotificationContext';
-import { Notification } from '../../types/Notifications';
+import { Notification, NotificationActionCallbackEvent } from '../../types/Notifications';
 
 const _state = vi.hoisted(() => ({ notifications: null as import('@luminix/support').Collection<Notification> | null }));
 
@@ -148,5 +148,74 @@ describe('NotificationProvider', () => {
         // 6500ms após a substituição: o timer reiniciado já expirou
         await advanceAndFlush(5000);
         expect(getCtx().isOpen).toBe(false);
+    });
+
+    it('gives the action callback an event that closes its notification', async () => {
+        const getCtx = renderWithCapture();
+        const callback = vi.fn((e: NotificationActionCallbackEvent) => e.close());
+
+        await act(async () => {
+            getCtx().notify({
+                message: 'Item excluído',
+                actions: [{ label: 'Desfazer', callback }],
+            });
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Desfazer' }));
+        });
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(typeof callback.mock.calls[0][0].close).toBe('function');
+        expect(getCtx().isOpen).toBe(false);
+    });
+
+    it('does not close the current notification when a replaced action closes late', async () => {
+        const getCtx = renderWithCapture();
+        let close!: () => void;
+        const callback = vi.fn((e: NotificationActionCallbackEvent) => {
+            close = e.close;
+        });
+
+        await act(async () => {
+            getCtx().notify({
+                message: 'Primeira',
+                actions: [{ label: 'Desfazer', callback }],
+            });
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Desfazer' }));
+        });
+
+        await act(async () => {
+            getCtx().notify('Segunda');
+        });
+
+        await act(async () => {
+            close();
+        });
+
+        expect(getCtx().isOpen).toBe(true);
+        expect(getCtx().current?.message).toBe('Segunda');
+    });
+
+    it('does not dismiss the notification when an action does not close it', async () => {
+        const getCtx = renderWithCapture();
+        const callback = vi.fn();
+
+        await act(async () => {
+            getCtx().notify({
+                message: 'Item excluído',
+                actions: [{ label: 'Desfazer', callback }],
+            });
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Desfazer' }));
+        });
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(getCtx().isOpen).toBe(true);
     });
 });

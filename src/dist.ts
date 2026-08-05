@@ -79,6 +79,13 @@ export type {
 } from './types/PropTypes';
 
 export type {
+    Notification,
+    NotificationAction,
+    NotificationActionCallbackEvent,
+    NotifyFunction,
+} from './types/Notifications';
+
+export type {
     InstanceAction,
     StaticAction,
     MassAction,
