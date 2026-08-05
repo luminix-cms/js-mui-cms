@@ -129,10 +129,20 @@ notify({
     severity: 'success',      // 'success' | 'error' | 'warning' | 'info'
     title:    'Sucesso',      // opcional
     actions: [                // opcional — botões de ação no toast
-        { label: 'Desfazer', callback: () => { /* ... */ } },
+        {
+            label: 'Desfazer',
+            callback: (e) => {
+                // ...
+                e.close(); // fecha a notificação que originou a action
+            },
+        },
     ],
 });
 ```
+
+Apenas uma notificação existe por vez: **uma notificação nova substitui imediatamente a que está sendo exibida** e reinicia o `autoHideDuration`. Em ações sucessivas isso garante que o usuário sempre veja a resposta mais recente, sem fila acumulada para dispensar.
+
+O callback de cada action recebe um evento com `close()`. Clicar em uma action **não** fecha a notificação automaticamente — o fechamento é sempre explícito. Se a notificação já tiver sido substituída por uma mais recente, `close()` não faz nada.
 
 A assinatura completa:
 
@@ -143,7 +153,16 @@ type Notification = {
     message:   React.ReactNode;
     severity?: 'success' | 'error' | 'warning' | 'info';
     title?:    React.ReactNode;
-    actions?:  { label: React.ReactNode; callback: () => void }[];
+    actions?:  NotificationAction[];
+};
+
+type NotificationAction = {
+    label:    React.ReactNode;
+    callback: (e: NotificationActionCallbackEvent) => void;
+};
+
+type NotificationActionCallbackEvent = {
+    close: () => void;
 };
 ```
 
@@ -156,7 +175,7 @@ const {
     isOpen,
     notify,
     dismissNotification,
-    notifications,   // Notification[]
+    notifications,   // Notification[] — 0 ou 1 item, nunca acumula
     current,         // Notification | undefined — notificação sendo exibida
     displacement,    // string — deslocamento CSS atual do Snackbar
 } = useNotifications();

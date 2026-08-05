@@ -1,9 +1,9 @@
-import { render, act } from '@testing-library/react';
+import { render, act, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React, { useContext } from 'react';
 import NotificationProvider from '../../components/providers/NotificationProvider';
 import NotificationContext from '../../contexts/NotificationContext';
-import { Notification } from '../../types/Notifications';
+import { Notification, NotificationActionCallbackEvent } from '../../types/Notifications';
 
 const _state = vi.hoisted(() => ({ notifications: null as import('@luminix/support').Collection<Notification> | null }));
 
@@ -64,12 +64,11 @@ describe('NotificationProvider', () => {
         expect(getCtx().notifications).toHaveLength(1);
     });
 
-    it('current becomes the first notification after 100ms', async () => {
+    it('current becomes the notification immediately, with no delay', async () => {
         const getCtx = renderWithCapture();
         await act(async () => {
             getCtx().notify('First message');
         });
-        await advanceAndFlush(100);
         expect(getCtx().isOpen).toBe(true);
         expect(getCtx().current?.message).toBe('First message');
     });
@@ -80,7 +79,6 @@ describe('NotificationProvider', () => {
         await act(async () => {
             getCtx().notify(notification);
         });
-        await advanceAndFlush(100);
         expect(getCtx().current?.severity).toBe('error');
     });
 
@@ -89,13 +87,13 @@ describe('NotificationProvider', () => {
         await act(async () => {
             getCtx().notify('Dismiss me');
         });
-        await advanceAndFlush(100);
         expect(getCtx().isOpen).toBe(true);
 
         await act(async () => {
             getCtx().dismissNotification();
         });
         expect(getCtx().isOpen).toBe(false);
+        expect(getCtx().notifications).toHaveLength(0);
     });
 
     it('displacement can be changed via setDisplacement', async () => {
@@ -106,19 +104,134 @@ describe('NotificationProvider', () => {
         expect(getCtx().displacement).toBe('40px');
     });
 
-    it('processes multiple notifications in FIFO order', async () => {
+    it('replaces the current notification when a new one arrives', async () => {
+        const getCtx = renderWithCapture();
+        await act(async () => {
+            getCtx().notify('First');
+        });
+        expect(getCtx().current?.message).toBe('First');
+
+        await act(async () => {
+            getCtx().notify('Second');
+        });
+        expect(getCtx().current?.message).toBe('Second');
+        expect(getCtx().notifications).toHaveLength(1);
+    });
+
+    it('keeps only the last notification when many arrive in the same tick', async () => {
         const getCtx = renderWithCapture();
         await act(async () => {
             getCtx().notify('First');
             getCtx().notify('Second');
+            getCtx().notify('Third');
         });
-        await advanceAndFlush(100);
-        expect(getCtx().current?.message).toBe('First');
+        expect(getCtx().current?.message).toBe('Third');
+        expect(getCtx().notifications).toHaveLength(1);
+    });
+
+    it('restarts the auto hide timer when a notification is replaced', async () => {
+        const getCtx = renderWithCapture();
+        await act(async () => {
+            getCtx().notify('First');
+        });
+        await advanceAndFlush(5000);
+        expect(getCtx().isOpen).toBe(true);
 
         await act(async () => {
-            getCtx().dismissNotification();
+            getCtx().notify('Second');
         });
-        await advanceAndFlush(100);
+        // 6500ms após a primeira: o timer dela já teria expirado
+        await advanceAndFlush(1500);
+        expect(getCtx().isOpen).toBe(true);
         expect(getCtx().current?.message).toBe('Second');
+
+        // 6500ms após a substituição: o timer reiniciado já expirou
+        await advanceAndFlush(5000);
+        expect(getCtx().isOpen).toBe(false);
+    });
+
+    it('keeps the notification open when clicking away', async () => {
+        const getCtx = renderWithCapture();
+        await act(async () => {
+            getCtx().notify('Fica aberta');
+        });
+
+        // o ClickAwayListener do Snackbar só passa a ouvir no tick seguinte
+        await advanceAndFlush(1);
+
+        await act(async () => {
+            fireEvent.click(document.body);
+        });
+
+        expect(getCtx().isOpen).toBe(true);
+    });
+
+    it('gives the action callback an event that closes its notification', async () => {
+        const getCtx = renderWithCapture();
+        const callback = vi.fn((e: NotificationActionCallbackEvent) => e.close());
+
+        await act(async () => {
+            getCtx().notify({
+                message: 'Item excluído',
+                actions: [{ label: 'Desfazer', callback }],
+            });
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Desfazer' }));
+        });
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(typeof callback.mock.calls[0][0].close).toBe('function');
+        expect(getCtx().isOpen).toBe(false);
+    });
+
+    it('does not close the current notification when a replaced action closes late', async () => {
+        const getCtx = renderWithCapture();
+        let close!: () => void;
+        const callback = vi.fn((e: NotificationActionCallbackEvent) => {
+            close = e.close;
+        });
+
+        await act(async () => {
+            getCtx().notify({
+                message: 'Primeira',
+                actions: [{ label: 'Desfazer', callback }],
+            });
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Desfazer' }));
+        });
+
+        await act(async () => {
+            getCtx().notify('Segunda');
+        });
+
+        await act(async () => {
+            close();
+        });
+
+        expect(getCtx().isOpen).toBe(true);
+        expect(getCtx().current?.message).toBe('Segunda');
+    });
+
+    it('does not dismiss the notification when an action does not close it', async () => {
+        const getCtx = renderWithCapture();
+        const callback = vi.fn();
+
+        await act(async () => {
+            getCtx().notify({
+                message: 'Item excluído',
+                actions: [{ label: 'Desfazer', callback }],
+            });
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Desfazer' }));
+        });
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(getCtx().isOpen).toBe(true);
     });
 });

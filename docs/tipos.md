@@ -193,9 +193,21 @@ type Notification = {
 
 type NotificationAction = {
     label:    React.ReactNode;
-    callback: () => void;
+    callback: (e: NotificationActionCallbackEvent) => void;
 };
 ```
+
+### NotificationActionCallbackEvent
+
+Recebido pelo `callback` de uma `NotificationAction`.
+
+```ts
+type NotificationActionCallbackEvent = {
+    close: () => void;
+};
+```
+
+- `close()` — fecha a notificação que originou a action. Não faz nada se ela já foi substituída por uma notificação mais recente.
 
 ---
 

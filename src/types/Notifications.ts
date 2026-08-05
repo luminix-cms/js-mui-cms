@@ -2,9 +2,17 @@ import { AlertProps } from "@mui/material";
 import React from "react";
 
 
+export type NotificationActionCallbackEvent = {
+    /**
+     * Fecha a notificação que originou a action. Não faz nada se ela já
+     * foi substituída por uma notificação mais recente.
+     */
+    close: () => void;
+};
+
 export type NotificationAction = {
     label: React.ReactNode;
-    callback: () => void;
+    callback: (e: NotificationActionCallbackEvent) => void;
 };
 
 export type Notification = {
