@@ -150,6 +150,22 @@ describe('NotificationProvider', () => {
         expect(getCtx().isOpen).toBe(false);
     });
 
+    it('keeps the notification open when clicking away', async () => {
+        const getCtx = renderWithCapture();
+        await act(async () => {
+            getCtx().notify('Fica aberta');
+        });
+
+        // o ClickAwayListener do Snackbar só passa a ouvir no tick seguinte
+        await advanceAndFlush(1);
+
+        await act(async () => {
+            fireEvent.click(document.body);
+        });
+
+        expect(getCtx().isOpen).toBe(true);
+    });
+
     it('gives the action callback an event that closes its notification', async () => {
         const getCtx = renderWithCapture();
         const callback = vi.fn((e: NotificationActionCallbackEvent) => e.close());
