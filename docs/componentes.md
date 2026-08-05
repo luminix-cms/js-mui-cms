@@ -77,10 +77,13 @@ import { NotificationProvider } from '@luminix/mui-cms';
 <NotificationProvider
     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} // SnackbarProps
     variant="filled" // 'filled' | 'outlined' | 'standard'
+    autoHideDuration={6000} // SnackbarProps — padrão 6000
 >
     {/* seus componentes */}
 </NotificationProvider>
 ```
+
+Exibe uma notificação por vez: uma notificação nova substitui imediatamente a atual e reinicia a contagem do `autoHideDuration`.
 
 ### LayoutProvider
 

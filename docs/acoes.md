@@ -69,7 +69,7 @@ Cms.reducer('staticActions', (actions, ModelClass, tab) => [
         label: 'Exportar CSV',
         callback: ({ notify }) => {
             // lógica de exportação
-            notify('Exportação iniciada!', 'info');
+            notify({ message: 'Exportação iniciada!', severity: 'info' });
         },
     },
 ]);
@@ -86,7 +86,7 @@ Cms.reducer('staticPostActions', (actions, ModelClass, tab) => [
         callback: async ({ refresh, notify }) => {
             await fetch('/api/posts/publish-all', { method: 'POST' });
             refresh();
-            notify('Posts publicados!', 'success');
+            notify({ message: 'Posts publicados!', severity: 'success' });
         },
     },
 ]);
