@@ -64,12 +64,11 @@ describe('NotificationProvider', () => {
         expect(getCtx().notifications).toHaveLength(1);
     });
 
-    it('current becomes the first notification after 100ms', async () => {
+    it('current becomes the notification immediately, with no delay', async () => {
         const getCtx = renderWithCapture();
         await act(async () => {
             getCtx().notify('First message');
         });
-        await advanceAndFlush(100);
         expect(getCtx().isOpen).toBe(true);
         expect(getCtx().current?.message).toBe('First message');
     });
@@ -80,7 +79,6 @@ describe('NotificationProvider', () => {
         await act(async () => {
             getCtx().notify(notification);
         });
-        await advanceAndFlush(100);
         expect(getCtx().current?.severity).toBe('error');
     });
 
@@ -89,13 +87,13 @@ describe('NotificationProvider', () => {
         await act(async () => {
             getCtx().notify('Dismiss me');
         });
-        await advanceAndFlush(100);
         expect(getCtx().isOpen).toBe(true);
 
         await act(async () => {
             getCtx().dismissNotification();
         });
         expect(getCtx().isOpen).toBe(false);
+        expect(getCtx().notifications).toHaveLength(0);
     });
 
     it('displacement can be changed via setDisplacement', async () => {
@@ -106,19 +104,49 @@ describe('NotificationProvider', () => {
         expect(getCtx().displacement).toBe('40px');
     });
 
-    it('processes multiple notifications in FIFO order', async () => {
+    it('replaces the current notification when a new one arrives', async () => {
+        const getCtx = renderWithCapture();
+        await act(async () => {
+            getCtx().notify('First');
+        });
+        expect(getCtx().current?.message).toBe('First');
+
+        await act(async () => {
+            getCtx().notify('Second');
+        });
+        expect(getCtx().current?.message).toBe('Second');
+        expect(getCtx().notifications).toHaveLength(1);
+    });
+
+    it('keeps only the last notification when many arrive in the same tick', async () => {
         const getCtx = renderWithCapture();
         await act(async () => {
             getCtx().notify('First');
             getCtx().notify('Second');
+            getCtx().notify('Third');
         });
-        await advanceAndFlush(100);
-        expect(getCtx().current?.message).toBe('First');
+        expect(getCtx().current?.message).toBe('Third');
+        expect(getCtx().notifications).toHaveLength(1);
+    });
+
+    it('restarts the auto hide timer when a notification is replaced', async () => {
+        const getCtx = renderWithCapture();
+        await act(async () => {
+            getCtx().notify('First');
+        });
+        await advanceAndFlush(5000);
+        expect(getCtx().isOpen).toBe(true);
 
         await act(async () => {
-            getCtx().dismissNotification();
+            getCtx().notify('Second');
         });
-        await advanceAndFlush(100);
+        // 6500ms após a primeira: o timer dela já teria expirado
+        await advanceAndFlush(1500);
+        expect(getCtx().isOpen).toBe(true);
         expect(getCtx().current?.message).toBe('Second');
+
+        // 6500ms após a substituição: o timer reiniciado já expirou
+        await advanceAndFlush(5000);
+        expect(getCtx().isOpen).toBe(false);
     });
 });

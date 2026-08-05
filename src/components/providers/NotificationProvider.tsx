@@ -18,18 +18,28 @@ import { useTheme } from '@mui/material/styles';
 
 import useIsDesktopMode from '../../hooks/useIsDesktopMode';
 import NotificationContext from '../../contexts/NotificationContext';
-import { Notification } from '../../types/Notifications';
+import { Notification, NotifyFunction } from '../../types/Notifications';
 import { NotificationProviderProps } from '../../types/PropTypes';
 
 
-const notifications = collect([] as Notification[]);
+type CurrentNotification = Notification & { id: number };
 
-const notify = (notification: string | Notification) => {
-    notifications.push(
-        typeof notification === 'string' 
-            ? { message: notification } 
-            : notification
-    );
+const notifications = collect([] as CurrentNotification[]);
+
+let nextId = 0;
+
+/**
+ * Substitui a notificação atual. Apenas uma notificação existe por vez:
+ * a mais recente sempre vence.
+ */
+const notify: NotifyFunction = (notification) => {
+    const item = typeof notification === 'string'
+        ? { message: notification }
+        : notification;
+
+    nextId += 1;
+
+    notifications.splice(0, notifications.count(), { ...item, id: nextId });
 };
 
 const NotificationProvider: React.FC<NotificationProviderProps> = ({
@@ -48,10 +58,11 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
     const defaultDisplacement = theme.spacing(isDesktop ? 3 : 1);
 
-    const [current, setCurrent] = React.useState<Notification>();
     const [displacement, setDisplacement] = React.useState(defaultDisplacement);
 
     const { vertical = 'bottom' } = anchorOrigin || {};
+
+    const current = notificationsState.first() ?? undefined;
 
     const handleClose = (
         _event?: React.SyntheticEvent | Event,
@@ -60,19 +71,9 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
         if (reason === 'clickaway') {
           return;
         }
-    
-        setCurrent(undefined);
-        
-    };
 
-    React.useEffect(() => {
-        if (!current && notificationsState.isNotEmpty()) {
-            const timeoutId = setTimeout(() => {
-                setCurrent(notifications.pull(0) ?? undefined);
-            }, 100);
-            return () => clearTimeout(timeoutId);
-        }
-    }, [current, notificationsState]);
+        notifications.splice(0, notifications.count());
+    };
 
     return (
         <NotificationContext.Provider value={{
@@ -85,7 +86,9 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
             setDisplacement,
         }}>
             {children}
-            <Snackbar 
+            <Snackbar
+                // remonta o Snackbar em cada notificação, reiniciando o timer de auto hide
+                key={current?.id}
                 open={!!current}
                 autoHideDuration={autoHideDuration}
                 anchorOrigin={anchorOrigin}
