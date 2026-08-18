@@ -152,13 +152,13 @@ describe('ModelItem', () => {
         expect(notify).toHaveBeenCalled();
     });
 
-    it('navigates after successful create when wasRecentlyCreated', async () => {
+    it('replaces the create route after a successful create', async () => {
         instanceConfig = { wasRecentlyCreated: true, key: '99' };
         renderModelItem({ create: true });
         await waitFor(() => screen.getByTestId('save-btn'));
         await act(async () => {
             screen.getByTestId('save-btn').click();
         });
-        expect(mockNavigate).toHaveBeenCalled();
+        expect(mockNavigate).toHaveBeenCalledWith('/items/99', { replace: true });
     });
 });
