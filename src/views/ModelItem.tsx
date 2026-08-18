@@ -53,7 +53,7 @@ const ModelItem: React.FunctionComponent<ModelItemProps> = ({ create = false }) 
         notify(t(':model saved successfully', { model: Model.singular() }));
 
         if (item?.wasRecentlyCreated) {
-            navigate(`/${Str.kebab(Model.plural())}/${item.getKey()}`);
+            navigate(`/${Str.kebab(Model.plural())}/${item.getKey()}`, { replace: true });
         }
 
     }, [notify, navigate, Model, item, t]);
