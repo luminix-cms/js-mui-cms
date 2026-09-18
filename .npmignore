@@ -2,11 +2,13 @@
 public/
 src/
 tests/
-docs/
+/docs/
+/agents/
+/AGENTS.md
 vite.config*.ts
 index.html
 README.md
-CLAUDE.md
+/CLAUDE.md
 .eslintrc.cjs
 tsconfig*.json
 vitest.config.ts
