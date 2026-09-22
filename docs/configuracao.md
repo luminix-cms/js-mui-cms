@@ -125,6 +125,33 @@ O `CmsServiceProvider` lê esse valor e configura o `basename` do `react-router-
 
 ---
 
+## Marca do painel
+
+O logotipo da barra superior (`Layout.AppLogo`) vem de `luminix.admin.brand`, publicado pelo `luminix/admin`:
+
+```php
+// config/luminix.php
+'admin' => [
+    'brand' => [
+        'name'      => 'Acme',                // texto alternativo; padrão: app.name
+        'logo'      => '/brand/acme.svg',     // URL servida pela aplicação
+        'logo_dark' => '/brand/acme-dark.svg', // opcional, usada no tema escuro
+    ],
+],
+```
+
+| Situação | Logotipo exibido |
+|---|---|
+| Nenhum `logo` configurado | Marca do Luminix (comportamento anterior) |
+| Apenas `logo` | O mesmo arquivo nos temas claro e escuro |
+| `logo` e `logo_dark` | `logo_dark` no tema escuro, `logo` no claro |
+
+O tema considerado é o resolvido pelo `LuminixCms` a partir de [`colorScheme`](#colorscheme): com `colorScheme="light"`, o logotipo claro é exibido mesmo que o sistema operacional prefira o modo escuro.
+
+Para um logotipo que não seja uma imagem, substitua o componente `'Layout.AppLogo'` via redutor `componentMap` (veja [Extensibilidade](extensibilidade.md)).
+
+---
+
 ## Operadores de filtro disponíveis
 
 Os operadores usados nos filtros da tabela também são configuráveis via `luminix.admin.filter.operators`. O conjunto padrão inclui:
