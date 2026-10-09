@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Reducible, ReducerCallback, Str, Obj } from "@luminix/support";
 import { ModelType, config } from "@luminix/core";
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { massActionHandlers, instanceActionHandlers, staticActionHandlers, rowClickHandlers } from '../../support/handlers';
 
 vi.mock('@luminix/core', () => ({
@@ -9,7 +9,7 @@ vi.mock('axios', () => ({
     isAxiosError: vi.fn(() => false),
 }));
 
-const makeSelected = (count: number, pk = 'id') => ({
+const makeSelected = (count: number) => ({
     count: () => count,
     pluck: vi.fn(() => ({ all: () => [1, 2, 3].slice(0, count) })),
 });

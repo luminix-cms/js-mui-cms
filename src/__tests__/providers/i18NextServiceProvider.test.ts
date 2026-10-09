@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeAll } from 'vitest';
 import type { MassAction, StaticAction } from '../../types/Table';
 import type { MenuItem } from '../../types/Menu';
 
-const reducers = vi.hoisted(() => new Map<string, Function>());
+const reducers = vi.hoisted(() => new Map<string, (...args: any[]) => any>());
 
 vi.mock('i18next', () => ({
     default: {
@@ -36,19 +36,19 @@ vi.mock('@luminix/core', () => ({
 }));
 
 vi.mock('@luminix/react', () => ({
-    Forms: { reducer: vi.fn((name: string, fn: Function) => { reducers.set(name, fn); }) },
+    Forms: { reducer: vi.fn((name: string, fn: (...args: any[]) => any) => { reducers.set(name, fn); }) },
 }));
 
 vi.mock('../../facades/Cms', () => ({
     default: {
-        reducer: vi.fn((name: string, fn: Function) => { reducers.set(name, fn); }),
+        reducer: vi.fn((name: string, fn: (...args: any[]) => any) => { reducers.set(name, fn); }),
     },
 }));
 
 const mockApp = vi.hoisted(() => ({
     singleton: vi.fn(),
     on: vi.fn(),
-    once: vi.fn((_event: string, handler: Function) => handler()),
+    once: vi.fn((_event: string, handler: (...args: any[]) => any) => handler()),
 }));
 
 beforeAll(async () => {

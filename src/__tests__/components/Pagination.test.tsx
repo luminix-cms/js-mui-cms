@@ -13,7 +13,6 @@ vi.mock('react-router-dom', async (importOriginal) => {
     const actual = await importOriginal<typeof import('react-router-dom')>();
     return {
         ...actual,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Form: ({ children, onSubmit, preventScrollReset: _p, ...props }: any) =>
             React.createElement('form', { onSubmit, ...props }, children),
     };
