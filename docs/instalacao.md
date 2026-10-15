@@ -82,7 +82,7 @@ A instalação manual requer que o backend Laravel já tenha os pacotes `luminix
 | `@fontsource/roboto` | ^5.0.12 |
 | `@luminix/core` | ^1.1.0 |
 | `@luminix/react` | ^1.3.0 |
-| `@luminix/support` | ^1.2.0 |
+| `@luminix/support` | ^1.2.1 |
 | `i18next` | ^23.12.2 |
 | `react-i18next` | ^15.0.1 |
 
