@@ -74,8 +74,10 @@ Portuguese tutorial style it already uses. Skip either only when asked to.
 
 ## Git
 
-- `v1.x` is the release branch; work on `feat/`/`fix/` branches and merge into it
-- every push to `v1.x` runs the tests, builds, publishes to npm as `latest` and cuts a tag +
-  Release. `v0.x` does the same as `beta` and a prerelease — and skips the test step
+- `v1.x` is the maintenance line of 1.x, for hosts still on react-router 6; current work goes to
+  `v2.x`. Work on `feat/`/`fix/` branches and merge into the line the change is for
+- every push to `v1.x` runs the tests, builds, publishes to npm as `latest-1` and cuts a tag +
+  Release that never becomes the repository's latest. `v0.x` publishes as `beta` and a
+  prerelease, and skips the test step
 - semver comes from the commit subject: `(MAJOR)` -> major, `(MINOR)` -> minor, absence -> patch
 - commit messages and branch names in português
