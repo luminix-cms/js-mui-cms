@@ -1,4 +1,4 @@
-name: Publish latest version to NPM
+name: Publish 1.x maintenance version to NPM
 
 on:
   push:
@@ -39,7 +39,8 @@ jobs:
             npm run build
             npm version ${{ steps.semver.outputs.version }} --no-git-tag-version
             echo "Publishing version ${{ steps.semver.outputs.version }}..."
-            npm publish
+            # 2.x owns `latest`; the 1.x line publishes beside it
+            npm publish --tag latest-1
 
         - name: Publish Github Release
           uses: softprops/action-gh-release@v2
@@ -47,3 +48,4 @@ jobs:
             tag_name: ${{ steps.semver.outputs.version_tag }}
             target_commitish: ${{ github.sha }}
             draft: false
+            make_latest: false
