@@ -80,11 +80,13 @@ A instalação manual requer que o backend Laravel já tenha os pacotes `luminix
 | `@emotion/react` | ^11.13.0 |
 | `@emotion/styled` | ^11.13.0 |
 | `@fontsource/roboto` | ^5.0.12 |
-| `@luminix/core` | ^1.0.0 |
+| `@luminix/core` | ^1.1.0 |
 | `@luminix/react` | ^1.3.0 |
-| `@luminix/support` | ^1.0.1 |
+| `@luminix/support` | ^1.2.0 |
 | `i18next` | ^23.12.2 |
 | `react-i18next` | ^15.0.1 |
+
+O `react-router-dom` 7 exige **Node.js 20 ou superior**, tanto para o build quanto para o servidor de desenvolvimento.
 
 ---
 
