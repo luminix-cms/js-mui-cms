@@ -3,7 +3,7 @@ name: Publish latest version to NPM
 on:
   push:
     branches:
-      - v1.x
+      - v2.x
 
 permissions:
   id-token: write

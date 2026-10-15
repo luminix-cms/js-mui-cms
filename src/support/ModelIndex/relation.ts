@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { ModelType as Model, model, collect } from "@luminix/core";
 import { Collection } from "@luminix/support";
 

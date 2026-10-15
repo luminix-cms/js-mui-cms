@@ -25,7 +25,7 @@ vi.mock('@luminix/core', () => ({
     collect: vi.fn((items: any[]) => ({
         all: () => items,
         [Symbol.iterator]: function* () { yield* items; },
-        unique: vi.fn((key: string) => ({ all: () => items })),
+        unique: vi.fn(() => ({ all: () => items })),
         length: items.length,
     })),
 }));
@@ -46,7 +46,7 @@ const makeModelClass = (relationModel = 'Category') => ({
 describe('loadRelationOptions', () => {
     it('returns a collection merging loaded options with new ones', async () => {
         const { collect } = await import('@luminix/core');
-        const result = await loadRelationOptions(makeModelClass(), 'category', []);
+        await loadRelationOptions(makeModelClass(), 'category', []);
         expect(collect).toHaveBeenCalled();
     });
 

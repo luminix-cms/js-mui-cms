@@ -3,7 +3,7 @@ import { changeValueFromArray, changeValueToArray, mountRelationModelOption } fr
 
 vi.mock('@luminix/core', () => ({
     model: vi.fn(() => ({
-        make: vi.fn((modelName: string) => ({
+        make: vi.fn(() => ({
             getSchema: () => ({ primaryKey: 'id' }),
             where: vi.fn(() => ({
                 first: vi.fn().mockResolvedValue({ id: 1, name: 'Item 1' }),

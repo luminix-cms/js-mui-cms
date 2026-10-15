@@ -3,7 +3,7 @@ import type { MassAction, InstanceAction, StaticAction, RowClickHandler } from '
 import type { MenuItem } from '../../types/Menu';
 
 // All reducer callbacks captured by name during boot()
-const reducers = vi.hoisted(() => new Map<string, Function>());
+const reducers = vi.hoisted(() => new Map<string, (...args: any[]) => any>());
 // ...and the priority each one was registered with
 const priorities = vi.hoisted(() => new Map<string, number | undefined>());
 
@@ -33,7 +33,7 @@ vi.mock('@luminix/react', () => ({}));
 
 vi.mock('../../facades/Cms', () => ({
     default: {
-        reducer: vi.fn((name: string, fn: Function, priority?: number) => {
+        reducer: vi.fn((name: string, fn: (...args: any[]) => any, priority?: number) => {
             reducers.set(name, fn);
             priorities.set(name, priority);
         }),
@@ -77,7 +77,7 @@ vi.mock('../../support/handlers', () => ({
 const mockApp = vi.hoisted(() => ({
     singleton: vi.fn(),
     make: vi.fn(() => ({ booted: vi.fn() })),
-    on: vi.fn((_event: string, handler: Function) => handler()),
+    on: vi.fn((_event: string, handler: (...args: any[]) => any) => handler()),
     once: vi.fn(),
 }));
 
